@@ -49,8 +49,31 @@ function igp_pro_load(): void {
 
 	require_once IGP_PRO_PATH . 'includes/content/content-graph.php';
 
+	if ( file_exists( IGP_PRO_PATH . 'includes/booking/pricing-engine.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/booking/pricing-engine.php';
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/booking/payment-adapters/adapter-interface.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/booking/payment-adapters/adapter-interface.php';
+	}
+
+	foreach ( array( 'mock', 'razorpay', 'stripe', 'paypal' ) as $igp_pro_adapter ) {
+		$igp_pro_adapter_file = IGP_PRO_PATH . 'includes/booking/payment-adapters/' . $igp_pro_adapter . '.php';
+		if ( file_exists( $igp_pro_adapter_file ) ) {
+			require_once $igp_pro_adapter_file;
+		}
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/booking/booking-engine.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/booking/booking-engine.php';
+	}
+
 	if ( file_exists( IGP_PRO_PATH . 'includes/admin/content-editor.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/admin/content-editor.php';
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/admin/booking-panel.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/booking-panel.php';
 	}
 
 	add_action( 'init', 'igp_pro_register_taxonomies', 0 );
@@ -67,7 +90,15 @@ function igp_pro_load(): void {
 		add_action( 'enqueue_block_editor_assets', 'igp_pro_enqueue_editor_styles', 20 );
 	}
 
+	if ( function_exists( 'igp_pro_register_booking_module' ) ) {
+		igp_pro_register_booking_module();
+	}
+
 	if ( is_admin() && function_exists( 'igp_pro_register_content_editor_admin' ) ) {
 		igp_pro_register_content_editor_admin();
+	}
+
+	if ( is_admin() && function_exists( 'igp_pro_register_booking_admin' ) ) {
+		igp_pro_register_booking_admin();
 	}
 }

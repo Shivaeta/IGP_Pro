@@ -1,0 +1,119 @@
+.igp-booking-admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  margin: 18px 0;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 12px;
+}
+
+.igp-booking-admin-filters label {
+  display: grid;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.igp-booking-admin-summary {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.igp-booking-admin-card,
+.igp-booking-admin-box {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.igp-booking-admin-card strong {
+  display: block;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.igp-booking-admin-card span {
+  color: #646970;
+}
+
+.igp-booking-admin-table .igp-pill {
+  display: inline-flex;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #edf2ff;
+  color: #1d4ed8;
+}
+
+.igp-booking-admin-table .igp-pill--enquiry {
+  background: #ecfdf3;
+  color: #067647;
+}
+
+.igp-booking-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.igp-booking-admin-box h2 {
+  margin-top: 0;
+}
+
+.igp-booking-admin-box dl {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px 16px;
+}
+
+.igp-booking-admin-box dt {
+  color: #646970;
+  font-weight: 700;
+}
+
+.igp-booking-admin-box dd {
+  margin: 0;
+}
+
+.igp-booking-admin-box pre {
+  overflow: auto;
+  max-height: 520px;
+  padding: 14px;
+  background: #f6f7f7;
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+.igp-booking-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 14px 0;
+}
+
+.igp-booking-meta-grid label,
+.igp-booking-meta-textarea {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.igp-booking-meta-grid input,
+.igp-booking-meta-textarea textarea {
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .igp-booking-admin-summary,
+  .igp-booking-detail-grid,
+  .igp-booking-meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
