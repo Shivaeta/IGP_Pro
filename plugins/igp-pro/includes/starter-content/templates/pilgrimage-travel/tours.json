@@ -1,0 +1,26 @@
+[
+  {
+    "template_uuid": "pilgrimage-travel-tour-primary",
+    "title": "Varanasi Spiritual Journey",
+    "slug": "varanasi-spiritual-journey",
+    "content_graph": "content-graphs/tour-template.json",
+    "seo": {
+      "h1": "Varanasi Spiritual Journey",
+      "title": "Varanasi Spiritual Journey",
+      "description": "Pilgrimage routes with temple visit planning, ritual timing guidance, local assistance, and calm pacing."
+    },
+    "relationships": {
+      "primary_destination_uuid": "pilgrimage-travel-destination-primary",
+      "destination_uuids": [
+        "pilgrimage-travel-destination-primary"
+      ],
+      "route_stop_uuids": [
+        "pilgrimage-travel-destination-primary"
+      ],
+      "related_tour_uuids": [],
+      "related_destination_uuids": [
+        "pilgrimage-travel-destination-primary"
+      ]
+    }
+  }
+]

@@ -4,9 +4,111 @@
   "category": "conversion",
   "data_source": "manual",
   "fields": {
-    "title": {
-      "type": "string",
-      "default": "Pricing Summary"
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Pricing Summary"
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": ""
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "compact",
+            "featured",
+            "comparison"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
     },
     "currency": {
       "type": "string",
@@ -31,16 +133,35 @@
     }
   },
   "defaults": {
-    "title": "Pricing Summary",
+    "heading": {
+      "text": "Pricing Summary",
+      "level": "h2",
+      "eyebrow": "",
+      "visible": true
+    },
     "currency": "₹",
     "base_price": "",
     "items": [],
-    "note": ""
+    "note": "",
+    "style": {
+      "variant": "default",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "default",
+      "media_position": "auto"
+    }
   },
   "variants": [
-    "card",
-    "table"
+    "default",
+    "compact",
+    "featured",
+    "comparison"
   ],
   "validation": {},
-  "render_callback": "igp_pro_render_block"
+  "render_callback": "igp_pro_render_block",
+  "supports": {
+    "heading": true,
+    "style": true
+  }
 }

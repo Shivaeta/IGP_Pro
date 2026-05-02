@@ -1,0 +1,12 @@
+{
+  "home_to_tours": {
+    "from_uuid": "budget-tours-page-home",
+    "to_uuid": "budget-tours-page-tours-index",
+    "anchor": "Browse tours"
+  },
+  "tour_to_destination": {
+    "from_uuid": "budget-tours-tour-primary",
+    "to_uuid": "budget-tours-destination-primary",
+    "anchor": "Himachal Pradesh"
+  }
+}

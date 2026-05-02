@@ -1,0 +1,209 @@
+{
+  "id": "inclusions_exclusions",
+  "block_id": "inclusions_exclusions",
+  "version": "v2.0",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "required": true,
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Inclusions & Exclusions",
+          "required": true
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": ""
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "two-column",
+            "compact",
+            "cards"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
+    },
+    "intro": {
+      "type": "text",
+      "default": ""
+    },
+    "inclusions": {
+      "type": "repeater",
+      "min_items": 1,
+      "fields": {
+        "item": {
+          "type": "string",
+          "required": true
+        },
+        "note": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "exclusions": {
+      "type": "repeater",
+      "fields": {
+        "item": {
+          "type": "string",
+          "required": true
+        },
+        "note": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "note": {
+      "type": "text",
+      "default": ""
+    }
+  },
+  "defaults": {
+    "heading": {
+      "text": "Inclusions & Exclusions",
+      "level": "h2",
+      "eyebrow": "",
+      "visible": true
+    },
+    "intro": "",
+    "inclusions": [
+      {
+        "item": "Accommodation as per itinerary",
+        "note": ""
+      },
+      {
+        "item": "Private transfers",
+        "note": ""
+      }
+    ],
+    "exclusions": [
+      {
+        "item": "Flights unless specified",
+        "note": ""
+      },
+      {
+        "item": "Personal expenses",
+        "note": ""
+      }
+    ],
+    "note": "",
+    "style": {
+      "variant": "default",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "default",
+      "media_position": "auto"
+    }
+  },
+  "variants": [
+    "default",
+    "two-column",
+    "compact",
+    "cards"
+  ],
+  "validation": {
+    "required": [
+      "heading",
+      "inclusions"
+    ]
+  },
+  "render_callback": "igp_pro_render_block",
+  "render_path": "includes/blocks/inclusions-exclusions/render.php",
+  "supports": {
+    "heading": true,
+    "style": true,
+    "schema": true
+  }
+}

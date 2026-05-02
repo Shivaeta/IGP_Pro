@@ -1,0 +1,24 @@
+[
+  {
+    "template_uuid": "luxury-tours-page-home",
+    "title": "Luxury India Tours",
+    "slug": "home",
+    "content_graph": "content-graphs/home.json",
+    "seo": {
+      "h1": "Luxury India Tours",
+      "title": "Luxury India Tours",
+      "description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support."
+    }
+  },
+  {
+    "template_uuid": "luxury-tours-page-tours-index",
+    "title": "Tours",
+    "slug": "tours",
+    "content_graph": "content-graphs/tours-index.json",
+    "seo": {
+      "h1": "Tours",
+      "title": "Tours",
+      "description": "Browse structured tour packages."
+    }
+  }
+]

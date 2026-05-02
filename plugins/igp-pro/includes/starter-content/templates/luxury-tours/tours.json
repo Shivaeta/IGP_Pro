@@ -1,0 +1,26 @@
+[
+  {
+    "template_uuid": "luxury-tours-tour-primary",
+    "title": "Private Rajasthan Palace Tour",
+    "slug": "private-rajasthan-palace-tour",
+    "content_graph": "content-graphs/tour-template.json",
+    "seo": {
+      "h1": "Private Rajasthan Palace Tour",
+      "title": "Private Rajasthan Palace Tour",
+      "description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support."
+    },
+    "relationships": {
+      "primary_destination_uuid": "luxury-tours-destination-primary",
+      "destination_uuids": [
+        "luxury-tours-destination-primary"
+      ],
+      "route_stop_uuids": [
+        "luxury-tours-destination-primary"
+      ],
+      "related_tour_uuids": [],
+      "related_destination_uuids": [
+        "luxury-tours-destination-primary"
+      ]
+    }
+  }
+]

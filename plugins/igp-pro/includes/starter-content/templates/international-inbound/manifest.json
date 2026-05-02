@@ -1,0 +1,132 @@
+{
+  "template_id": "international-inbound",
+  "version": "1.0.0",
+  "name": "International Inbound Starter Template",
+  "industry": "International inbound travel",
+  "required_blocks": [
+    "hero",
+    "rich_text",
+    "tour_cards",
+    "destination_cards",
+    "cta",
+    "faq",
+    "tour_facts",
+    "package_tiers",
+    "reviews_summary",
+    "visa_requirements",
+    "best_time_to_visit",
+    "route_timeline",
+    "expert_box",
+    "brochure_cta",
+    "nearby_attractions"
+  ],
+  "required_features": [
+    "enable_relationship_layer",
+    "enable_semantic_outline",
+    "enable_smart_block_variants",
+    "enable_brand_engine",
+    "enable_starter_templates"
+  ],
+  "brand_profile": "international-inbound-brand",
+  "pages": [
+    {
+      "template_uuid": "international-inbound-page-home",
+      "title": "Inbound India Travel Experiences",
+      "slug": "home",
+      "content_graph": "content-graphs/home.json",
+      "seo": {
+        "h1": "Inbound India Travel Experiences",
+        "title": "Inbound India Travel Experiences",
+        "description": "Inbound-ready itineraries for international guests with airport support, multilingual assistance, and curated highlights."
+      }
+    },
+    {
+      "template_uuid": "international-inbound-page-tours-index",
+      "title": "Tours",
+      "slug": "tours",
+      "content_graph": "content-graphs/tours-index.json",
+      "seo": {
+        "h1": "Tours",
+        "title": "Tours",
+        "description": "Browse structured tour packages."
+      }
+    }
+  ],
+  "tours": [
+    {
+      "template_uuid": "international-inbound-tour-primary",
+      "title": "Classic Golden Triangle Tour",
+      "slug": "classic-golden-triangle-tour",
+      "content_graph": "content-graphs/tour-template.json",
+      "seo": {
+        "h1": "Classic Golden Triangle Tour",
+        "title": "Classic Golden Triangle Tour",
+        "description": "Inbound-ready itineraries for international guests with airport support, multilingual assistance, and curated highlights."
+      },
+      "relationships": {
+        "primary_destination_uuid": "international-inbound-destination-primary",
+        "destination_uuids": [
+          "international-inbound-destination-primary"
+        ],
+        "route_stop_uuids": [
+          "international-inbound-destination-primary"
+        ],
+        "related_tour_uuids": [],
+        "related_destination_uuids": [
+          "international-inbound-destination-primary"
+        ]
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "template_uuid": "international-inbound-destination-primary",
+      "title": "Golden Triangle",
+      "slug": "golden-triangle",
+      "content_graph": "content-graphs/destination-template.json",
+      "seo": {
+        "h1": "Golden Triangle",
+        "title": "Golden Triangle",
+        "description": "Destination page starter content."
+      },
+      "relationships": {
+        "related_destination_uuids": []
+      }
+    }
+  ],
+  "media_placeholders": [
+    {
+      "template_uuid": "international-inbound-hero-image",
+      "role": "hero",
+      "filename": "template-hero.jpg",
+      "alt": "Inbound India Travel Experiences"
+    },
+    {
+      "template_uuid": "international-inbound-og-image",
+      "role": "og_image",
+      "filename": "template-og.jpg",
+      "alt": "Inbound India Travel Experiences"
+    }
+  ],
+  "seo_profile": {
+    "focus_topics": [
+      "International inbound travel",
+      "travel packages",
+      "Golden Triangle"
+    ],
+    "schema_policy": "tourism_default",
+    "robots": "index,follow"
+  },
+  "link_map": {
+    "home_to_tours": {
+      "from_uuid": "international-inbound-page-home",
+      "to_uuid": "international-inbound-page-tours-index",
+      "anchor": "Browse tours"
+    },
+    "tour_to_destination": {
+      "from_uuid": "international-inbound-tour-primary",
+      "to_uuid": "international-inbound-destination-primary",
+      "anchor": "Golden Triangle"
+    }
+  }
+}

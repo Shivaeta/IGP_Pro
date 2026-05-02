@@ -1,0 +1,37 @@
+{
+    "snapshot_id": "snap_20260502_210857_hpxqkfo0",
+    "object_type": "relationship_data",
+    "object_id": 133,
+    "before_data": {
+        "primary_destination_id": 0,
+        "destination_ids": [],
+        "route_stop_ids": [],
+        "related_tour_ids": [],
+        "related_destination_ids": []
+    },
+    "after_data": {
+        "primary_destination_id": 131,
+        "destination_ids": [
+            131
+        ],
+        "route_stop_ids": [
+            131
+        ],
+        "related_tour_ids": [],
+        "related_destination_ids": [
+            131
+        ]
+    },
+    "actor_user_id": 1,
+    "source_module": "relationships",
+    "created_at": "2026-05-02T21:08:57+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "cd91f138bf96df01ff0e92d159476ff6f8381fe65c96feb649960c8f554f9dea",
+    "after_hash": "836f70381e546831fddf3548ef690e4cc9c440afdfbf2ca577e4c9a4ee39649f",
+    "current_hash_at_create": "cd91f138bf96df01ff0e92d159476ff6f8381fe65c96feb649960c8f554f9dea",
+    "context": {
+        "source_module": "relationships",
+        "actor_type": "import",
+        "reason": "starter_template_import"
+    }
+}

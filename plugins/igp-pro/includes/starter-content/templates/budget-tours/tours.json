@@ -1,0 +1,26 @@
+[
+  {
+    "template_uuid": "budget-tours-tour-primary",
+    "title": "Budget Himachal Adventure",
+    "slug": "budget-himachal-adventure",
+    "content_graph": "content-graphs/tour-template.json",
+    "seo": {
+      "h1": "Budget Himachal Adventure",
+      "title": "Budget Himachal Adventure",
+      "description": "Value-first packages with practical routes, verified stays, transparent inclusions, and flexible group options."
+    },
+    "relationships": {
+      "primary_destination_uuid": "budget-tours-destination-primary",
+      "destination_uuids": [
+        "budget-tours-destination-primary"
+      ],
+      "route_stop_uuids": [
+        "budget-tours-destination-primary"
+      ],
+      "related_tour_uuids": [],
+      "related_destination_uuids": [
+        "budget-tours-destination-primary"
+      ]
+    }
+  }
+]

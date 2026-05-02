@@ -1,0 +1,132 @@
+{
+  "template_id": "luxury-tours",
+  "version": "1.0.0",
+  "name": "Luxury Tours Starter Template",
+  "industry": "Luxury private travel",
+  "required_blocks": [
+    "hero",
+    "rich_text",
+    "tour_cards",
+    "destination_cards",
+    "cta",
+    "faq",
+    "tour_facts",
+    "package_tiers",
+    "reviews_summary",
+    "visa_requirements",
+    "best_time_to_visit",
+    "route_timeline",
+    "expert_box",
+    "brochure_cta",
+    "nearby_attractions"
+  ],
+  "required_features": [
+    "enable_relationship_layer",
+    "enable_semantic_outline",
+    "enable_smart_block_variants",
+    "enable_brand_engine",
+    "enable_starter_templates"
+  ],
+  "brand_profile": "luxury-tours-brand",
+  "pages": [
+    {
+      "template_uuid": "luxury-tours-page-home",
+      "title": "Luxury India Tours",
+      "slug": "home",
+      "content_graph": "content-graphs/home.json",
+      "seo": {
+        "h1": "Luxury India Tours",
+        "title": "Luxury India Tours",
+        "description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support."
+      }
+    },
+    {
+      "template_uuid": "luxury-tours-page-tours-index",
+      "title": "Tours",
+      "slug": "tours",
+      "content_graph": "content-graphs/tours-index.json",
+      "seo": {
+        "h1": "Tours",
+        "title": "Tours",
+        "description": "Browse structured tour packages."
+      }
+    }
+  ],
+  "tours": [
+    {
+      "template_uuid": "luxury-tours-tour-primary",
+      "title": "Private Rajasthan Palace Tour",
+      "slug": "private-rajasthan-palace-tour",
+      "content_graph": "content-graphs/tour-template.json",
+      "seo": {
+        "h1": "Private Rajasthan Palace Tour",
+        "title": "Private Rajasthan Palace Tour",
+        "description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support."
+      },
+      "relationships": {
+        "primary_destination_uuid": "luxury-tours-destination-primary",
+        "destination_uuids": [
+          "luxury-tours-destination-primary"
+        ],
+        "route_stop_uuids": [
+          "luxury-tours-destination-primary"
+        ],
+        "related_tour_uuids": [],
+        "related_destination_uuids": [
+          "luxury-tours-destination-primary"
+        ]
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "template_uuid": "luxury-tours-destination-primary",
+      "title": "Rajasthan",
+      "slug": "rajasthan",
+      "content_graph": "content-graphs/destination-template.json",
+      "seo": {
+        "h1": "Rajasthan",
+        "title": "Rajasthan",
+        "description": "Destination page starter content."
+      },
+      "relationships": {
+        "related_destination_uuids": []
+      }
+    }
+  ],
+  "media_placeholders": [
+    {
+      "template_uuid": "luxury-tours-hero-image",
+      "role": "hero",
+      "filename": "template-hero.jpg",
+      "alt": "Luxury India Tours"
+    },
+    {
+      "template_uuid": "luxury-tours-og-image",
+      "role": "og_image",
+      "filename": "template-og.jpg",
+      "alt": "Luxury India Tours"
+    }
+  ],
+  "seo_profile": {
+    "focus_topics": [
+      "Luxury private travel",
+      "travel packages",
+      "Rajasthan"
+    ],
+    "schema_policy": "tourism_default",
+    "robots": "index,follow"
+  },
+  "link_map": {
+    "home_to_tours": {
+      "from_uuid": "luxury-tours-page-home",
+      "to_uuid": "luxury-tours-page-tours-index",
+      "anchor": "Browse tours"
+    },
+    "tour_to_destination": {
+      "from_uuid": "luxury-tours-tour-primary",
+      "to_uuid": "luxury-tours-destination-primary",
+      "anchor": "Rajasthan"
+    }
+  }
+}

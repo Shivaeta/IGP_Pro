@@ -1,0 +1,132 @@
+{
+  "template_id": "budget-tours",
+  "version": "1.0.0",
+  "name": "Budget Tours Starter Template",
+  "industry": "Budget travel packages",
+  "required_blocks": [
+    "hero",
+    "rich_text",
+    "tour_cards",
+    "destination_cards",
+    "cta",
+    "faq",
+    "tour_facts",
+    "package_tiers",
+    "reviews_summary",
+    "visa_requirements",
+    "best_time_to_visit",
+    "route_timeline",
+    "expert_box",
+    "brochure_cta",
+    "nearby_attractions"
+  ],
+  "required_features": [
+    "enable_relationship_layer",
+    "enable_semantic_outline",
+    "enable_smart_block_variants",
+    "enable_brand_engine",
+    "enable_starter_templates"
+  ],
+  "brand_profile": "budget-tours-brand",
+  "pages": [
+    {
+      "template_uuid": "budget-tours-page-home",
+      "title": "Affordable India Tours",
+      "slug": "home",
+      "content_graph": "content-graphs/home.json",
+      "seo": {
+        "h1": "Affordable India Tours",
+        "title": "Affordable India Tours",
+        "description": "Value-first packages with practical routes, verified stays, transparent inclusions, and flexible group options."
+      }
+    },
+    {
+      "template_uuid": "budget-tours-page-tours-index",
+      "title": "Tours",
+      "slug": "tours",
+      "content_graph": "content-graphs/tours-index.json",
+      "seo": {
+        "h1": "Tours",
+        "title": "Tours",
+        "description": "Browse structured tour packages."
+      }
+    }
+  ],
+  "tours": [
+    {
+      "template_uuid": "budget-tours-tour-primary",
+      "title": "Budget Himachal Adventure",
+      "slug": "budget-himachal-adventure",
+      "content_graph": "content-graphs/tour-template.json",
+      "seo": {
+        "h1": "Budget Himachal Adventure",
+        "title": "Budget Himachal Adventure",
+        "description": "Value-first packages with practical routes, verified stays, transparent inclusions, and flexible group options."
+      },
+      "relationships": {
+        "primary_destination_uuid": "budget-tours-destination-primary",
+        "destination_uuids": [
+          "budget-tours-destination-primary"
+        ],
+        "route_stop_uuids": [
+          "budget-tours-destination-primary"
+        ],
+        "related_tour_uuids": [],
+        "related_destination_uuids": [
+          "budget-tours-destination-primary"
+        ]
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "template_uuid": "budget-tours-destination-primary",
+      "title": "Himachal Pradesh",
+      "slug": "himachal-pradesh",
+      "content_graph": "content-graphs/destination-template.json",
+      "seo": {
+        "h1": "Himachal Pradesh",
+        "title": "Himachal Pradesh",
+        "description": "Destination page starter content."
+      },
+      "relationships": {
+        "related_destination_uuids": []
+      }
+    }
+  ],
+  "media_placeholders": [
+    {
+      "template_uuid": "budget-tours-hero-image",
+      "role": "hero",
+      "filename": "template-hero.jpg",
+      "alt": "Affordable India Tours"
+    },
+    {
+      "template_uuid": "budget-tours-og-image",
+      "role": "og_image",
+      "filename": "template-og.jpg",
+      "alt": "Affordable India Tours"
+    }
+  ],
+  "seo_profile": {
+    "focus_topics": [
+      "Budget travel packages",
+      "travel packages",
+      "Himachal Pradesh"
+    ],
+    "schema_policy": "tourism_default",
+    "robots": "index,follow"
+  },
+  "link_map": {
+    "home_to_tours": {
+      "from_uuid": "budget-tours-page-home",
+      "to_uuid": "budget-tours-page-tours-index",
+      "anchor": "Browse tours"
+    },
+    "tour_to_destination": {
+      "from_uuid": "budget-tours-tour-primary",
+      "to_uuid": "budget-tours-destination-primary",
+      "anchor": "Himachal Pradesh"
+    }
+  }
+}

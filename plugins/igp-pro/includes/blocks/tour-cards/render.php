@@ -28,23 +28,30 @@ if ( ! function_exists( 'igp_pro_render_tour_cards' ) ) {
 		$destination_ids = igp_pro_normalize_post_ids( $data['destination'] ?? array() );
 		$extra       = array();
 
-		if ( empty( $ids ) && ! empty( $destination_ids ) ) {
-			$extra['meta_query'] = array(
-				'relation' => 'OR',
-				array(
-					'key'     => '_igp_destination_id',
-					'value'   => $destination_ids,
-					'compare' => 'IN',
-				),
-				array(
-					'key'     => 'igp_destination_id',
-					'value'   => $destination_ids,
-					'compare' => 'IN',
-				),
-			);
+		$query = null;
+		if ( empty( $ids ) && ! empty( $destination_ids ) && function_exists( 'igp_pro_get_tours_for_destinations' ) ) {
+			$query = igp_pro_get_tours_for_destinations( $destination_ids, array( 'posts_per_page' => $query_limit ) );
 		}
 
-		$query = igp_pro_get_listing_query( 'tour', $query_limit, $ids, $extra );
+		if ( ! $query instanceof WP_Query ) {
+			if ( empty( $ids ) && ! empty( $destination_ids ) ) {
+				$extra['meta_query'] = array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_igp_destination_id',
+						'value'   => $destination_ids,
+						'compare' => 'IN',
+					),
+					array(
+						'key'     => 'igp_destination_id',
+						'value'   => $destination_ids,
+						'compare' => 'IN',
+					),
+				);
+			}
+
+			$query = igp_pro_get_listing_query( 'tour', $query_limit, $ids, $extra );
+		}
 
 		ob_start();
 		?>

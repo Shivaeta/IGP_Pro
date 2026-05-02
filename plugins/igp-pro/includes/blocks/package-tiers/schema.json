@@ -1,0 +1,229 @@
+{
+  "id": "package_tiers",
+  "block_id": "package_tiers",
+  "version": "v2.0",
+  "category": "conversion",
+  "data_source": "manual",
+  "fields": {
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "required": true,
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Package Tiers",
+          "required": true
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": ""
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "comparison",
+            "cards",
+            "compact"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
+    },
+    "intro": {
+      "type": "text",
+      "default": ""
+    },
+    "tiers": {
+      "type": "repeater",
+      "min_items": 1,
+      "fields": {
+        "name": {
+          "type": "string",
+          "required": true
+        },
+        "price": {
+          "type": "string",
+          "default": ""
+        },
+        "currency": {
+          "type": "string",
+          "default": "₹"
+        },
+        "duration": {
+          "type": "string",
+          "default": ""
+        },
+        "description": {
+          "type": "text",
+          "default": ""
+        },
+        "features": {
+          "type": "repeater",
+          "fields": {
+            "item": {
+              "type": "string",
+              "required": true
+            }
+          }
+        },
+        "highlight": {
+          "type": "boolean",
+          "default": false
+        },
+        "cta_label": {
+          "type": "string",
+          "default": "Enquire now"
+        },
+        "cta_url": {
+          "type": "string",
+          "default": ""
+        }
+      }
+    },
+    "note": {
+      "type": "text",
+      "default": ""
+    }
+  },
+  "defaults": {
+    "heading": {
+      "text": "Package Tiers",
+      "level": "h2",
+      "eyebrow": "",
+      "visible": true
+    },
+    "intro": "",
+    "tiers": [
+      {
+        "name": "Standard",
+        "price": "",
+        "currency": "₹",
+        "duration": "",
+        "description": "",
+        "features": [
+          {
+            "item": "Curated itinerary"
+          },
+          {
+            "item": "Travel support"
+          }
+        ],
+        "highlight": false,
+        "cta_label": "Enquire now",
+        "cta_url": ""
+      }
+    ],
+    "note": "",
+    "style": {
+      "variant": "default",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "default",
+      "media_position": "auto"
+    }
+  },
+  "variants": [
+    "default",
+    "comparison",
+    "cards",
+    "compact"
+  ],
+  "validation": {
+    "required": [
+      "heading",
+      "tiers"
+    ]
+  },
+  "render_callback": "igp_pro_render_block",
+  "render_path": "includes/blocks/package-tiers/render.php",
+  "supports": {
+    "heading": true,
+    "style": true,
+    "schema": true
+  }
+}

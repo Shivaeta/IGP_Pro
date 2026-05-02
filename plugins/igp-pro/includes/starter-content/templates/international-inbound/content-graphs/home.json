@@ -1,0 +1,162 @@
+{
+  "version": "v1",
+  "schema_version": "2.0",
+  "seo": {
+    "h1": "Inbound India Travel Experiences",
+    "title": "Inbound India Travel Experiences",
+    "description": "Starter template page for structured travel content.",
+    "canonical_url": "",
+    "robots": "index,follow"
+  },
+  "sections": [
+    {
+      "block_id": "hero",
+      "data": {
+        "heading": {
+          "text": "Inbound India Travel Experiences",
+          "level": "h2",
+          "eyebrow": "Featured travel template",
+          "visible": true
+        },
+        "subheading": "India travel experiences structured for international guests from arrival to departure.",
+        "background_image": {
+          "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+          "alt": "Inbound India Travel Experiences"
+        },
+        "cta": {
+          "label": "Start planning",
+          "url": "/contact/"
+        },
+        "enable_search": false,
+        "style": {
+          "variant": "centered-minimal",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "rich_text",
+      "data": {
+        "heading": {
+          "text": "Why this template works",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "content": "Inbound-ready itineraries for international guests with airport support, multilingual assistance, and curated highlights.",
+        "alignment": "left",
+        "width": "normal",
+        "variant": "default",
+        "style": {
+          "variant": "article",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "destination_cards",
+      "data": {
+        "heading": {
+          "text": "Featured Destinations",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "description": "Template destinations are relationship-aware and can be expanded during import.",
+        "source": "query",
+        "items": [],
+        "layout": "grid",
+        "columns": 3,
+        "limit": 3,
+        "show_excerpt": true,
+        "style": {
+          "variant": "grid",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "cta",
+      "data": {
+        "heading": {
+          "text": "Plan a custom trip",
+          "level": "h2",
+          "eyebrow": "Ready to plan?",
+          "visible": true
+        },
+        "subheading": "Use this starter template as a structured baseline, then replace content with client-specific details.",
+        "button": {
+          "label": "Request a quote",
+          "url": "/contact/"
+        },
+        "secondary_button": {
+          "label": "View tours",
+          "url": "/tours/"
+        },
+        "alignment": "center",
+        "variant": "solid",
+        "show_badges": true,
+        "badges": [
+          {
+            "label": "Structured content"
+          },
+          {
+            "label": "SEO-ready sections"
+          },
+          {
+            "label": "Editable blocks"
+          }
+        ],
+        "style": {
+          "variant": "banner",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "faq",
+      "data": {
+        "heading": {
+          "text": "Common Questions",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "items": [
+          {
+            "question": "Can this package be customized?",
+            "answer": "Yes. The itinerary, hotel category, pacing, and inclusions can be adjusted for the traveler profile."
+          },
+          {
+            "question": "Is this content editable?",
+            "answer": "Yes. All sections are stored as structured IGP Content Graph data."
+          }
+        ],
+        "style": {
+          "variant": "accordion",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    }
+  ]
+}

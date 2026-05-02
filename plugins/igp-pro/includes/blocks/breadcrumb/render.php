@@ -26,6 +26,15 @@ if ( ! function_exists( 'igp_pro_render_breadcrumb' ) ) {
 			$post_type = get_post_type();
 			if ( 'tour' === $post_type ) {
 				$items[] = array( 'label' => __( 'Tours', 'igp-pro' ), 'url' => get_post_type_archive_link( 'tour' ) );
+				if ( class_exists( 'IGP_Relationships' ) ) {
+					$primary_destination_id = IGP_Relationships::get_primary_destination( get_the_ID() );
+					if ( $primary_destination_id > 0 ) {
+						$items[] = array(
+							'label' => get_the_title( $primary_destination_id ),
+							'url'   => get_permalink( $primary_destination_id ),
+						);
+					}
+				}
 			} elseif ( 'destination' === $post_type ) {
 				$items[] = array( 'label' => __( 'Destinations', 'igp-pro' ), 'url' => get_post_type_archive_link( 'destination' ) );
 			}

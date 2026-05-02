@@ -1,0 +1,188 @@
+{
+  "version": "v1",
+  "schema_version": "2.0",
+  "seo": {
+    "h1": "Rajasthan",
+    "title": "Rajasthan",
+    "description": "Starter template page for structured travel content.",
+    "canonical_url": "",
+    "robots": "index,follow"
+  },
+  "sections": [
+    {
+      "block_id": "hero",
+      "data": {
+        "heading": {
+          "text": "Rajasthan",
+          "level": "h2",
+          "eyebrow": "Featured travel template",
+          "visible": true
+        },
+        "subheading": "Destination template for Rajasthan.",
+        "background_image": {
+          "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+          "alt": "Rajasthan"
+        },
+        "cta": {
+          "label": "Start planning",
+          "url": "/contact/"
+        },
+        "enable_search": false,
+        "style": {
+          "variant": "centered-minimal",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "rich_text",
+      "data": {
+        "heading": {
+          "text": "About Rajasthan",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "content": "Rajasthan is the primary destination used by this starter package. Replace this text with client-specific destination expertise.",
+        "alignment": "left",
+        "width": "normal",
+        "variant": "default",
+        "style": {
+          "variant": "article",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "best_time_to_visit",
+      "data": {
+        "heading": {
+          "text": "Best Time to Visit",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "intro": "Seasonality guidance helps travelers choose the right travel window.",
+        "best_months": "October to March",
+        "weather_summary": "Cooler weather and strong sightseeing conditions in most routes.",
+        "seasons": [
+          {
+            "name": "Peak season",
+            "months": "October–March",
+            "temperature": "15–28°C",
+            "description": "Cooler weather and strong sightseeing conditions.",
+            "best_for": "Sightseeing and cultural travel"
+          },
+          {
+            "name": "Shoulder season",
+            "months": "April–June",
+            "temperature": "24–38°C",
+            "description": "Good value with warmer days.",
+            "best_for": "Budget-conscious travelers"
+          }
+        ],
+        "tips": [
+          {
+            "item": "Book early for peak season hotels."
+          },
+          {
+            "item": "Carry sun protection during warmer months."
+          }
+        ],
+        "style": {
+          "variant": "seasons",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "nearby_attractions",
+      "data": {
+        "heading": {
+          "text": "Nearby Attractions",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "intro": "Add nearby attractions relevant to this destination.",
+        "source": "manual",
+        "items": [
+          {
+            "name": "Signature attraction",
+            "description": "Replace with a real nearby attraction.",
+            "distance": "30 km",
+            "travel_time": "30 minutes",
+            "image": {
+              "url": "",
+              "alt": ""
+            },
+            "link_url": ""
+          }
+        ],
+        "limit": 6,
+        "style": {
+          "variant": "grid",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "cta",
+      "data": {
+        "heading": {
+          "text": "Plan a trip to Rajasthan",
+          "level": "h2",
+          "eyebrow": "Ready to plan?",
+          "visible": true
+        },
+        "subheading": "Use this starter template as a structured baseline, then replace content with client-specific details.",
+        "button": {
+          "label": "Request a quote",
+          "url": "/contact/"
+        },
+        "secondary_button": {
+          "label": "View tours",
+          "url": "/tours/"
+        },
+        "alignment": "center",
+        "variant": "solid",
+        "show_badges": true,
+        "badges": [
+          {
+            "label": "Structured content"
+          },
+          {
+            "label": "SEO-ready sections"
+          },
+          {
+            "label": "Editable blocks"
+          }
+        ],
+        "style": {
+          "variant": "banner",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    }
+  ]
+}

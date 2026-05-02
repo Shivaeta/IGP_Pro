@@ -25,7 +25,7 @@ function igp_pro_register_seo_panel_menu(): void {
 		'igp-pro-content-editor',
 		__( 'SEO / Performance', 'igp-pro' ),
 		__( 'SEO / Performance', 'igp-pro' ),
-		'manage_options',
+		function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'seo' ) : 'manage_options',
 		'igp-pro-seo-performance',
 		'igp_pro_render_seo_panel_page'
 	);
@@ -49,7 +49,7 @@ function igp_pro_enqueue_seo_admin_assets( string $hook ): void {
  * Render SEO panel.
  */
 function igp_pro_render_seo_panel_page(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'seo' ) : 'manage_options' ) ) {
 		wp_die( esc_html__( 'You do not have permission to manage SEO and performance settings.', 'igp-pro' ) );
 	}
 
@@ -110,32 +110,16 @@ function igp_pro_render_seo_panel_page(): void {
 				</form>
 			</section>
 
-			<section class="igp-seo-card">
-				<h2><?php esc_html_e( 'Post SEO Audit', 'igp-pro' ); ?></h2>
-				<form method="get">
+			<section class="igp-seo-card igp-seo-card--wide">
+				<h2><?php esc_html_e( 'SEO Health Dashboard', 'igp-pro' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Phase 8.4 structured checks for H1, heading hierarchy, metadata, schema, image alt text, internal links, orphan risk, and CWV/cache status.', 'igp-pro' ); ?></p>
+				<form method="get" class="igp-seo-audit-form">
 					<input type="hidden" name="page" value="igp-pro-seo-performance">
 					<label><?php esc_html_e( 'Post/Page/Tour/Destination ID', 'igp-pro' ); ?><input type="number" min="1" name="post_id" value="<?php echo esc_attr( (string) $selected_id ); ?>"></label>
-					<?php submit_button( __( 'Run Audit', 'igp-pro' ), 'secondary', 'submit', false ); ?>
+					<?php submit_button( __( 'Run SEO Health Audit', 'igp-pro' ), 'secondary', 'submit', false ); ?>
 				</form>
 
-				<?php if ( is_array( $audit ) ) : ?>
-					<h3><?php echo esc_html( get_the_title( $selected_id ) ); ?></h3>
-					<ul class="igp-seo-checks">
-						<?php foreach ( $audit['checks'] as $check ) : ?>
-							<li class="is-<?php echo esc_attr( $check['status'] ); ?>"><?php echo esc_html( $check['label'] ); ?></li>
-						<?php endforeach; ?>
-					</ul>
-					<h3><?php esc_html_e( 'Internal linking hints', 'igp-pro' ); ?></h3>
-					<?php if ( ! empty( $audit['hints'] ) ) : ?>
-						<ul>
-							<?php foreach ( $audit['hints'] as $hint ) : ?>
-								<li><a href="<?php echo esc_url( $hint['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $hint['title'] ); ?></a> <span><?php echo esc_html( $hint['type'] ); ?></span></li>
-							<?php endforeach; ?>
-						</ul>
-					<?php else : ?>
-						<p><?php esc_html_e( 'No obvious internal-link hints found.', 'igp-pro' ); ?></p>
-					<?php endif; ?>
-				<?php endif; ?>
+				<?php igp_pro_render_seo_audit_results( $audit, $selected_id ); ?>
 			</section>
 
 			<section class="igp-seo-card igp-seo-card--wide">
@@ -159,6 +143,84 @@ function igp_pro_render_seo_panel_page(): void {
 			</section>
 		</div>
 	</div>
+	<?php
+}
+
+
+/**
+ * Render the Phase 8.4 SEO audit dashboard results.
+ *
+ * @param mixed $audit Audit result.
+ * @param int   $selected_id Selected post ID.
+ */
+function igp_pro_render_seo_audit_results( $audit, int $selected_id ): void {
+	if ( null === $audit ) {
+		return;
+	}
+
+	if ( ! is_array( $audit ) ) {
+		printf( '<div class="notice notice-warning inline"><p>%s</p></div>', esc_html__( 'SEO audit did not return a readable result.', 'igp-pro' ) );
+		return;
+	}
+
+	$score = isset( $audit['score'] ) ? absint( $audit['score'] ) : 0;
+	$source = isset( $audit['frontend_html']['source'] ) ? (string) $audit['frontend_html']['source'] : '';
+	$error  = isset( $audit['frontend_html']['error'] ) ? (string) $audit['frontend_html']['error'] : '';
+	?>
+	<div class="igp-seo-audit-summary">
+		<div class="igp-seo-audit-score">
+			<strong><?php echo esc_html( (string) $score ); ?></strong>
+			<span><?php esc_html_e( 'Health score', 'igp-pro' ); ?></span>
+		</div>
+		<div>
+			<h3><?php echo esc_html( get_the_title( $selected_id ) ); ?></h3>
+			<?php if ( ! empty( $audit['permalink'] ) ) : ?>
+				<p><a href="<?php echo esc_url( (string) $audit['permalink'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) $audit['permalink'] ); ?></a></p>
+			<?php endif; ?>
+			<p><strong><?php esc_html_e( 'HTML source checked:', 'igp-pro' ); ?></strong> <?php echo esc_html( '' !== $source ? $source : 'not available' ); ?></p>
+			<?php if ( '' !== $error ) : ?>
+				<p class="igp-seo-warning"><?php echo esc_html( sprintf( __( 'Frontend fetch fallback reason: %s', 'igp-pro' ), $error ) ); ?></p>
+			<?php endif; ?>
+		</div>
+	</div>
+
+	<?php if ( ! empty( $audit['groups'] ) && is_array( $audit['groups'] ) ) : ?>
+		<div class="igp-seo-audit-groups">
+			<?php foreach ( $audit['groups'] as $group ) : ?>
+				<?php if ( empty( $group['checks'] ) || ! is_array( $group['checks'] ) ) { continue; } ?>
+				<section class="igp-seo-audit-group">
+					<h3><?php echo esc_html( (string) ( $group['label'] ?? '' ) ); ?></h3>
+					<ul class="igp-seo-checks">
+						<?php foreach ( $group['checks'] as $check ) : ?>
+							<li class="is-<?php echo esc_attr( (string) ( $check['status'] ?? 'info' ) ); ?>">
+								<strong><?php echo esc_html( (string) ( $check['label'] ?? '' ) ); ?></strong>
+								<?php if ( ! empty( $check['detail'] ) ) : ?>
+									<span><?php echo esc_html( (string) $check['detail'] ); ?></span>
+								<?php endif; ?>
+							</li>
+						<?php endforeach; ?>
+					</ul>
+				</section>
+			<?php endforeach; ?>
+		</div>
+	<?php elseif ( ! empty( $audit['checks'] ) && is_array( $audit['checks'] ) ) : ?>
+		<ul class="igp-seo-checks">
+			<?php foreach ( $audit['checks'] as $check ) : ?>
+				<li class="is-<?php echo esc_attr( (string) ( $check['status'] ?? 'info' ) ); ?>"><?php echo esc_html( (string) ( $check['label'] ?? '' ) ); ?></li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
+
+	<h3><?php esc_html_e( 'Internal linking hints', 'igp-pro' ); ?></h3>
+	<?php if ( ! empty( $audit['hints'] ) ) : ?>
+		<ul class="igp-seo-link-hints">
+			<?php foreach ( $audit['hints'] as $hint ) : ?>
+				<li><a href="<?php echo esc_url( (string) $hint['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) $hint['title'] ); ?></a> <span><?php echo esc_html( (string) $hint['type'] ); ?></span></li>
+			<?php endforeach; ?>
+		</ul>
+	<?php else : ?>
+		<p><?php esc_html_e( 'No obvious internal-link hints found.', 'igp-pro' ); ?></p>
+	<?php endif; ?>
 	<?php
 }
 
@@ -207,7 +269,7 @@ function igp_pro_render_cwv_report_card( $report ): void {
  * Save settings.
  */
 function igp_pro_handle_save_seo_settings(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'seo' ) : 'manage_options' ) ) {
 		wp_die( esc_html__( 'Permission denied.', 'igp-pro' ) );
 	}
 	check_admin_referer( 'igp_pro_save_seo_settings' );
@@ -250,7 +312,7 @@ function igp_pro_handle_save_seo_settings(): void {
  * Purge cache.
  */
 function igp_pro_handle_purge_performance_cache(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'seo' ) : 'manage_options' ) ) {
 		wp_die( esc_html__( 'Permission denied.', 'igp-pro' ) );
 	}
 	check_admin_referer( 'igp_pro_purge_performance_cache' );

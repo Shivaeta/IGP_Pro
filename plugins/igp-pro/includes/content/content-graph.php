@@ -135,23 +135,46 @@ function igp_pro_validate_content_graph( array $graph ) {
  * @param array $graph Content graph.
  * @return string|WP_Error
  */
-function igp_pro_render_content_graph( array $graph ) {
+function igp_pro_render_content_graph( array $graph, array $context = array() ) {
 	$validation = igp_pro_validate_content_graph( $graph );
 
 	if ( is_wp_error( $validation ) ) {
 		return $validation;
 	}
 
-	$output = '';
+	$output  = '';
+	$outline = array();
+
+	if ( function_exists( 'igp_pro_semantic_outline_enabled' ) && igp_pro_semantic_outline_enabled() && function_exists( 'igp_pro_build_semantic_outline' ) ) {
+		$outline = igp_pro_build_semantic_outline( $graph, $context );
+		if ( is_wp_error( $outline ) ) {
+			return $outline;
+		}
+
+		$render_page_h1 = array_key_exists( 'render_page_h1', $context ) ? (bool) $context['render_page_h1'] : true;
+		if ( $render_page_h1 && function_exists( 'igp_pro_render_page_h1_from_outline' ) ) {
+			$output .= igp_pro_render_page_h1_from_outline( $outline );
+		}
+	}
 
 	foreach ( $graph['sections'] as $section ) {
-		$output .= igp_pro_render_block(
-			(string) $section['block_id'],
-			isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array(),
+		$block_context = array_merge(
+			$context,
 			array(
 				'section' => $section,
 				'graph'   => $graph,
+				'outline' => $outline,
 			)
+		);
+
+		if ( function_exists( 'igp_pro_apply_heading_policy_to_block_context' ) && is_array( $outline ) ) {
+			$block_context = igp_pro_apply_heading_policy_to_block_context( $block_context, $outline, $section );
+		}
+
+		$output .= igp_pro_render_block(
+			(string) $section['block_id'],
+			isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array(),
+			$block_context
 		);
 	}
 

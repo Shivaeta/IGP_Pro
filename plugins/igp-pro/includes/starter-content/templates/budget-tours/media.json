@@ -1,0 +1,14 @@
+[
+  {
+    "template_uuid": "budget-tours-hero-image",
+    "role": "hero",
+    "filename": "template-hero.jpg",
+    "alt": "Affordable India Tours"
+  },
+  {
+    "template_uuid": "budget-tours-og-image",
+    "role": "og_image",
+    "filename": "template-og.jpg",
+    "alt": "Affordable India Tours"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "template_uuid": "pilgrimage-travel-destination-primary",
+    "title": "Varanasi",
+    "slug": "varanasi",
+    "content_graph": "content-graphs/destination-template.json",
+    "seo": {
+      "h1": "Varanasi",
+      "title": "Varanasi",
+      "description": "Destination page starter content."
+    },
+    "relationships": {
+      "related_destination_uuids": []
+    }
+  }
+]

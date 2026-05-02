@@ -1,0 +1,14 @@
+[
+  {
+    "template_uuid": "luxury-tours-hero-image",
+    "role": "hero",
+    "filename": "template-hero.jpg",
+    "alt": "Luxury India Tours"
+  },
+  {
+    "template_uuid": "luxury-tours-og-image",
+    "role": "og_image",
+    "filename": "template-og.jpg",
+    "alt": "Luxury India Tours"
+  }
+]

@@ -1,0 +1,208 @@
+{
+  "id": "route_timeline",
+  "block_id": "route_timeline",
+  "version": "v2.0",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "required": true,
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Route & Stops Timeline",
+          "required": true
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": ""
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "timeline",
+            "cards",
+            "compact"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
+    },
+    "intro": {
+      "type": "text",
+      "default": ""
+    },
+    "stops": {
+      "type": "repeater",
+      "min_items": 1,
+      "fields": {
+        "day": {
+          "type": "string",
+          "default": ""
+        },
+        "title": {
+          "type": "string",
+          "required": true
+        },
+        "location": {
+          "type": "string",
+          "default": ""
+        },
+        "duration": {
+          "type": "string",
+          "default": ""
+        },
+        "description": {
+          "type": "text",
+          "default": ""
+        },
+        "highlights": {
+          "type": "repeater",
+          "fields": {
+            "item": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaults": {
+    "heading": {
+      "text": "Route & Stops Timeline",
+      "level": "h2",
+      "eyebrow": "Trip flow",
+      "visible": true
+    },
+    "intro": "Follow the core route and key stops included in this itinerary.",
+    "stops": [
+      {
+        "day": "Day 1",
+        "title": "Arrival and orientation",
+        "location": "Starting destination",
+        "duration": "Half day",
+        "description": "Meet your local team and settle into the destination.",
+        "highlights": [
+          {
+            "item": "Arrival assistance"
+          },
+          {
+            "item": "Local orientation"
+          }
+        ]
+      }
+    ],
+    "style": {
+      "variant": "default",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "default",
+      "media_position": "auto"
+    }
+  },
+  "variants": [
+    "default",
+    "timeline",
+    "cards",
+    "compact"
+  ],
+  "validation": {
+    "required": [
+      "heading"
+    ]
+  },
+  "render_callback": "igp_pro_render_block",
+  "render_path": "includes/blocks/route-timeline/render.php",
+  "supports": {
+    "heading": true,
+    "style": true,
+    "schema": true
+  }
+}

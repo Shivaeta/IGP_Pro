@@ -1,0 +1,207 @@
+{
+  "id": "sticky_booking_cta",
+  "block_id": "sticky_booking_cta",
+  "version": "v2.0",
+  "category": "conversion",
+  "data_source": "manual",
+  "fields": {
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "required": true,
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Ready to Book?",
+          "required": true
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": ""
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "bottom-bar",
+            "side-card",
+            "inline"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "default": ""
+    },
+    "price_from": {
+      "type": "string",
+      "default": ""
+    },
+    "currency": {
+      "type": "string",
+      "default": "₹"
+    },
+    "primary_label": {
+      "type": "string",
+      "default": "Send enquiry"
+    },
+    "primary_url": {
+      "type": "string",
+      "default": ""
+    },
+    "secondary_label": {
+      "type": "string",
+      "default": "Download itinerary"
+    },
+    "secondary_url": {
+      "type": "string",
+      "default": ""
+    },
+    "phone_label": {
+      "type": "string",
+      "default": ""
+    },
+    "phone_url": {
+      "type": "string",
+      "default": ""
+    },
+    "note": {
+      "type": "string",
+      "default": ""
+    },
+    "cta_title": {
+      "type": "string",
+      "default": "Ready to plan this trip?",
+      "label": "CTA title"
+    }
+  },
+  "defaults": {
+    "heading": {
+      "text": "Ready to Book?",
+      "level": "h2",
+      "eyebrow": "Booking assistance",
+      "visible": false
+    },
+    "description": "Share your preferred travel dates and we will help customize the package.",
+    "price_from": "",
+    "currency": "₹",
+    "primary_label": "Send enquiry",
+    "primary_url": "#booking",
+    "secondary_label": "Download itinerary",
+    "secondary_url": "",
+    "phone_label": "",
+    "phone_url": "",
+    "note": "No payment is collected through this CTA.",
+    "style": {
+      "variant": "inline",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "elevated",
+      "media_position": "none"
+    },
+    "cta_title": "Ready to plan this trip?"
+  },
+  "variants": [
+    "default",
+    "bottom-bar",
+    "side-card",
+    "inline"
+  ],
+  "validation": {
+    "required": [
+      "heading"
+    ]
+  },
+  "render_callback": "igp_pro_render_block",
+  "render_path": "includes/blocks/sticky-booking-cta/render.php",
+  "supports": {
+    "heading": true,
+    "style": true,
+    "schema": true
+  }
+}

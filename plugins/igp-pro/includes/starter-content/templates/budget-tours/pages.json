@@ -1,0 +1,24 @@
+[
+  {
+    "template_uuid": "budget-tours-page-home",
+    "title": "Affordable India Tours",
+    "slug": "home",
+    "content_graph": "content-graphs/home.json",
+    "seo": {
+      "h1": "Affordable India Tours",
+      "title": "Affordable India Tours",
+      "description": "Value-first packages with practical routes, verified stays, transparent inclusions, and flexible group options."
+    }
+  },
+  {
+    "template_uuid": "budget-tours-page-tours-index",
+    "title": "Tours",
+    "slug": "tours",
+    "content_graph": "content-graphs/tours-index.json",
+    "seo": {
+      "h1": "Tours",
+      "title": "Tours",
+      "description": "Browse structured tour packages."
+    }
+  }
+]

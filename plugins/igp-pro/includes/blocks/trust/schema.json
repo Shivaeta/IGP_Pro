@@ -4,13 +4,111 @@
   "category": "trust",
   "data_source": "manual",
   "fields": {
-    "eyebrow": {
-      "type": "string",
-      "default": "Trusted Travel Partner"
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Proof that helps travellers decide"
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": "Trusted Travel Partner"
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
     },
-    "title": {
-      "type": "string",
-      "default": "Proof that helps travellers decide"
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "logo-strip",
+            "testimonial-cards",
+            "stats"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
     },
     "rating": {
       "type": "string",
@@ -40,20 +138,36 @@
     }
   },
   "defaults": {
-    "eyebrow": "Trusted Travel Partner",
-    "title": "Proof that helps travellers decide",
+    "heading": {
+      "text": "Proof that helps travellers decide",
+      "level": "h2",
+      "eyebrow": "Trusted Travel Partner",
+      "visible": true
+    },
     "rating": "4.9/5",
     "source": "Verified guest reviews",
     "layout": "cards",
     "items": [],
-    "logos": []
+    "logos": [],
+    "style": {
+      "variant": "default",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "default",
+      "media_position": "auto"
+    }
   },
   "variants": [
-    "cards",
-    "strip",
-    "logos",
-    "split"
+    "default",
+    "logo-strip",
+    "testimonial-cards",
+    "stats"
   ],
   "validation": {},
-  "render_callback": "igp_pro_render_block"
+  "render_callback": "igp_pro_render_block",
+  "supports": {
+    "heading": true,
+    "style": true
+  }
 }

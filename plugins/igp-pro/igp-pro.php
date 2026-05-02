@@ -37,6 +37,26 @@ function igp_pro_activate(): void {
 		igp_pro_register_post_types();
 	}
 
+	if ( function_exists( 'igp_pro_register_default_feature_flags' ) ) {
+		igp_pro_register_default_feature_flags();
+	}
+
+	if ( function_exists( 'igp_pro_register_capabilities' ) ) {
+		igp_pro_register_capabilities();
+	}
+
+	if ( function_exists( 'igp_pro_ensure_log_storage' ) ) {
+		igp_pro_ensure_log_storage();
+	}
+
+	if ( function_exists( 'igp_pro_ensure_snapshot_storage' ) ) {
+		igp_pro_ensure_snapshot_storage();
+	}
+
+	if ( function_exists( 'igp_pro_ensure_generated_css_storage' ) ) {
+		igp_pro_ensure_generated_css_storage();
+	}
+
 	flush_rewrite_rules();
 }
 

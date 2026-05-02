@@ -23,7 +23,7 @@ function igp_pro_export_content_graph( int $post_id ) {
 		return $graph;
 	}
 
-	return array(
+	$payload = array(
 		'type'        => 'igp_pro_content_graph',
 		'version'     => 'v1',
 		'exported_at' => gmdate( 'c' ),
@@ -38,4 +38,10 @@ function igp_pro_export_content_graph( int $post_id ) {
 		),
 		'graph'       => $graph,
 	);
+
+	if ( function_exists( 'igp_pro_get_relationships' ) && in_array( get_post_type( $post_id ), array( 'tour', 'destination' ), true ) ) {
+		$payload['relationships'] = igp_pro_get_relationships( $post_id, true );
+	}
+
+	return $payload;
 }

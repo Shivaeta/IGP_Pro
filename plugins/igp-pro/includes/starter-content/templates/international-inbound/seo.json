@@ -1,0 +1,9 @@
+{
+  "focus_topics": [
+    "International inbound travel",
+    "travel packages",
+    "Golden Triangle"
+  ],
+  "schema_policy": "tourism_default",
+  "robots": "index,follow"
+}

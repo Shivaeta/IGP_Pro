@@ -1,0 +1,132 @@
+{
+  "template_id": "pilgrimage-travel",
+  "version": "1.0.0",
+  "name": "Pilgrimage Travel Starter Template",
+  "industry": "Pilgrimage and spiritual travel",
+  "required_blocks": [
+    "hero",
+    "rich_text",
+    "tour_cards",
+    "destination_cards",
+    "cta",
+    "faq",
+    "tour_facts",
+    "package_tiers",
+    "reviews_summary",
+    "visa_requirements",
+    "best_time_to_visit",
+    "route_timeline",
+    "expert_box",
+    "brochure_cta",
+    "nearby_attractions"
+  ],
+  "required_features": [
+    "enable_relationship_layer",
+    "enable_semantic_outline",
+    "enable_smart_block_variants",
+    "enable_brand_engine",
+    "enable_starter_templates"
+  ],
+  "brand_profile": "pilgrimage-travel-brand",
+  "pages": [
+    {
+      "template_uuid": "pilgrimage-travel-page-home",
+      "title": "Sacred India Pilgrimage Tours",
+      "slug": "home",
+      "content_graph": "content-graphs/home.json",
+      "seo": {
+        "h1": "Sacred India Pilgrimage Tours",
+        "title": "Sacred India Pilgrimage Tours",
+        "description": "Pilgrimage routes with temple visit planning, ritual timing guidance, local assistance, and calm pacing."
+      }
+    },
+    {
+      "template_uuid": "pilgrimage-travel-page-tours-index",
+      "title": "Tours",
+      "slug": "tours",
+      "content_graph": "content-graphs/tours-index.json",
+      "seo": {
+        "h1": "Tours",
+        "title": "Tours",
+        "description": "Browse structured tour packages."
+      }
+    }
+  ],
+  "tours": [
+    {
+      "template_uuid": "pilgrimage-travel-tour-primary",
+      "title": "Varanasi Spiritual Journey",
+      "slug": "varanasi-spiritual-journey",
+      "content_graph": "content-graphs/tour-template.json",
+      "seo": {
+        "h1": "Varanasi Spiritual Journey",
+        "title": "Varanasi Spiritual Journey",
+        "description": "Pilgrimage routes with temple visit planning, ritual timing guidance, local assistance, and calm pacing."
+      },
+      "relationships": {
+        "primary_destination_uuid": "pilgrimage-travel-destination-primary",
+        "destination_uuids": [
+          "pilgrimage-travel-destination-primary"
+        ],
+        "route_stop_uuids": [
+          "pilgrimage-travel-destination-primary"
+        ],
+        "related_tour_uuids": [],
+        "related_destination_uuids": [
+          "pilgrimage-travel-destination-primary"
+        ]
+      }
+    }
+  ],
+  "destinations": [
+    {
+      "template_uuid": "pilgrimage-travel-destination-primary",
+      "title": "Varanasi",
+      "slug": "varanasi",
+      "content_graph": "content-graphs/destination-template.json",
+      "seo": {
+        "h1": "Varanasi",
+        "title": "Varanasi",
+        "description": "Destination page starter content."
+      },
+      "relationships": {
+        "related_destination_uuids": []
+      }
+    }
+  ],
+  "media_placeholders": [
+    {
+      "template_uuid": "pilgrimage-travel-hero-image",
+      "role": "hero",
+      "filename": "template-hero.jpg",
+      "alt": "Sacred India Pilgrimage Tours"
+    },
+    {
+      "template_uuid": "pilgrimage-travel-og-image",
+      "role": "og_image",
+      "filename": "template-og.jpg",
+      "alt": "Sacred India Pilgrimage Tours"
+    }
+  ],
+  "seo_profile": {
+    "focus_topics": [
+      "Pilgrimage and spiritual travel",
+      "travel packages",
+      "Varanasi"
+    ],
+    "schema_policy": "tourism_default",
+    "robots": "index,follow"
+  },
+  "link_map": {
+    "home_to_tours": {
+      "from_uuid": "pilgrimage-travel-page-home",
+      "to_uuid": "pilgrimage-travel-page-tours-index",
+      "anchor": "Browse tours"
+    },
+    "tour_to_destination": {
+      "from_uuid": "pilgrimage-travel-tour-primary",
+      "to_uuid": "pilgrimage-travel-destination-primary",
+      "anchor": "Varanasi"
+    }
+  }
+}

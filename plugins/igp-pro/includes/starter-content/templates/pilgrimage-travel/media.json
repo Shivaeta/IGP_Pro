@@ -1,0 +1,14 @@
+[
+  {
+    "template_uuid": "pilgrimage-travel-hero-image",
+    "role": "hero",
+    "filename": "template-hero.jpg",
+    "alt": "Sacred India Pilgrimage Tours"
+  },
+  {
+    "template_uuid": "pilgrimage-travel-og-image",
+    "role": "og_image",
+    "filename": "template-og.jpg",
+    "alt": "Sacred India Pilgrimage Tours"
+  }
+]

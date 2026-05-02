@@ -27,7 +27,7 @@ function igp_pro_register_content_editor_menu(): void {
 	add_menu_page(
 		__( 'IGP Pro', 'igp-pro' ),
 		__( 'IGP Pro', 'igp-pro' ),
-		'edit_posts',
+		function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'content_editor' ) : 'edit_posts',
 		'igp-pro-content-editor',
 		'igp_pro_render_content_editor_page',
 		'dashicons-location-alt',
@@ -39,7 +39,7 @@ function igp_pro_register_content_editor_menu(): void {
  * Render the admin app shell.
  */
 function igp_pro_render_content_editor_page(): void {
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'content_editor' ) : 'edit_posts' ) ) {
 		wp_die( esc_html__( 'You do not have permission to access the IGP Pro content editor.', 'igp-pro' ) );
 	}
 	?>
@@ -112,7 +112,21 @@ function igp_pro_content_editor_permission_check( ?int $post_id = null ) {
 		return new WP_Error( 'igp_pro_invalid_nonce', __( 'Security check failed.', 'igp-pro' ) );
 	}
 
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'content_editor' ) : 'edit_posts' ) ) {
+		if ( function_exists( 'igp_pro_log' ) ) {
+			igp_pro_log(
+				array(
+					'actor_type'    => is_user_logged_in() ? 'human' : 'anonymous',
+					'operation'     => 'content_editor_permission_denied',
+					'object_type'   => 'content_graph',
+					'object_id'     => $post_id ? absint( $post_id ) : 0,
+					'source_module' => 'content-editor',
+					'status'        => 'failure',
+					'error_code'    => 'igp_pro_missing_capability',
+					'summary'       => 'Content editor request denied.',
+				)
+			);
+		}
 		return new WP_Error( 'igp_pro_missing_capability', __( 'You do not have permission to use the content editor.', 'igp-pro' ) );
 	}
 
@@ -251,22 +265,49 @@ function igp_pro_ajax_import_content_graph(): void {
 		igp_pro_send_json_error( $permission );
 	}
 
+	$import_capability = function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'import_content' ) : 'edit_posts';
+	if ( ! current_user_can( $import_capability ) ) {
+		if ( function_exists( 'igp_pro_log' ) ) {
+			igp_pro_log(
+				array(
+					'actor_type'    => is_user_logged_in() ? 'human' : 'anonymous',
+					'operation'     => 'content_import_permission_denied',
+					'object_type'   => 'content_graph',
+					'object_id'     => 0,
+					'source_module' => 'content-editor',
+					'status'        => 'failure',
+					'error_code'    => 'igp_pro_missing_capability',
+					'summary'       => 'Content Graph import denied.',
+				)
+			);
+		}
+		igp_pro_send_json_error( new WP_Error( 'igp_pro_missing_import_capability', __( 'You do not have permission to import Content Graph data.', 'igp-pro' ) ) );
+	}
+
 	$payload = isset( $_POST['payload'] ) ? wp_unslash( $_POST['payload'] ) : '';
 	$graph   = igp_pro_import_content_graph_payload( (string) $payload );
 	if ( is_wp_error( $graph ) ) {
 		igp_pro_send_json_error( $graph );
 	}
 
-	$description = '';
-	$decoded     = igp_pro_json_decode_array( (string) $payload );
+	$description   = '';
+	$relationships = null;
+	$decoded       = igp_pro_json_decode_array( (string) $payload );
 	if ( is_array( $decoded ) && isset( $decoded['meta']['description'] ) ) {
 		$description = sanitize_textarea_field( (string) $decoded['meta']['description'] );
+	}
+	if ( function_exists( 'igp_pro_import_relationship_payload' ) ) {
+		$relationships = igp_pro_import_relationship_payload( (string) $payload );
+		if ( is_wp_error( $relationships ) ) {
+			igp_pro_send_json_error( $relationships );
+		}
 	}
 
 	wp_send_json_success(
 		array(
 			'graph'            => $graph,
 			'meta_description' => $description,
+			'relationships'    => is_array( $relationships ) ? $relationships : null,
 			'message'          => __( 'Import validated.', 'igp-pro' ),
 		)
 	);

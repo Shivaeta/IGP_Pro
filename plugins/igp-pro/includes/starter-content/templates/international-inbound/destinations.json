@@ -1,0 +1,16 @@
+[
+  {
+    "template_uuid": "international-inbound-destination-primary",
+    "title": "Golden Triangle",
+    "slug": "golden-triangle",
+    "content_graph": "content-graphs/destination-template.json",
+    "seo": {
+      "h1": "Golden Triangle",
+      "title": "Golden Triangle",
+      "description": "Destination page starter content."
+    },
+    "relationships": {
+      "related_destination_uuids": []
+    }
+  }
+]

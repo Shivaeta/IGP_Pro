@@ -49,8 +49,17 @@ function igp_pro_seo_first_section_text( array $graph, array $block_ids, array $
 		foreach ( igp_pro_seo_get_sections_by_block( $graph, $block_id ) as $section ) {
 			$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
 			foreach ( $keys as $key ) {
-				if ( isset( $data[ $key ] ) && '' !== trim( wp_strip_all_tags( (string) $data[ $key ] ) ) ) {
-					return trim( wp_strip_all_tags( (string) $data[ $key ] ) );
+				if ( ! isset( $data[ $key ] ) ) {
+					continue;
+				}
+
+				$value = $data[ $key ];
+				if ( 'heading' === $key && is_array( $value ) ) {
+					$value = ! empty( $value['visible'] ) ? (string) ( $value['text'] ?? '' ) : '';
+				}
+
+				if ( is_scalar( $value ) && '' !== trim( wp_strip_all_tags( (string) $value ) ) ) {
+					return trim( wp_strip_all_tags( (string) $value ) );
 				}
 			}
 		}
@@ -129,6 +138,211 @@ function igp_pro_seo_get_faq_entities( array $graph ): array {
 	}
 	return $entities;
 }
+
+
+/**
+ * Extract aggregate rating data from the P0 Reviews Summary block.
+ */
+function igp_pro_schema_get_aggregate_rating( array $graph ): ?array {
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'reviews_summary' ) as $section ) {
+		$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$rating = isset( $data['average_rating'] ) ? (float) $data['average_rating'] : 0.0;
+		$count  = isset( $data['review_count'] ) ? absint( $data['review_count'] ) : 0;
+		if ( $rating > 0 && $count > 0 ) {
+			return array(
+				'@type'       => 'AggregateRating',
+				'ratingValue' => max( 0, min( 5, $rating ) ),
+				'bestRating'  => 5,
+				'worstRating' => 1,
+				'reviewCount' => $count,
+			);
+		}
+	}
+
+	return null;
+}
+
+/**
+ * Extract package-tier or departure-date offers for the TouristTrip schema.
+ */
+function igp_pro_schema_get_p0_offers( array $graph, string $url, string $fallback_currency = 'INR' ): ?array {
+	$offers = array();
+
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'package_tiers' ) as $section ) {
+		$data  = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$tiers = $data['tiers'] ?? array();
+		if ( is_string( $tiers ) ) {
+			$decoded = json_decode( $tiers, true );
+			$tiers   = is_array( $decoded ) ? $decoded : array();
+		}
+
+		foreach ( is_array( $tiers ) ? $tiers : array() as $tier ) {
+			if ( ! is_array( $tier ) ) {
+				continue;
+			}
+			$price = function_exists( 'igp_pro_parse_money' ) ? igp_pro_parse_money( $tier['price'] ?? '' ) : (float) preg_replace( '/[^0-9.]/', '', (string) ( $tier['price'] ?? '' ) );
+			if ( $price <= 0 ) {
+				continue;
+			}
+			$currency = igp_pro_schema_currency_from_symbol( (string) ( $tier['currency'] ?? $fallback_currency ) );
+			$offers[] = array_filter(
+				array(
+					'@type'         => 'Offer',
+					'name'          => trim( wp_strip_all_tags( (string) ( $tier['name'] ?? '' ) ) ),
+					'price'         => $price,
+					'priceCurrency' => $currency,
+					'url'           => ! empty( $tier['cta_url'] ) ? esc_url_raw( (string) $tier['cta_url'] ) : $url,
+					'availability'  => 'https://schema.org/InStock',
+				)
+			);
+		}
+	}
+
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'departure_dates' ) as $section ) {
+		$data  = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$dates = $data['dates'] ?? array();
+		if ( is_string( $dates ) ) {
+			$decoded = json_decode( $dates, true );
+			$dates   = is_array( $decoded ) ? $decoded : array();
+		}
+
+		foreach ( is_array( $dates ) ? $dates : array() as $date ) {
+			if ( ! is_array( $date ) ) {
+				continue;
+			}
+			$price = function_exists( 'igp_pro_parse_money' ) ? igp_pro_parse_money( $date['price'] ?? '' ) : (float) preg_replace( '/[^0-9.]/', '', (string) ( $date['price'] ?? '' ) );
+			$status = sanitize_key( (string) ( $date['status'] ?? 'available' ) );
+			if ( $price <= 0 && 'on_request' !== $status ) {
+				continue;
+			}
+			$availability = 'sold_out' === $status ? 'https://schema.org/SoldOut' : ( 'limited' === $status ? 'https://schema.org/LimitedAvailability' : 'https://schema.org/InStock' );
+			$offers[] = array_filter(
+				array(
+					'@type'              => 'Offer',
+					'name'               => trim( wp_strip_all_tags( (string) ( $date['start_date'] ?? '' ) ) ),
+					'price'              => $price > 0 ? $price : null,
+					'priceCurrency'      => igp_pro_schema_currency_from_symbol( (string) ( $date['currency'] ?? $fallback_currency ) ),
+					'url'                => ! empty( $date['booking_url'] ) ? esc_url_raw( (string) $date['booking_url'] ) : $url,
+					'availability'       => $availability,
+					'availabilityStarts' => ! empty( $date['start_date'] ) ? (string) $date['start_date'] : null,
+				)
+			);
+		}
+	}
+
+	if ( empty( $offers ) ) {
+		return null;
+	}
+
+	return count( $offers ) > 1 ? array( '@type' => 'AggregateOffer', 'offers' => $offers ) : $offers[0];
+}
+
+/**
+ * Extract a named tour fact value for schema enrichment.
+ */
+function igp_pro_schema_get_tour_fact_value( array $graph, array $labels ): string {
+	$labels = array_map( 'strtolower', $labels );
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'tour_facts' ) as $section ) {
+		$data  = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$facts = $data['facts'] ?? array();
+		if ( is_string( $facts ) ) {
+			$decoded = json_decode( $facts, true );
+			$facts   = is_array( $decoded ) ? $decoded : array();
+		}
+		foreach ( is_array( $facts ) ? $facts : array() as $fact ) {
+			if ( ! is_array( $fact ) ) {
+				continue;
+			}
+			$label = strtolower( trim( wp_strip_all_tags( (string) ( $fact['label'] ?? '' ) ) ) );
+			$value = trim( wp_strip_all_tags( (string) ( $fact['value'] ?? '' ) ) );
+			if ( '' !== $value && in_array( $label, $labels, true ) ) {
+				return $value;
+			}
+		}
+	}
+	return '';
+}
+
+/**
+ * Extract P1 route timeline entries as TouristTrip itinerary items.
+ */
+function igp_pro_schema_get_route_timeline_items( array $graph ): array {
+	$items = array();
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'route_timeline' ) as $section ) {
+		$data  = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$stops = $data['stops'] ?? array();
+		if ( is_string( $stops ) ) {
+			$decoded = json_decode( $stops, true );
+			$stops   = is_array( $decoded ) ? $decoded : array();
+		}
+		foreach ( is_array( $stops ) ? $stops : array() as $stop ) {
+			if ( ! is_array( $stop ) ) {
+				continue;
+			}
+			$name = trim( wp_strip_all_tags( (string) ( $stop['title'] ?? '' ) ) );
+			$text = trim( wp_strip_all_tags( (string) ( $stop['description'] ?? '' ) ) );
+			$loc  = trim( wp_strip_all_tags( (string) ( $stop['location'] ?? '' ) ) );
+			if ( '' !== $name || '' !== $text || '' !== $loc ) {
+				$items[] = array_filter(
+					array(
+						'@type'       => 'TouristAttraction',
+						'name'        => '' !== $name ? $name : $loc,
+						'description' => $text,
+					)
+				);
+			}
+		}
+	}
+	return $items;
+}
+
+/**
+ * Extract lightweight P1 informational fields as schema PropertyValue objects.
+ */
+function igp_pro_schema_get_p1_travel_properties( array $graph ): array {
+	$properties = array();
+
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'best_time_to_visit' ) as $section ) {
+		$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$best = trim( wp_strip_all_tags( (string) ( $data['best_months'] ?? '' ) ) );
+		if ( '' !== $best ) {
+			$properties[] = array(
+				'@type' => 'PropertyValue',
+				'name'  => __( 'Best time to visit', 'igp-pro' ),
+				'value' => $best,
+			);
+		}
+	}
+
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'visa_requirements' ) as $section ) {
+		$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$requirements = $data['requirements'] ?? array();
+		if ( is_string( $requirements ) ) {
+			$decoded      = json_decode( $requirements, true );
+			$requirements = is_array( $decoded ) ? $decoded : array();
+		}
+		$labels = array();
+		foreach ( is_array( $requirements ) ? $requirements : array() as $requirement ) {
+			if ( ! is_array( $requirement ) ) {
+				continue;
+			}
+			$title = trim( wp_strip_all_tags( (string) ( $requirement['title'] ?? '' ) ) );
+			if ( '' !== $title ) {
+				$labels[] = $title;
+			}
+		}
+		if ( ! empty( $labels ) ) {
+			$properties[] = array(
+				'@type' => 'PropertyValue',
+				'name'  => __( 'Travel requirements', 'igp-pro' ),
+				'value' => implode( ', ', array_slice( $labels, 0, 5 ) ),
+			);
+		}
+	}
+
+	return $properties;
+}
+
 
 /**
  * Build BreadcrumbList item data.
@@ -231,24 +445,34 @@ function igp_pro_generate_json_ld( int $post_id ): array {
 		$currency_symbol = (string) get_post_meta( $post_id, '_igp_booking_currency', true );
 		$currency        = igp_pro_schema_currency_from_symbol( $currency_symbol );
 		$duration        = get_post_meta( $post_id, '_igp_duration', true );
+		if ( '' === (string) $duration ) {
+			$duration = igp_pro_schema_get_tour_fact_value( $graph, array( 'duration', 'trip duration', 'tour duration' ) );
+		}
+
+		$p0_offers = igp_pro_schema_get_p0_offers( $graph, $url, $currency );
+		if ( null === $p0_offers && $price > 0 ) {
+			$p0_offers = array(
+				'@type'         => 'Offer',
+				'price'         => $price,
+				'priceCurrency' => $currency,
+				'url'           => $url,
+				'availability'  => 'https://schema.org/InStock',
+			);
+		}
 
 		$entities[] = array_filter(
 			array(
-				'@type'       => 'TouristTrip',
-				'@id'         => trailingslashit( $url ) . '#tour',
-				'name'        => $title,
-				'description' => $description,
-				'url'         => $url,
-				'image'       => '' !== $image ? array( $image ) : null,
-				'itinerary'   => igp_pro_schema_itinerary_items( $graph ),
-				'offers'      => $price > 0 ? array(
-					'@type'         => 'Offer',
-					'price'         => $price,
-					'priceCurrency' => $currency,
-					'url'           => $url,
-					'availability'  => 'https://schema.org/InStock',
-				) : null,
-				'touristType' => '' !== (string) $duration ? (string) $duration : null,
+				'@type'           => 'TouristTrip',
+				'@id'             => trailingslashit( $url ) . '#tour',
+				'name'            => $title,
+				'description'     => $description,
+				'url'             => $url,
+				'image'           => '' !== $image ? array( $image ) : null,
+				'itinerary'       => array_values( array_merge( igp_pro_schema_itinerary_items( $graph ), igp_pro_schema_get_route_timeline_items( $graph ) ) ),
+				'offers'          => $p0_offers,
+				'aggregateRating' => igp_pro_schema_get_aggregate_rating( $graph ),
+				'touristType'     => '' !== (string) $duration ? (string) $duration : null,
+				'additionalProperty' => igp_pro_schema_get_p1_travel_properties( $graph ),
 			)
 		);
 	} elseif ( 'destination' === $post->post_type ) {

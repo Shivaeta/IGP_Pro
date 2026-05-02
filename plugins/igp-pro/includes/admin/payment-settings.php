@@ -23,7 +23,7 @@ function igp_pro_register_payment_settings_menu(): void {
 		'igp-pro-content-editor',
 		__( 'Payment Settings', 'igp-pro' ),
 		__( 'Payment Settings', 'igp-pro' ),
-		'manage_options',
+		function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'payment_settings' ) : 'manage_options',
 		'igp-pro-payment-settings',
 		'igp_pro_render_payment_settings_page'
 	);
@@ -54,7 +54,7 @@ function igp_pro_mask_secret( string $value ): string {
  * Render payment settings page.
  */
 function igp_pro_render_payment_settings_page(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'payment_settings' ) : 'manage_options' ) ) {
 		wp_die( esc_html__( 'You do not have permission to manage payment settings.', 'igp-pro' ) );
 	}
 
@@ -116,7 +116,7 @@ function igp_pro_render_payment_settings_page(): void {
  * Save payment settings.
  */
 function igp_pro_handle_save_payment_settings(): void {
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! current_user_can( function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'payment_settings' ) : 'manage_options' ) ) {
 		wp_die( esc_html__( 'You do not have permission to manage payment settings.', 'igp-pro' ) );
 	}
 

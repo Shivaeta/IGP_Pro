@@ -1,0 +1,26 @@
+[
+  {
+    "template_uuid": "international-inbound-tour-primary",
+    "title": "Classic Golden Triangle Tour",
+    "slug": "classic-golden-triangle-tour",
+    "content_graph": "content-graphs/tour-template.json",
+    "seo": {
+      "h1": "Classic Golden Triangle Tour",
+      "title": "Classic Golden Triangle Tour",
+      "description": "Inbound-ready itineraries for international guests with airport support, multilingual assistance, and curated highlights."
+    },
+    "relationships": {
+      "primary_destination_uuid": "international-inbound-destination-primary",
+      "destination_uuids": [
+        "international-inbound-destination-primary"
+      ],
+      "route_stop_uuids": [
+        "international-inbound-destination-primary"
+      ],
+      "related_tour_uuids": [],
+      "related_destination_uuids": [
+        "international-inbound-destination-primary"
+      ]
+    }
+  }
+]

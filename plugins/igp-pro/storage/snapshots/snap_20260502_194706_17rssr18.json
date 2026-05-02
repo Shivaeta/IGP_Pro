@@ -1,0 +1,21 @@
+{
+    "snapshot_id": "snap_20260502_194706_17rssr18",
+    "object_type": "settings",
+    "object_id": 0,
+    "before_data": {
+        "profiles": [],
+        "active": "default"
+    },
+    "after_data": null,
+    "actor_user_id": 1,
+    "source_module": "brand_engine",
+    "created_at": "2026-05-02T19:47:06+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "9a16a7ea2284d97869bcb5072981e43e4307224f6e26205528273cedfdb3afef",
+    "after_hash": "",
+    "current_hash_at_create": "ccde1ba393d60b946e581b4fd0859960ee47dd76dff9c69d235fe654a2a338ce",
+    "context": {
+        "source_module": "brand_engine",
+        "reason": "brand_profile_update"
+    }
+}

@@ -53,6 +53,10 @@ function igp_pro_validate_content_graph_payload( array $graph ) {
 			return $schema;
 		}
 
+		if ( function_exists( 'igp_pro_migrate_block_heading_data_for_render' ) ) {
+			$data = igp_pro_migrate_block_heading_data_for_render( $block_id, $data );
+		}
+
 		$field_validation = igp_pro_validate_schema_data( $schema, $data, 'sections.' . $index . '.data', false );
 		if ( is_wp_error( $field_validation ) ) {
 			return $field_validation;
@@ -65,6 +69,13 @@ function igp_pro_validate_content_graph_payload( array $graph ) {
 		$block_validation = igp_pro_validate_block_data( $block, $resolved_data );
 		if ( is_wp_error( $block_validation ) ) {
 			return $block_validation;
+		}
+	}
+
+	if ( function_exists( 'igp_pro_semantic_outline_enabled' ) && igp_pro_semantic_outline_enabled() && function_exists( 'igp_pro_validate_heading_hierarchy' ) ) {
+		$heading_validation = igp_pro_validate_heading_hierarchy( $graph );
+		if ( is_wp_error( $heading_validation ) ) {
+			return $heading_validation;
 		}
 	}
 

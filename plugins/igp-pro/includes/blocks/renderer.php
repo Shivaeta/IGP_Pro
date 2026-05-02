@@ -30,10 +30,28 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 		}
 
 		$resolved_data = igp_pro_resolve_block_data( $block, $data, $context );
-		$validation    = igp_pro_validate_block_data( $block, $resolved_data );
+
+		if ( function_exists( 'igp_pro_migrate_block_heading_data_for_render' ) ) {
+			$resolved_data = igp_pro_migrate_block_heading_data_for_render( $block_id, $resolved_data );
+		}
+
+		if ( function_exists( 'igp_pro_migrate_block_style_data_for_render' ) ) {
+			$resolved_data = igp_pro_migrate_block_style_data_for_render( $block_id, $resolved_data );
+		}
+
+		$validation = igp_pro_validate_block_data( $block, $resolved_data );
 
 		if ( is_wp_error( $validation ) ) {
 			return igp_pro_render_block_fallback( $block_id, $validation->get_error_code() );
+		}
+
+		if ( function_exists( 'igp_pro_prepare_semantic_block_context' ) ) {
+			$context = igp_pro_prepare_semantic_block_context( $block_id, $resolved_data, $context );
+		}
+
+		$semantic_data = $resolved_data;
+		if ( function_exists( 'igp_pro_prepare_legacy_heading_render_data' ) ) {
+			$resolved_data = igp_pro_prepare_legacy_heading_render_data( $block_id, $resolved_data );
 		}
 
 		ob_start();
@@ -46,6 +64,10 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 
 		if ( '' === trim( $output ) ) {
 			return igp_pro_render_block_fallback( $block_id, 'empty_output' );
+		}
+
+		if ( function_exists( 'igp_pro_apply_semantic_block_wrapper' ) ) {
+			$output = igp_pro_apply_semantic_block_wrapper( $block_id, $output, $semantic_data, $context );
 		}
 
 		return $output;

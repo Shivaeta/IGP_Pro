@@ -1,0 +1,117 @@
+{
+  "version": "v1",
+  "schema_version": "2.0",
+  "seo": {
+    "h1": "Tours",
+    "title": "Tours",
+    "description": "Starter template page for structured travel content.",
+    "canonical_url": "",
+    "robots": "index,follow"
+  },
+  "sections": [
+    {
+      "block_id": "hero",
+      "data": {
+        "heading": {
+          "text": "Browse Tours",
+          "level": "h2",
+          "eyebrow": "Featured travel template",
+          "visible": true
+        },
+        "subheading": "Use this index as the structured hub for package discovery.",
+        "background_image": {
+          "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+          "alt": "Browse Tours"
+        },
+        "cta": {
+          "label": "Start planning",
+          "url": "/contact/"
+        },
+        "enable_search": false,
+        "style": {
+          "variant": "centered-minimal",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "tour_cards",
+      "data": {
+        "heading": {
+          "text": "Featured Tours",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "description": "Template tours will be created by the importer in a later phase.",
+        "source": "query",
+        "items": [],
+        "destination": [],
+        "layout": "grid",
+        "columns": 3,
+        "limit": 6,
+        "show_price": true,
+        "show_rating": true,
+        "show_excerpt": true,
+        "show_meta": true,
+        "cta_label": "View tour",
+        "image_ratio": "landscape",
+        "variant": "elevated",
+        "style": {
+          "variant": "grid",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "cta",
+      "data": {
+        "heading": {
+          "text": "Need help choosing a package",
+          "level": "h2",
+          "eyebrow": "Ready to plan?",
+          "visible": true
+        },
+        "subheading": "Use this starter template as a structured baseline, then replace content with client-specific details.",
+        "button": {
+          "label": "Request a quote",
+          "url": "/contact/"
+        },
+        "secondary_button": {
+          "label": "View tours",
+          "url": "/tours/"
+        },
+        "alignment": "center",
+        "variant": "solid",
+        "show_badges": true,
+        "badges": [
+          {
+            "label": "Structured content"
+          },
+          {
+            "label": "SEO-ready sections"
+          },
+          {
+            "label": "Editable blocks"
+          }
+        ],
+        "style": {
+          "variant": "banner",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    }
+  ]
+}

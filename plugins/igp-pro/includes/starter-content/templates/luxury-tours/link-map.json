@@ -1,0 +1,12 @@
+{
+  "home_to_tours": {
+    "from_uuid": "luxury-tours-page-home",
+    "to_uuid": "luxury-tours-page-tours-index",
+    "anchor": "Browse tours"
+  },
+  "tour_to_destination": {
+    "from_uuid": "luxury-tours-tour-primary",
+    "to_uuid": "luxury-tours-destination-primary",
+    "anchor": "Rajasthan"
+  }
+}

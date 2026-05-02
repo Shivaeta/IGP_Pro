@@ -1,0 +1,181 @@
+{
+  "id": "brochure_cta",
+  "block_id": "brochure_cta",
+  "version": "v2.0",
+  "category": "conversion",
+  "data_source": "manual",
+  "fields": {
+    "heading": {
+      "type": "object",
+      "label": "Heading",
+      "required": true,
+      "fields": {
+        "text": {
+          "type": "string",
+          "default": "Download the Brochure",
+          "required": true
+        },
+        "level": {
+          "type": "enum",
+          "values": [
+            "h2",
+            "h3",
+            "h4"
+          ],
+          "default": "h2"
+        },
+        "eyebrow": {
+          "type": "string",
+          "default": ""
+        },
+        "visible": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "label": "Style",
+      "fields": {
+        "variant": {
+          "type": "enum",
+          "label": "Variant",
+          "values": [
+            "default",
+            "banner",
+            "card",
+            "inline"
+          ],
+          "default": "default"
+        },
+        "density": {
+          "type": "enum",
+          "label": "Density",
+          "values": [
+            "compact",
+            "comfortable",
+            "spacious"
+          ],
+          "default": "comfortable"
+        },
+        "theme": {
+          "type": "enum",
+          "label": "Theme",
+          "values": [
+            "default",
+            "brand",
+            "neutral",
+            "light",
+            "dark",
+            "accent",
+            "muted"
+          ],
+          "default": "brand"
+        },
+        "container": {
+          "type": "enum",
+          "label": "Container",
+          "values": [
+            "narrow",
+            "default",
+            "wide",
+            "full"
+          ],
+          "default": "wide"
+        },
+        "surface": {
+          "type": "enum",
+          "label": "Surface",
+          "values": [
+            "default",
+            "flat",
+            "elevated",
+            "card",
+            "tinted",
+            "transparent"
+          ],
+          "default": "default"
+        },
+        "media_position": {
+          "type": "enum",
+          "label": "Media Position",
+          "values": [
+            "auto",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "background",
+            "none"
+          ],
+          "default": "auto"
+        }
+      }
+    },
+    "description": {
+      "type": "text",
+      "default": ""
+    },
+    "file_url": {
+      "type": "string",
+      "default": ""
+    },
+    "button_label": {
+      "type": "string",
+      "default": "Download brochure"
+    },
+    "secondary_label": {
+      "type": "string",
+      "default": ""
+    },
+    "secondary_url": {
+      "type": "string",
+      "default": ""
+    },
+    "form_note": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "defaults": {
+    "heading": {
+      "text": "Download the Brochure",
+      "level": "h2",
+      "eyebrow": "Trip PDF",
+      "visible": true
+    },
+    "description": "Get a concise trip brochure with highlights, route, inclusions and next steps.",
+    "file_url": "",
+    "button_label": "Download brochure",
+    "secondary_label": "Ask for a custom quote",
+    "secondary_url": "#booking",
+    "form_note": "PDF downloads should use approved files from your media library.",
+    "style": {
+      "variant": "default",
+      "density": "comfortable",
+      "theme": "brand",
+      "container": "wide",
+      "surface": "default",
+      "media_position": "auto"
+    }
+  },
+  "variants": [
+    "default",
+    "banner",
+    "card",
+    "inline"
+  ],
+  "validation": {
+    "required": [
+      "heading"
+    ]
+  },
+  "render_callback": "igp_pro_render_block",
+  "render_path": "includes/blocks/brochure-cta/render.php",
+  "supports": {
+    "heading": true,
+    "style": true,
+    "schema": true
+  }
+}

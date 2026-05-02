@@ -20,19 +20,27 @@ if ( ! function_exists( 'igp_pro_render_related_destinations' ) ) {
 		$layout       = igp_pro_enum( $data['layout'] ?? 'grid', array( 'grid', 'list' ), 'grid' );
 		$show_excerpt = ! empty( $data['show_excerpt'] );
 		$args         = array();
+		$current_id   = get_the_ID() ? absint( get_the_ID() ) : 0;
+		$query        = null;
 
-		if ( function_exists( 'igp_pro_get_related_tax_query' ) ) {
-			$tax_query = igp_pro_get_related_tax_query();
-			if ( ! empty( $tax_query ) ) {
-				$args['tax_query'] = $tax_query;
+		if ( $current_id > 0 && function_exists( 'igp_pro_get_related_destinations_query' ) ) {
+			$query = igp_pro_get_related_destinations_query( $current_id, $limit );
+		}
+
+		if ( ! $query instanceof WP_Query ) {
+			if ( function_exists( 'igp_pro_get_related_tax_query' ) ) {
+				$tax_query = igp_pro_get_related_tax_query();
+				if ( ! empty( $tax_query ) ) {
+					$args['tax_query'] = $tax_query;
+				}
 			}
-		}
 
-		if ( get_the_ID() && 'destination' === get_post_type( get_the_ID() ) ) {
-			$args['post__not_in'] = array( get_the_ID() );
-		}
+			if ( $current_id > 0 && 'destination' === get_post_type( $current_id ) ) {
+				$args['post__not_in'] = array( $current_id );
+			}
 
-		$query = igp_pro_get_listing_query( 'destination', $limit, array(), $args );
+			$query = igp_pro_get_listing_query( 'destination', $limit, array(), $args );
+		}
 
 		ob_start();
 		?>

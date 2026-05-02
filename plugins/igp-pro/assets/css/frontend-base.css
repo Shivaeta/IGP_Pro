@@ -1,0 +1,40 @@
+/* IGP Pro token-aware frontend base. Generated profile CSS overrides the variables. */
+.igp-block,
+.igp-page-title {
+  font-family: var(--igp-font-family, inherit);
+}
+
+.igp-block-heading,
+.igp-pro-hero__heading,
+.igp-page-title {
+  font-weight: var(--igp-heading-weight, 850);
+  letter-spacing: var(--igp-heading-letter-spacing, -.055em);
+}
+
+.igp-pro-hero__heading {
+  font-size: var(--igp-hero-size, clamp(44px, 7vw, 92px));
+}
+
+.igp-block-heading {
+  font-size: var(--igp-section-heading-size, clamp(30px, 4vw, 54px));
+}
+
+.igp-pro-hero__cta,
+.igp-pro-cta__button,
+.igp-button {
+  border-radius: var(--igp-button-radius, 999px);
+  font-weight: var(--igp-button-font-weight, 850);
+}
+
+.igp-surface--soft {
+  background: var(--igp-surface-soft, #f6f8fb);
+}
+
+.igp-surface--brand {
+  background: var(--igp-surface-brand, #fff6ef);
+}
+
+.igp-surface--elevated {
+  background: var(--igp-surface-elevated, #fff);
+  box-shadow: var(--igp-shadow-soft, 0 10px 28px rgba(17, 24, 39, .08));
+}

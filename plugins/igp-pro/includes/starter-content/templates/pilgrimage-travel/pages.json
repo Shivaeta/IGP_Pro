@@ -1,0 +1,24 @@
+[
+  {
+    "template_uuid": "pilgrimage-travel-page-home",
+    "title": "Sacred India Pilgrimage Tours",
+    "slug": "home",
+    "content_graph": "content-graphs/home.json",
+    "seo": {
+      "h1": "Sacred India Pilgrimage Tours",
+      "title": "Sacred India Pilgrimage Tours",
+      "description": "Pilgrimage routes with temple visit planning, ritual timing guidance, local assistance, and calm pacing."
+    }
+  },
+  {
+    "template_uuid": "pilgrimage-travel-page-tours-index",
+    "title": "Tours",
+    "slug": "tours",
+    "content_graph": "content-graphs/tours-index.json",
+    "seo": {
+      "h1": "Tours",
+      "title": "Tours",
+      "description": "Browse structured tour packages."
+    }
+  }
+]

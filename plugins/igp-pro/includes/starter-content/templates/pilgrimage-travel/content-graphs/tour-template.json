@@ -1,0 +1,397 @@
+{
+  "version": "v1",
+  "schema_version": "2.0",
+  "seo": {
+    "h1": "Varanasi Spiritual Journey",
+    "title": "Varanasi Spiritual Journey",
+    "description": "Starter template page for structured travel content.",
+    "canonical_url": "",
+    "robots": "index,follow"
+  },
+  "sections": [
+    {
+      "block_id": "hero",
+      "data": {
+        "heading": {
+          "text": "Varanasi Spiritual Journey",
+          "level": "h2",
+          "eyebrow": "Featured travel template",
+          "visible": true
+        },
+        "subheading": "Spiritual journeys planned with care, timing, accessibility, and trusted local support.",
+        "background_image": {
+          "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+          "alt": "Varanasi Spiritual Journey"
+        },
+        "cta": {
+          "label": "Start planning",
+          "url": "/contact/"
+        },
+        "enable_search": false,
+        "style": {
+          "variant": "centered-minimal",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "tour_facts",
+      "data": {
+        "heading": {
+          "text": "Quick Tour Facts",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "intro": "Use structured facts for scanning and schema-aware summaries.",
+        "facts": [
+          {
+            "label": "Duration",
+            "value": "6 days",
+            "icon": "calendar",
+            "note": ""
+          },
+          {
+            "label": "Primary destination",
+            "value": "Varanasi",
+            "icon": "location",
+            "note": ""
+          },
+          {
+            "label": "Travel style",
+            "value": "Private guided tour",
+            "icon": "star",
+            "note": ""
+          },
+          {
+            "label": "Best for",
+            "value": "Couples, families, and small groups",
+            "icon": "users",
+            "note": ""
+          }
+        ],
+        "style": {
+          "variant": "grid",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "package_tiers",
+      "data": {
+        "heading": {
+          "text": "Package Tiers",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "intro": "Compare package options before enquiry.",
+        "tiers": [
+          {
+            "name": "Standard",
+            "price": "35000",
+            "currency": "INR",
+            "duration": "6 days",
+            "description": "Comfortable stays and essential inclusions.",
+            "features": [
+              {
+                "item": "Private transfers"
+              },
+              {
+                "item": "Daily breakfast"
+              }
+            ],
+            "highlight": false,
+            "cta_label": "Enquire now",
+            "cta_url": "/contact/"
+          },
+          {
+            "name": "Premium",
+            "price": "62000",
+            "currency": "INR",
+            "duration": "6 days",
+            "description": "Upgraded hotels and curated experiences.",
+            "features": [
+              {
+                "item": "Boutique hotels"
+              },
+              {
+                "item": "Expert guide"
+              }
+            ],
+            "highlight": true,
+            "cta_label": "Enquire now",
+            "cta_url": "/contact/"
+          }
+        ],
+        "note": "Prices are placeholders and should be updated before publishing.",
+        "style": {
+          "variant": "comparison",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "route_timeline",
+      "data": {
+        "heading": {
+          "text": "Route Timeline",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "intro": "Replace this route with the final itinerary before publishing.",
+        "stops": [
+          {
+            "day": "Day 1",
+            "title": "Arrival",
+            "location": "Varanasi",
+            "duration": "Half day",
+            "description": "Arrival support and orientation.",
+            "highlights": [
+              {
+                "item": "Airport transfer"
+              },
+              {
+                "item": "Welcome briefing"
+              }
+            ]
+          },
+          {
+            "day": "Day 2",
+            "title": "Local exploration",
+            "location": "Varanasi",
+            "duration": "Full day",
+            "description": "Guided sightseeing and cultural experiences.",
+            "highlights": [
+              {
+                "item": "City tour"
+              },
+              {
+                "item": "Local experience"
+              }
+            ]
+          },
+          {
+            "day": "Day 3",
+            "title": "Flexible extension",
+            "location": "Varanasi",
+            "duration": "Full day",
+            "description": "Add nearby places based on traveler interests.",
+            "highlights": [
+              {
+                "item": "Optional extension"
+              }
+            ]
+          }
+        ],
+        "style": {
+          "variant": "timeline",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "visa_requirements",
+      "data": {
+        "heading": {
+          "text": "Travel Requirements",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "intro": "Confirm current entry and travel rules before publishing or operating the package.",
+        "requirements": [
+          {
+            "title": "ID / Passport",
+            "description": "Carry valid identity documents for hotel check-in and local access.",
+            "required": true,
+            "applies_to": "All travelers",
+            "link_label": "",
+            "link_url": ""
+          },
+          {
+            "title": "Permits",
+            "description": "Regional permits may be required for selected routes.",
+            "required": false,
+            "applies_to": "Selected routes",
+            "link_label": "",
+            "link_url": ""
+          }
+        ],
+        "documents": [
+          {
+            "item": "Government ID",
+            "note": "Required for hotel check-in."
+          },
+          {
+            "item": "Travel insurance",
+            "note": "Recommended."
+          }
+        ],
+        "disclaimer": "Requirements are placeholders and must be verified before publication.",
+        "last_updated": "2026-05-02",
+        "style": {
+          "variant": "checklist",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "reviews_summary",
+      "data": {
+        "heading": {
+          "text": "Traveler Trust",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "average_rating": 4.8,
+        "review_count": 128,
+        "rating_source": "Verified travelers",
+        "summary": "Guests value the structured planning, responsive support, and local expertise.",
+        "breakdown": [
+          {
+            "label": "Planning",
+            "rating": 4.9
+          },
+          {
+            "label": "Support",
+            "rating": 4.8
+          }
+        ],
+        "testimonials": [
+          {
+            "quote": "Well planned, clear communication, and smooth execution.",
+            "name": "A verified traveler",
+            "location": "India",
+            "rating": 5
+          }
+        ],
+        "style": {
+          "variant": "summary",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "expert_box",
+      "data": {
+        "heading": {
+          "text": "Talk to a Travel Consultant",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "name": "IGP Travel Expert",
+        "role": "Destination specialist",
+        "bio": "Use expert assistance to refine routing, timing, and inclusions before publishing the final package.",
+        "image": {
+          "url": "",
+          "alt": ""
+        },
+        "phone": "",
+        "email": "hello@example.com",
+        "cta_label": "Ask an expert",
+        "cta_url": "/contact/",
+        "specialties": [
+          {
+            "item": "Routing"
+          },
+          {
+            "item": "Hotel selection"
+          },
+          {
+            "item": "Local experiences"
+          }
+        ],
+        "style": {
+          "variant": "profile",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "brochure_cta",
+      "data": {
+        "heading": {
+          "text": "Download a Brochure",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "description": "Offer a PDF itinerary or capture enquiries through a brochure request workflow.",
+        "file_url": "/brochure.pdf",
+        "button_label": "Download brochure",
+        "secondary_label": "Request custom plan",
+        "secondary_url": "/contact/",
+        "form_note": "Replace with your real brochure and enquiry workflow.",
+        "style": {
+          "variant": "banner",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    },
+    {
+      "block_id": "faq",
+      "data": {
+        "heading": {
+          "text": "Common Questions",
+          "level": "h2",
+          "eyebrow": "",
+          "visible": true
+        },
+        "items": [
+          {
+            "question": "Can this package be customized?",
+            "answer": "Yes. The itinerary, hotel category, pacing, and inclusions can be adjusted for the traveler profile."
+          },
+          {
+            "question": "Is this content editable?",
+            "answer": "Yes. All sections are stored as structured IGP Content Graph data."
+          }
+        ],
+        "style": {
+          "variant": "accordion",
+          "density": "comfortable",
+          "theme": "brand",
+          "container": "wide",
+          "surface": "default",
+          "media_position": "auto"
+        }
+      }
+    }
+  ]
+}

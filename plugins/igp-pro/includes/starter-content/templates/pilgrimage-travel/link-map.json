@@ -1,0 +1,12 @@
+{
+  "home_to_tours": {
+    "from_uuid": "pilgrimage-travel-page-home",
+    "to_uuid": "pilgrimage-travel-page-tours-index",
+    "anchor": "Browse tours"
+  },
+  "tour_to_destination": {
+    "from_uuid": "pilgrimage-travel-tour-primary",
+    "to_uuid": "pilgrimage-travel-destination-primary",
+    "anchor": "Varanasi"
+  }
+}

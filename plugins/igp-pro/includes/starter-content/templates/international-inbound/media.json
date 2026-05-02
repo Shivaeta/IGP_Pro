@@ -1,0 +1,14 @@
+[
+  {
+    "template_uuid": "international-inbound-hero-image",
+    "role": "hero",
+    "filename": "template-hero.jpg",
+    "alt": "Inbound India Travel Experiences"
+  },
+  {
+    "template_uuid": "international-inbound-og-image",
+    "role": "og_image",
+    "filename": "template-og.jpg",
+    "alt": "Inbound India Travel Experiences"
+  }
+]

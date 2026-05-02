@@ -19,10 +19,29 @@ function igp_pro_sanitize_content_graph_payload( array $graph ): array {
 		'sections' => array(),
 	);
 
+	if ( isset( $graph['schema_version'] ) ) {
+		$sanitized['schema_version'] = sanitize_text_field( (string) $graph['schema_version'] );
+	}
+
+	if ( isset( $graph['migrated_from'] ) ) {
+		$sanitized['migrated_from'] = sanitize_text_field( (string) $graph['migrated_from'] );
+	}
+
+	if ( isset( $graph['last_migrated_at'] ) ) {
+		$sanitized['last_migrated_at'] = sanitize_text_field( (string) $graph['last_migrated_at'] );
+	}
+
 	if ( isset( $graph['meta'] ) && is_array( $graph['meta'] ) ) {
 		$sanitized['meta'] = array();
 		if ( isset( $graph['meta']['description'] ) ) {
 			$sanitized['meta']['description'] = sanitize_textarea_field( (string) $graph['meta']['description'] );
+		}
+	}
+
+	if ( isset( $graph['seo'] ) && is_array( $graph['seo'] ) ) {
+		$sanitized['seo'] = array();
+		if ( isset( $graph['seo']['h1'] ) ) {
+			$sanitized['seo']['h1'] = sanitize_text_field( (string) $graph['seo']['h1'] );
 		}
 	}
 
@@ -43,6 +62,10 @@ function igp_pro_sanitize_content_graph_payload( array $graph ): array {
 		$schema = $block ? igp_pro_get_block_schema( $block ) : null;
 		$data   = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
 
+		if ( function_exists( 'igp_pro_migrate_block_heading_data_for_render' ) ) {
+			$data = igp_pro_migrate_block_heading_data_for_render( $block_id, $data );
+		}
+
 		if ( is_array( $schema ) ) {
 			$data = igp_pro_sanitize_schema_data( $schema, $data );
 		} else {
@@ -53,6 +76,14 @@ function igp_pro_sanitize_content_graph_payload( array $graph ): array {
 			'block_id' => $block_id,
 			'data'     => $data,
 		);
+
+		if ( isset( $section['schema_version'] ) ) {
+			$next_section['schema_version'] = sanitize_text_field( (string) $section['schema_version'] );
+		}
+
+		if ( isset( $section['migrated_from'] ) ) {
+			$next_section['migrated_from'] = sanitize_text_field( (string) $section['migrated_from'] );
+		}
 
 		if ( isset( $section['id'] ) && '' !== (string) $section['id'] ) {
 			$next_section['id'] = sanitize_key( (string) $section['id'] );

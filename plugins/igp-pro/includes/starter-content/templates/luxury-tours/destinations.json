@@ -1,0 +1,16 @@
+[
+  {
+    "template_uuid": "luxury-tours-destination-primary",
+    "title": "Rajasthan",
+    "slug": "rajasthan",
+    "content_graph": "content-graphs/destination-template.json",
+    "seo": {
+      "h1": "Rajasthan",
+      "title": "Rajasthan",
+      "description": "Destination page starter content."
+    },
+    "relationships": {
+      "related_destination_uuids": []
+    }
+  }
+]

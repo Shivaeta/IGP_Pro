@@ -1,0 +1,81 @@
+{
+    "snapshot_id": "snap_20260502_173248_qxxz16z5",
+    "object_type": "content_graph",
+    "object_id": 34,
+    "before_data": {
+        "version": "v1",
+        "sections": [
+            {
+                "block_id": "hero",
+                "data": {
+                    "heading": "Hero",
+                    "subheading": "hero",
+                    "background_image": {
+                        "url": "https://namasteindiavacations.com/wp-content/uploads/2025/06/63.jpg",
+                        "alt": "taj mahal image"
+                    },
+                    "cta": {
+                        "label": "",
+                        "url": ""
+                    },
+                    "enable_search": true
+                },
+                "id": "section_wp_1_hero"
+            },
+            {
+                "block_id": "breadcrumb",
+                "data": {
+                    "source": "auto",
+                    "items": [],
+                    "show_current": true
+                },
+                "id": "section_wp_2_breadcrumb"
+            },
+            {
+                "block_id": "destination_cards",
+                "data": {
+                    "eyebrow": "Vacation Packages",
+                    "title": "Trending Destinations",
+                    "description": "",
+                    "source": "query",
+                    "items": [],
+                    "layout": "grid",
+                    "columns": 4,
+                    "limit": 6,
+                    "show_excerpt": true,
+                    "show_count": true,
+                    "image_ratio": "portrait",
+                    "variant": "overlay"
+                },
+                "id": "section_wp_3_destination_cards"
+            },
+            {
+                "block_id": "rich_text",
+                "data": {
+                    "eyebrow": "",
+                    "title": "",
+                    "content": "Add rich text content.",
+                    "alignment": "left",
+                    "width": "normal",
+                    "variant": "default"
+                },
+                "id": "section_1777743118330_9453"
+            }
+        ]
+    },
+    "after_data": null,
+    "actor_user_id": 1,
+    "source_module": "recovery-panel",
+    "created_at": "2026-05-02T17:32:48+00:00",
+    "rollback_status": "restored",
+    "before_hash": "19ba4c660e3c67eb491916f6ec208af4b8dab9f18537c92a4f6b4281e8074493",
+    "after_hash": "",
+    "current_hash_at_create": "19ba4c660e3c67eb491916f6ec208af4b8dab9f18537c92a4f6b4281e8074493",
+    "context": {
+        "source_module": "recovery-panel",
+        "actor_type": "human",
+        "reason": "manual_gate_test"
+    },
+    "restored_at": "2026-05-02T17:34:37+00:00",
+    "restored_by": 1
+}
