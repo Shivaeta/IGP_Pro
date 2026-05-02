@@ -173,3 +173,28 @@
     border-radius: 8px;
   }
 }
+
+/* Phase 4 form-mode correction. */
+.igp-booking-meta-grid select {
+  width: 100%;
+  max-width: none;
+}
+
+/* Phase 4 final checkout extraction: add-on scope controls. */
+.igp-booking-repeater__row textarea {
+  width: 100%;
+  min-height: 54px;
+}
+
+.igp-booking-repeater[data-igp-booking-repeater="addons"] .igp-booking-repeater__row {
+  grid-template-columns: minmax(90px, .7fr) minmax(130px, 1fr) minmax(80px, .55fr) minmax(150px, 1.1fr) minmax(150px, 1.1fr) minmax(150px, 1.1fr) auto;
+}
+
+@media (max-width: 1200px) {
+  .igp-booking-repeater[data-igp-booking-repeater="addons"] .igp-booking-repeater__row {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+  }
+}

@@ -7,12 +7,19 @@
 
   function rowHtml(kind) {
     var prefix = 'igp_booking_' + kind;
+    var extra = '';
+    if (kind === 'addons') {
+      extra = '<textarea name="' + prefix + '[included][]" placeholder="Included items, one per line"></textarea>' +
+        '<textarea name="' + prefix + '[excluded][]" placeholder="Excluded items, one per line"></textarea>';
+    }
+
     return '' +
       '<div class="igp-booking-repeater__row" data-igp-row>' +
       '<input type="text" name="' + prefix + '[id][]" value="" placeholder="id">' +
       '<input type="text" name="' + prefix + '[label][]" value="" placeholder="Label">' +
       '<input type="number" step="0.01" min="0" name="' + prefix + '[price][]" value="0" placeholder="Price">' +
       '<input type="text" name="' + prefix + '[description][]" value="" placeholder="Description">' +
+      extra +
       '<button type="button" class="button-link-delete" data-igp-remove-row>Remove</button>' +
       '</div>';
   }

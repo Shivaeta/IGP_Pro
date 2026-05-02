@@ -103,6 +103,7 @@ function igp_pro_render_submission_filters(): void {
  */
 function igp_pro_get_submission_status_options(): array {
 	return array(
+		'checkout_pending' => __( 'Checkout pending', 'igp-pro' ),
 		'pending_payment' => __( 'Pending payment', 'igp-pro' ),
 		'confirmed'       => __( 'Confirmed', 'igp-pro' ),
 		'failed'          => __( 'Failed', 'igp-pro' ),
@@ -162,6 +163,7 @@ function igp_pro_render_submission_summary(): void {
 	$counts = array(
 		'booking'         => 0,
 		'enquiry'         => 0,
+		'checkout_pending' => 0,
 		'pending_payment' => 0,
 		'confirmed'       => 0,
 		'received'        => 0,

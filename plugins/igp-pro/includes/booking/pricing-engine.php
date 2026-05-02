@@ -40,7 +40,7 @@ function igp_pro_format_money( float $amount, string $currency = '₹' ): string
  *
  * @param mixed  $value Raw value.
  * @param string $fallback_label Fallback label.
- * @return array<int,array{id:string,label:string,price:float,description:string}>
+ * @return array<int,array{id:string,label:string,price:float,description:string,included?:string,excluded?:string}>
  */
 function igp_pro_sanitize_pricing_rows( $value, string $fallback_label = 'Standard' ): array {
 	if ( is_string( $value ) ) {
@@ -80,12 +80,22 @@ function igp_pro_sanitize_pricing_rows( $value, string $fallback_label = 'Standa
 		}
 		$seen[ $id ] = true;
 
-		$rows[] = array(
+		$pricing_row = array(
 			'id'          => $id,
 			'label'       => $label,
 			'price'       => isset( $row['price'] ) ? igp_pro_parse_money( $row['price'] ) : 0.0,
 			'description' => isset( $row['description'] ) ? sanitize_text_field( (string) $row['description'] ) : '',
 		);
+
+		if ( isset( $row['included'] ) ) {
+			$pricing_row['included'] = sanitize_textarea_field( (string) $row['included'] );
+		}
+
+		if ( isset( $row['excluded'] ) ) {
+			$pricing_row['excluded'] = sanitize_textarea_field( (string) $row['excluded'] );
+		}
+
+		$rows[] = $pricing_row;
 	}
 
 	return $rows;
@@ -175,15 +185,33 @@ function igp_pro_get_tour_booking_config( int $tour_id ): array {
 		);
 	}
 
+	$form_mode = sanitize_key( (string) get_post_meta( $tour_id, '_igp_booking_form_mode', true ) );
+	if ( ! in_array( $form_mode, array( 'booking_enquiry', 'enquiry_only' ), true ) ) {
+		$form_mode = 'booking_enquiry';
+	}
+
+	$compare_price = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_booking_compare_price', true ) );
+	if ( $compare_price <= $base_price ) {
+		$compare_price = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_regular_price', true ) );
+	}
+
+	$discount_badge = sanitize_text_field( (string) get_post_meta( $tour_id, '_igp_booking_discount_badge', true ) );
+	if ( '' === $discount_badge && $compare_price > $base_price && $base_price > 0 ) {
+		$discount_badge = '-' . absint( round( ( ( $compare_price - $base_price ) / $compare_price ) * 100 ) ) . '%';
+	}
+
 	return array(
-		'tour_id'      => $tour_id,
-		'enabled'      => 'no' !== (string) get_post_meta( $tour_id, '_igp_booking_enabled', true ),
-		'base_price'   => $base_price,
-		'currency'     => $currency,
-		'pricing_unit' => sanitize_text_field( (string) ( get_post_meta( $tour_id, '_igp_booking_pricing_unit', true ) ?: '/person' ) ),
-		'options'      => $options,
-		'addons'       => $addons,
-		'guest_types'  => $guest_types,
+		'tour_id'         => $tour_id,
+		'enabled'         => 'no' !== (string) get_post_meta( $tour_id, '_igp_booking_enabled', true ),
+		'form_mode'       => $form_mode,
+		'base_price'      => $base_price,
+		'compare_price'   => $compare_price,
+		'discount_badge'  => $discount_badge,
+		'currency'        => $currency,
+		'pricing_unit'    => sanitize_text_field( (string) ( get_post_meta( $tour_id, '_igp_booking_pricing_unit', true ) ?: '/person' ) ),
+		'options'         => $options,
+		'addons'          => $addons,
+		'guest_types'     => $guest_types,
 	);
 }
 
@@ -216,6 +244,10 @@ function igp_pro_calculate_booking_total( int $tour_id, array $request ) {
 	$config = igp_pro_get_tour_booking_config( $tour_id );
 	if ( ! $config['enabled'] ) {
 		return new WP_Error( 'igp_pro_booking_disabled', __( 'Booking is disabled for this tour.', 'igp-pro' ) );
+	}
+
+	if ( isset( $config['form_mode'] ) && 'enquiry_only' === $config['form_mode'] ) {
+		return new WP_Error( 'igp_pro_enquiry_only', __( 'This tour is configured for enquiry only.', 'igp-pro' ) );
 	}
 
 	$option_id = isset( $request['tour_option'] ) ? sanitize_key( (string) wp_unslash( $request['tour_option'] ) ) : 'standard';
@@ -259,17 +291,33 @@ function igp_pro_calculate_booking_total( int $tour_id, array $request ) {
 
 	$requested_addons = isset( $request['addons'] ) ? (array) wp_unslash( $request['addons'] ) : array();
 	$requested_addons = array_map( 'sanitize_key', array_map( 'strval', $requested_addons ) );
+	$addon_qty_request = isset( $request['addon_qty'] ) && is_array( $request['addon_qty'] ) ? wp_unslash( $request['addon_qty'] ) : array();
 	$addon_rows       = array();
 	$addons_total     = 0.0;
 
-	foreach ( $requested_addons as $addon_id ) {
-		$addon = igp_pro_find_pricing_row( $config['addons'], $addon_id );
-		if ( null === $addon ) {
+	foreach ( $config['addons'] as $configured_addon ) {
+		$addon_id = sanitize_key( (string) $configured_addon['id'] );
+		$qty      = 0;
+
+		if ( isset( $addon_qty_request[ $addon_id ] ) ) {
+			$qty = max( 0, absint( $addon_qty_request[ $addon_id ] ) );
+		} elseif ( in_array( $addon_id, $requested_addons, true ) ) {
+			$qty = 1;
+		}
+
+		if ( $qty < 1 ) {
 			continue;
 		}
 
-		$addon_rows[] = $addon;
-		$addons_total += (float) $addon['price'];
+		$line_total = $qty * (float) $configured_addon['price'];
+		$addon_rows[] = array_merge(
+			$configured_addon,
+			array(
+				'quantity'   => $qty,
+				'line_total' => $line_total,
+			)
+		);
+		$addons_total += $line_total;
 	}
 
 	$option_total = (float) $option['price'] * $total_guests;
