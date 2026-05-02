@@ -203,15 +203,16 @@ function igp_pro_render_submission_table(): void {
 				<th><?php esc_html_e( 'Tour', 'igp-pro' ); ?></th>
 				<th><?php esc_html_e( 'Customer', 'igp-pro' ); ?></th>
 				<th><?php esc_html_e( 'Contact', 'igp-pro' ); ?></th>
+				<th><?php esc_html_e( 'Tour date', 'igp-pro' ); ?></th>
 				<th><?php esc_html_e( 'Amount', 'igp-pro' ); ?></th>
 				<th><?php esc_html_e( 'Status', 'igp-pro' ); ?></th>
-				<th><?php esc_html_e( 'Date', 'igp-pro' ); ?></th>
+				<th><?php esc_html_e( 'Booking date', 'igp-pro' ); ?></th>
 				<th><?php esc_html_e( 'Actions', 'igp-pro' ); ?></th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php if ( empty( $submissions ) ) : ?>
-			<tr><td colspan="9"><?php esc_html_e( 'No bookings or enquiries found.', 'igp-pro' ); ?></td></tr>
+			<tr><td colspan="10"><?php esc_html_e( 'No bookings or enquiries found.', 'igp-pro' ); ?></td></tr>
 		<?php else : ?>
 			<?php foreach ( $submissions as $submission ) : ?>
 				<?php
@@ -223,8 +224,10 @@ function igp_pro_render_submission_table(): void {
 				$last     = (string) get_post_meta( $id, '_igp_customer_last_name', true );
 				$email    = (string) get_post_meta( $id, '_igp_customer_email', true );
 				$phone    = (string) get_post_meta( $id, '_igp_customer_phone', true );
-				$amount   = (float) get_post_meta( $id, '_igp_total_amount', true );
-				$currency = (string) get_post_meta( $id, '_igp_currency', true );
+				$amount       = (float) get_post_meta( $id, '_igp_total_amount', true );
+				$currency     = (string) get_post_meta( $id, '_igp_currency', true );
+				$tour_date    = (string) get_post_meta( $id, '_igp_tour_date', true );
+				$booking_date = (string) get_post_meta( $id, '_igp_booking_date', true );
 				?>
 				<tr>
 					<td>#<?php echo esc_html( (string) $id ); ?></td>
@@ -232,9 +235,10 @@ function igp_pro_render_submission_table(): void {
 					<td><?php echo $tour_id ? '<a href="' . esc_url( get_edit_post_link( $tour_id ) ) . '">' . esc_html( get_the_title( $tour_id ) ) . '</a>' : '—'; ?></td>
 					<td><?php echo esc_html( trim( $first . ' ' . $last ) ); ?></td>
 					<td><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a><br><?php echo esc_html( $phone ); ?></td>
+					<td><?php echo '' !== $tour_date ? esc_html( $tour_date ) : '—'; ?></td>
 					<td><?php echo $amount > 0 ? esc_html( igp_pro_format_money( $amount, $currency ?: '₹' ) ) : '—'; ?></td>
 					<td><?php echo esc_html( igp_pro_format_submission_status( $status ) ); ?></td>
-					<td><?php echo esc_html( get_the_date( '', $submission ) ); ?></td>
+					<td><?php echo esc_html( '' !== $booking_date ? $booking_date : get_the_date( '', $submission ) ); ?></td>
 					<td>
 						<a class="button button-small" href="<?php echo esc_url( admin_url( 'admin.php?page=igp-pro-bookings&submission_id=' . $id ) ); ?>"><?php esc_html_e( 'Inspect', 'igp-pro' ); ?></a>
 					</td>
@@ -265,7 +269,9 @@ function igp_pro_render_submission_detail( int $submission_id ): void {
 	$last      = (string) get_post_meta( $submission_id, '_igp_customer_last_name', true );
 	$email     = (string) get_post_meta( $submission_id, '_igp_customer_email', true );
 	$phone     = (string) get_post_meta( $submission_id, '_igp_customer_phone', true );
-	$txn       = (string) get_post_meta( $submission_id, '_igp_transaction_id', true );
+	$txn          = (string) get_post_meta( $submission_id, '_igp_transaction_id', true );
+	$tour_date    = (string) get_post_meta( $submission_id, '_igp_tour_date', true );
+	$booking_date = (string) get_post_meta( $submission_id, '_igp_booking_date', true );
 	?>
 	<p><a class="button" href="<?php echo esc_url( admin_url( 'admin.php?page=igp-pro-bookings' ) ); ?>">← <?php esc_html_e( 'Back to panel', 'igp-pro' ); ?></a></p>
 	<div class="igp-booking-detail-grid">
@@ -274,6 +280,10 @@ function igp_pro_render_submission_detail( int $submission_id ): void {
 			<dl>
 				<dt><?php esc_html_e( 'Status', 'igp-pro' ); ?></dt><dd><?php echo esc_html( igp_pro_format_submission_status( $status ) ); ?></dd>
 				<dt><?php esc_html_e( 'Tour', 'igp-pro' ); ?></dt><dd><?php echo $tour_id ? esc_html( get_the_title( $tour_id ) ) : '—'; ?></dd>
+				<?php if ( 'booking' === $type ) : ?>
+					<dt><?php esc_html_e( 'Booking date', 'igp-pro' ); ?></dt><dd><?php echo esc_html( '' !== $booking_date ? $booking_date : get_the_date( '', $post ) ); ?></dd>
+					<dt><?php esc_html_e( 'Tour date', 'igp-pro' ); ?></dt><dd><?php echo esc_html( '' !== $tour_date ? $tour_date : (string) ( $payload['tour_date'] ?? '—' ) ); ?></dd>
+				<?php endif; ?>
 				<dt><?php esc_html_e( 'Customer', 'igp-pro' ); ?></dt><dd><?php echo esc_html( trim( $first . ' ' . $last ) ); ?></dd>
 				<dt><?php esc_html_e( 'Email', 'igp-pro' ); ?></dt><dd><a href="mailto:<?php echo esc_attr( $email ); ?>"><?php echo esc_html( $email ); ?></a></dd>
 				<dt><?php esc_html_e( 'Phone', 'igp-pro' ); ?></dt><dd><?php echo esc_html( $phone ); ?></dd>

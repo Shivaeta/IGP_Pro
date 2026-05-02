@@ -117,3 +117,59 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Phase 4 correction: repeatable tour booking settings. */
+.igp-booking-meta-box {
+  display: grid;
+  gap: 18px;
+}
+
+.igp-booking-repeater {
+  border: 1px solid #dcdcde;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fff;
+}
+
+.igp-booking-repeater__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.igp-booking-repeater__head h4 {
+  margin: 0;
+}
+
+.igp-booking-repeater__rows {
+  display: grid;
+  gap: 8px;
+}
+
+.igp-booking-repeater__row {
+  display: grid;
+  grid-template-columns: minmax(90px, .8fr) minmax(140px, 1.2fr) minmax(90px, .7fr) minmax(160px, 1.4fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.igp-booking-repeater__row input {
+  width: 100%;
+}
+
+.igp-payment-settings-form h2 {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid #dcdcde;
+}
+
+@media (max-width: 960px) {
+  .igp-booking-repeater__row {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    border: 1px solid #dcdcde;
+    border-radius: 8px;
+  }
+}

@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function igp_pro_parse_money( $value ): float {
 	if ( is_numeric( $value ) ) {
-		return (float) $value;
+		return max( 0.0, (float) $value );
 	}
 
 	$value = preg_replace( '/[^0-9\.\-]/', '', (string) $value );
@@ -53,6 +53,7 @@ function igp_pro_sanitize_pricing_rows( $value, string $fallback_label = 'Standa
 	}
 
 	$rows = array();
+	$seen = array();
 	foreach ( $value as $index => $row ) {
 		if ( ! is_array( $row ) ) {
 			continue;
@@ -71,6 +72,14 @@ function igp_pro_sanitize_pricing_rows( $value, string $fallback_label = 'Standa
 			$id = 'item-' . absint( $index );
 		}
 
+		$base_id = $id;
+		$suffix  = 2;
+		while ( isset( $seen[ $id ] ) ) {
+			$id = $base_id . '-' . $suffix;
+			$suffix++;
+		}
+		$seen[ $id ] = true;
+
 		$rows[] = array(
 			'id'          => $id,
 			'label'       => $label,
@@ -80,6 +89,23 @@ function igp_pro_sanitize_pricing_rows( $value, string $fallback_label = 'Standa
 	}
 
 	return $rows;
+}
+
+/**
+ * Sanitize traveler rows. This is separate from add-ons/options because travelers define quantity-bearing price lines.
+ *
+ * @param mixed $value Raw value.
+ * @return array<string,array{id:string,label:string,price:float,description:string}>
+ */
+function igp_pro_sanitize_guest_type_rows( $value ): array {
+	$rows = igp_pro_sanitize_pricing_rows( $value, __( 'Traveler', 'igp-pro' ) );
+	$out  = array();
+
+	foreach ( $rows as $row ) {
+		$out[ $row['id'] ] = $row;
+	}
+
+	return $out;
 }
 
 /**
@@ -111,18 +137,42 @@ function igp_pro_get_tour_booking_config( int $tour_id ): array {
 
 	$addons = igp_pro_sanitize_pricing_rows( get_post_meta( $tour_id, '_igp_booking_addons', true ), __( 'Add-on', 'igp-pro' ) );
 
-	$adult_price  = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_adult_price', true ) );
-	$senior_price = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_senior_price', true ) );
-	$child_price  = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_child_price', true ) );
+	$guest_types = igp_pro_sanitize_guest_type_rows( get_post_meta( $tour_id, '_igp_booking_guest_types', true ) );
+	if ( empty( $guest_types ) ) {
+		$adult_price  = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_adult_price', true ) );
+		$senior_price = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_senior_price', true ) );
+		$child_price  = igp_pro_parse_money( get_post_meta( $tour_id, '_igp_child_price', true ) );
 
-	if ( $adult_price <= 0 ) {
-		$adult_price = $base_price;
-	}
-	if ( $senior_price <= 0 ) {
-		$senior_price = $adult_price;
-	}
-	if ( $child_price <= 0 && $adult_price > 0 ) {
-		$child_price = round( $adult_price * 0.6, 2 );
+		if ( $adult_price <= 0 ) {
+			$adult_price = $base_price;
+		}
+		if ( $senior_price <= 0 ) {
+			$senior_price = $adult_price;
+		}
+		if ( $child_price <= 0 && $adult_price > 0 ) {
+			$child_price = round( $adult_price * 0.6, 2 );
+		}
+
+		$guest_types = array(
+			'senior'   => array(
+				'id'          => 'senior',
+				'label'       => __( 'Senior', 'igp-pro' ),
+				'price'       => $senior_price,
+				'description' => __( 'Senior traveler', 'igp-pro' ),
+			),
+			'adult'    => array(
+				'id'          => 'adult',
+				'label'       => __( 'Adult', 'igp-pro' ),
+				'price'       => $adult_price,
+				'description' => __( 'Adult traveler', 'igp-pro' ),
+			),
+			'children' => array(
+				'id'          => 'children',
+				'label'       => __( 'Children', 'igp-pro' ),
+				'price'       => $child_price,
+				'description' => __( 'Child traveler', 'igp-pro' ),
+			),
+		);
 	}
 
 	return array(
@@ -133,20 +183,7 @@ function igp_pro_get_tour_booking_config( int $tour_id ): array {
 		'pricing_unit' => sanitize_text_field( (string) ( get_post_meta( $tour_id, '_igp_booking_pricing_unit', true ) ?: '/person' ) ),
 		'options'      => $options,
 		'addons'       => $addons,
-		'guest_types'  => array(
-			'senior'   => array(
-				'label' => __( 'Senior', 'igp-pro' ),
-				'price' => $senior_price,
-			),
-			'adult'    => array(
-				'label' => __( 'Adult', 'igp-pro' ),
-				'price' => $adult_price,
-			),
-			'children' => array(
-				'label' => __( 'Children', 'igp-pro' ),
-				'price' => $child_price,
-			),
-		),
+		'guest_types'  => $guest_types,
 	);
 }
 
@@ -154,8 +191,9 @@ function igp_pro_get_tour_booking_config( int $tour_id ): array {
  * Locate a config row by ID.
  */
 function igp_pro_find_pricing_row( array $rows, string $id ): ?array {
-	foreach ( $rows as $row ) {
-		if ( isset( $row['id'] ) && $id === (string) $row['id'] ) {
+	foreach ( $rows as $key => $row ) {
+		$row_id = isset( $row['id'] ) ? (string) $row['id'] : (string) $key;
+		if ( $id === $row_id ) {
 			return $row;
 		}
 	}
@@ -180,26 +218,35 @@ function igp_pro_calculate_booking_total( int $tour_id, array $request ) {
 		return new WP_Error( 'igp_pro_booking_disabled', __( 'Booking is disabled for this tour.', 'igp-pro' ) );
 	}
 
-	$option_id = isset( $request['tour_option'] ) ? sanitize_key( (string) $request['tour_option'] ) : 'standard';
+	$option_id = isset( $request['tour_option'] ) ? sanitize_key( (string) wp_unslash( $request['tour_option'] ) ) : 'standard';
 	$option    = igp_pro_find_pricing_row( $config['options'], $option_id );
 	if ( null === $option ) {
 		$option = $config['options'][0];
 	}
 
-	$guests       = array();
-	$total_guests = 0;
-	$guest_total  = 0.0;
+	$guest_request = isset( $request['guest_qty'] ) && is_array( $request['guest_qty'] ) ? wp_unslash( $request['guest_qty'] ) : array();
+	$guests        = array();
+	$total_guests  = 0;
+	$guest_total   = 0.0;
 
 	foreach ( $config['guest_types'] as $type => $guest_type ) {
-		$key = $type . '_qty';
-		$qty = isset( $request[ $key ] ) ? max( 0, absint( $request[ $key ] ) ) : 0;
+		$type = sanitize_key( (string) $type );
+		$qty  = isset( $guest_request[ $type ] ) ? max( 0, absint( $guest_request[ $type ] ) ) : 0;
+
+		// Backward compatibility for the previous senior_qty/adult_qty/children_qty request keys.
+		$legacy_key = $type . '_qty';
+		if ( 0 === $qty && isset( $request[ $legacy_key ] ) ) {
+			$qty = max( 0, absint( $request[ $legacy_key ] ) );
+		}
 
 		$line_total = $qty * (float) $guest_type['price'];
 		$guests[ $type ] = array(
-			'label'      => $guest_type['label'],
-			'quantity'   => $qty,
-			'unit_price' => (float) $guest_type['price'],
-			'line_total' => $line_total,
+			'id'          => $type,
+			'label'       => $guest_type['label'],
+			'description' => $guest_type['description'] ?? '',
+			'quantity'    => $qty,
+			'unit_price'  => (float) $guest_type['price'],
+			'line_total'  => $line_total,
 		);
 
 		$total_guests += $qty;
@@ -210,7 +257,7 @@ function igp_pro_calculate_booking_total( int $tour_id, array $request ) {
 		return new WP_Error( 'igp_pro_no_guests', __( 'Please select at least one traveller.', 'igp-pro' ) );
 	}
 
-	$requested_addons = isset( $request['addons'] ) ? (array) $request['addons'] : array();
+	$requested_addons = isset( $request['addons'] ) ? (array) wp_unslash( $request['addons'] ) : array();
 	$requested_addons = array_map( 'sanitize_key', array_map( 'strval', $requested_addons ) );
 	$addon_rows       = array();
 	$addons_total     = 0.0;

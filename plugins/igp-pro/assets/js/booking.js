@@ -30,6 +30,13 @@
     messageEl.dataset.type = type || '';
   }
 
+  function setInlineNotice(panel, message, type) {
+    var notice = qs(panel, '[data-igp-traveler-notice]');
+    if (!notice) return;
+    notice.textContent = message || '';
+    notice.dataset.type = type || '';
+  }
+
   function setLoading(form, isLoading) {
     var buttons = qsa(form, 'button[type="submit"]');
     buttons.forEach(function (button) {
@@ -58,7 +65,7 @@
         if (!payload || !payload.success) {
           var error = payload && payload.data && payload.data.message ? payload.data.message : 'Request failed.';
           setMessage(form, error, 'error');
-          return;
+          return payload;
         }
 
         var data = payload.data || {};
@@ -67,6 +74,8 @@
         if (data.redirect_url) {
           window.location.href = data.redirect_url;
         }
+
+        return payload;
       })
       .catch(function () {
         setLoading(form, false);
@@ -74,8 +83,31 @@
       });
   }
 
+  function getTotalGuests(panel) {
+    var totalGuests = 0;
+    qsa(panel, '[data-igp-guest-row] input[type="number"]').forEach(function (input) {
+      totalGuests += Math.max(0, parseInt(input.value || '0', 10) || 0);
+    });
+    return totalGuests;
+  }
+
+  function updateTravelerSummary(panel) {
+    var totalGuests = getTotalGuests(panel);
+    var summary = qs(panel, '[data-igp-traveler-summary]');
+    if (!summary) return;
+
+    if (totalGuests < 1) {
+      summary.textContent = 'Select guests';
+      return;
+    }
+
+    var template = window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.travelersSummary : '%d traveler(s)';
+    summary.textContent = template.replace('%d', String(totalGuests));
+  }
+
   function updateTotal(panel) {
-    var currency = (qs(panel, '.igp-booking-total') || {}).dataset ? (qs(panel, '.igp-booking-total').dataset.currency || '₹') : '₹';
+    var totalBox = qs(panel, '.igp-booking-total');
+    var currency = totalBox && totalBox.dataset ? (totalBox.dataset.currency || '₹') : '₹';
     var total = 0;
     var totalGuests = 0;
 
@@ -99,6 +131,8 @@
     if (totalEl) {
       totalEl.textContent = formatMoney(total, currency);
     }
+
+    updateTravelerSummary(panel);
   }
 
   function initTabs(panel) {
@@ -119,6 +153,39 @@
           tabPanel.hidden = !active;
         });
       });
+    });
+  }
+
+  function initTravelerPicker(panel) {
+    var toggle = qs(panel, '[data-igp-traveler-toggle]');
+    var pickerPanel = qs(panel, '[data-igp-traveler-panel]');
+    var apply = qs(panel, '[data-igp-traveler-apply]');
+
+    if (toggle && pickerPanel) {
+      toggle.addEventListener('click', function () {
+        var open = pickerPanel.hidden;
+        pickerPanel.hidden = !open;
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+
+    if (apply && pickerPanel && toggle) {
+      apply.addEventListener('click', function () {
+        if (getTotalGuests(panel) < 1) {
+          setInlineNotice(panel, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select at least one traveller.'), 'error');
+          return;
+        }
+        setInlineNotice(panel, '', '');
+        pickerPanel.hidden = true;
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    document.addEventListener('click', function (event) {
+      if (!pickerPanel || pickerPanel.hidden) return;
+      if (panel.contains(event.target)) return;
+      pickerPanel.hidden = true;
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
     });
   }
 
@@ -155,9 +222,9 @@
   }
 
   function validateBookingForm(form) {
-    var date = qs(form, 'input[name="booking_date"]');
+    var date = qs(form, 'input[name="tour_date"]');
     if (date && !date.value) {
-      setMessage(form, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseDate : 'Please select a booking date.'), 'error');
+      setMessage(form, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseDate : 'Please select a tour date.'), 'error');
       date.focus();
       return false;
     }
@@ -169,6 +236,8 @@
 
     if (guests < 1) {
       setMessage(form, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select at least one traveller.'), 'error');
+      var toggle = qs(form, '[data-igp-traveler-toggle]');
+      if (toggle) toggle.click();
       return false;
     }
 
@@ -207,6 +276,7 @@
 
   function initPanel(panel) {
     initTabs(panel);
+    initTravelerPicker(panel);
     initQuantities(panel);
     initForms(panel);
   }

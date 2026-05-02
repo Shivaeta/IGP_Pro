@@ -76,6 +76,11 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/admin/booking-panel.php';
 	}
 
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/admin/payment-settings.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/payment-settings.php';
+	}
+
 	add_action( 'init', 'igp_pro_register_taxonomies', 0 );
 	add_action( 'init', 'igp_pro_register_post_types', 1 );
 	add_action( 'init', 'igp_pro_register_core_blocks', 9 );
@@ -100,5 +105,9 @@ function igp_pro_load(): void {
 
 	if ( is_admin() && function_exists( 'igp_pro_register_booking_admin' ) ) {
 		igp_pro_register_booking_admin();
+	}
+
+	if ( is_admin() && function_exists( 'igp_pro_register_payment_settings_admin' ) ) {
+		igp_pro_register_payment_settings_admin();
 	}
 }
