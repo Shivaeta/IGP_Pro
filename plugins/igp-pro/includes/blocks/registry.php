@@ -11,9 +11,23 @@ defined( 'ABSPATH' ) || exit;
  * Register Phase 1 core blocks.
  */
 function igp_pro_register_core_blocks(): void {
-	if ( igp_pro_get_registered_block( 'hero' ) ) {
+	global $igp_pro_block_registry;
+
+	static $registering = false;
+
+	if ( $registering ) {
 		return;
 	}
+
+	if ( ! is_array( $igp_pro_block_registry ?? null ) ) {
+		$igp_pro_block_registry = array();
+	}
+
+	if ( isset( $igp_pro_block_registry['hero'] ) ) {
+		return;
+	}
+
+	$registering = true;
 
 	igp_pro_register_block_type(
 		array(
@@ -26,6 +40,8 @@ function igp_pro_register_core_blocks(): void {
 			'render_callback' => 'igp_pro_render_block',
 		)
 	);
+
+	$registering = false;
 }
 
 /**
@@ -108,10 +124,15 @@ function igp_pro_get_block_registry(): array {
  * @return array|null
  */
 function igp_pro_get_registered_block( string $block_id ): ?array {
-	$block_id = sanitize_key( $block_id );
-	$registry = igp_pro_get_block_registry();
+	global $igp_pro_block_registry;
 
-	return $registry[ $block_id ] ?? null;
+	$block_id = sanitize_key( $block_id );
+
+	if ( ! is_array( $igp_pro_block_registry ?? null ) || ! isset( $igp_pro_block_registry[ $block_id ] ) ) {
+		igp_pro_register_core_blocks();
+	}
+
+	return is_array( $igp_pro_block_registry ?? null ) ? ( $igp_pro_block_registry[ $block_id ] ?? null ) : null;
 }
 
 /**
