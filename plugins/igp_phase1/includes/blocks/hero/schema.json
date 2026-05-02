@@ -1,0 +1,38 @@
+{
+  "id": "hero",
+  "version": "v1",
+  "category": "core",
+  "data_source": "manual",
+  "fields": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "subheading": {
+      "type": "string"
+    },
+    "background_image": {
+      "type": "image",
+      "required": true
+    },
+    "cta": {
+      "type": "object",
+      "fields": {
+        "label": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "enable_search": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "variants": ["full", "split", "overlay"],
+  "validation": {
+    "required": ["heading", "background_image"]
+  }
+}

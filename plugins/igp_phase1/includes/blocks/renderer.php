@@ -1,0 +1,61 @@
+<?php
+/**
+ * Central block renderer.
+ *
+ * @package IGP_Pro
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Render a registered IGP Pro block through one controller.
+ *
+ * @param string $block_id Block ID.
+ * @param array  $data     Block data.
+ * @param array  $context  Render context.
+ * @return string
+ */
+function igp_pro_render_block( string $block_id, array $data = array(), array $context = array() ): string {
+	$block = igp_pro_get_registered_block( $block_id );
+
+	if ( ! $block ) {
+		return igp_pro_render_block_fallback( $block_id, 'missing_block' );
+	}
+
+	$render_path = isset( $block['render_path'] ) ? (string) $block['render_path'] : '';
+
+	if ( '' === $render_path || ! file_exists( $render_path ) ) {
+		return igp_pro_render_block_fallback( $block_id, 'missing_render_path' );
+	}
+
+	$resolved_data = igp_pro_resolve_block_data( $block, $data, $context );
+
+	ob_start();
+	$result = include $render_path;
+	$output = ob_get_clean();
+
+	if ( is_string( $result ) && '' !== $result ) {
+		$output .= $result;
+	}
+
+	if ( '' === trim( $output ) ) {
+		return igp_pro_render_block_fallback( $block_id, 'empty_output' );
+	}
+
+	return $output;
+}
+
+/**
+ * Render a safe fallback for missing or broken blocks.
+ *
+ * @param string $block_id Block ID.
+ * @param string $reason   Failure reason.
+ * @return string
+ */
+function igp_pro_render_block_fallback( string $block_id, string $reason ): string {
+	return sprintf(
+		'<!-- IGP Pro block fallback: %1$s (%2$s) --><div class="igp-pro-block igp-pro-block--fallback" data-igp-block="%1$s" data-igp-reason="%2$s" hidden></div>',
+		esc_attr( sanitize_key( $block_id ) ),
+		esc_attr( sanitize_key( $reason ) )
+	);
+}
