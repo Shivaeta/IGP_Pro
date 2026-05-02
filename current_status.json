@@ -1,115 +1,41 @@
 {
   "project": {
     "repository": "Shivaeta/IGP_Pro",
-    "branch": "main",
     "product_system": "IGP Pro plugin + IGP Travel Pro theme",
-    "production_readiness": "not_production_ready"
-  },
-  "authority": {
-    "charter": "PROJECT_CHARTER.md",
-    "blueprint": "BLUEPRINT.md",
-    "gates": "GATES.md",
-    "structure": "STRUCTURE.md",
-    "authority_order": [
-      "PROJECT_CHARTER.md",
-      "BLUEPRINT.md",
-      "GATES.md",
-      "current_status.json",
-      "STRUCTURE.md",
-      "actual inspected codebase"
-    ]
+    "production_readiness": "not_production_ready",
+    "development_phase": "started"
   },
   "active": {
     "phase": "0",
-    "subphase": "0.a",
-    "name": "Repository reset and blueprint lock",
-    "status": "in_progress",
-    "started_date": "2026-05-01"
+    "subphase": "0.b",
+    "title": "Minimal repository scaffold",
+    "state": "needs_review",
+    "requires_user_approval_to_complete": true
   },
   "completed": {
     "phases": [],
     "subphases": []
   },
-  "last_completed": {
-    "phase": null,
-    "subphase": null,
-    "name": null,
-    "approved_by_user": false,
-    "completion_date": null,
-    "evidence": []
+  "gate_results": {
+    "0.b": {
+      "result": "DEFERRED",
+      "reason": "Scaffold files are being created, but completion requires gate verification and explicit user approval."
+    }
   },
-  "modules": {
-    "core_loader": "not_started",
-    "cpt": "not_started",
-    "taxonomies": "not_started",
-    "admin_dashboard": "not_started",
-    "diagnostics": "not_started",
-    "booking_records": "not_started",
-    "booking_json_handler": "not_started",
-    "section_registry": "not_started",
-    "theme_renderer": "not_started",
-    "payments": "disabled",
-    "ai_mcp_write_routes": "disabled",
-    "rank_math_sync": "disabled",
-    "woocommerce_integration": "disabled"
+  "baseline": {
+    "state": "blank_slate",
+    "business_logic_active": false,
+    "booking_logic_active": false,
+    "registries_active": false,
+    "schema_active": false,
+    "import_export_active": false,
+    "design_tokens_active": false,
+    "payments_active": false,
+    "cwv_readiness": "NOT_TESTED"
   },
-  "contracts": {
-    "cpts": [
-      "igp_tour",
-      "igp_destination",
-      "igp_booking"
-    ],
-    "modular_content_fields": [
-      "page_sections",
-      "tour_sections",
-      "destination_sections"
-    ],
-    "booking_ajax_action": "igp_submit_booking",
-    "booking_ajax_hooks": [
-      "wp_ajax_igp_submit_booking",
-      "wp_ajax_nopriv_igp_submit_booking"
-    ]
-  },
-  "current_files_expected_after_control_file_install": [
-    "PROJECT_CHARTER.md",
-    "BLUEPRINT.md",
-    "GATES.md",
-    "current_status.json",
-    "STRUCTURE.md"
-  ],
   "known_gaps": [
-    "Repository has not yet been inspected after installing these split control files.",
-    "No plugin code is active.",
-    "No theme code is active.",
-    "No docs scaffold exists until Phase 0.b.",
-    "No static audit harness exists until Phase 0.c."
+    "PROJECT_CHARTER.md, BLUEPRINT.md, and GATES.md were not found in the GitHub repository during initial inspection; they were read from uploaded source files in this session.",
+    "Phase 0.b is not marked complete until the gate output is reviewed and the user explicitly approves completion."
   ],
-  "next": {
-    "phase": "0",
-    "subphase": "0.b",
-    "name": "Minimal repository scaffold",
-    "files_to_inspect_first": [
-      "PROJECT_CHARTER.md",
-      "current_status.json",
-      "STRUCTURE.md",
-      "BLUEPRINT.md#0.b",
-      "GATES.md#Gate 0.b",
-      "actual repository tree"
-    ],
-    "out_of_scope_warning": [
-      "Do not implement business logic.",
-      "Do not implement booking logic.",
-      "Do not implement registries.",
-      "Do not implement schema.",
-      "Do not implement import/export.",
-      "Do not implement design tokens.",
-      "Do not implement payments."
-    ]
-  },
-  "update_rules": {
-    "subphase_completion_requires_gate_pass": true,
-    "subphase_completion_requires_user_approval": true,
-    "structure_must_be_updated_from_actual_tree": true,
-    "do_not_mark_complete_just_because_code_was_written": true
-  }
+  "last_updated": "2026-05-01"
 }
