@@ -4,19 +4,83 @@
   "category": "discovery",
   "data_source": "hybrid",
   "fields": {
-    "eyebrow": { "type": "string", "default": "Handpicked" },
-    "title": { "type": "string", "default": "Featured Listings" },
-    "description": { "type": "text", "default": "" },
-    "post_type": { "type": "enum", "values": ["tour", "destination", "both"], "default": "tour" },
-    "items": { "type": "relationship", "post_type": "any", "default": [] },
-    "layout": { "type": "enum", "values": ["grid", "list", "slider"], "default": "grid" },
-    "columns": { "type": "number", "default": 3, "min": 1, "max": 4 },
-    "limit": { "type": "number", "default": 4, "min": 1, "max": 12 },
-    "show_excerpt": { "type": "boolean", "default": true },
-    "show_price": { "type": "boolean", "default": true },
-    "show_rating": { "type": "boolean", "default": true },
-    "image_ratio": { "type": "enum", "values": ["landscape", "portrait", "square"], "default": "landscape" },
-    "variant": { "type": "enum", "values": ["elevated", "bordered", "compact"], "default": "elevated" }
+    "eyebrow": {
+      "type": "string",
+      "default": "Handpicked"
+    },
+    "title": {
+      "type": "string",
+      "default": "Featured Listings"
+    },
+    "description": {
+      "type": "text",
+      "default": ""
+    },
+    "post_type": {
+      "type": "enum",
+      "values": [
+        "tour",
+        "destination",
+        "both"
+      ],
+      "default": "tour"
+    },
+    "items": {
+      "type": "relationship",
+      "post_type": "any",
+      "default": []
+    },
+    "layout": {
+      "type": "enum",
+      "values": [
+        "grid",
+        "list",
+        "slider"
+      ],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 4
+    },
+    "limit": {
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 12
+    },
+    "show_excerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_price": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_rating": {
+      "type": "boolean",
+      "default": true
+    },
+    "image_ratio": {
+      "type": "enum",
+      "values": [
+        "landscape",
+        "portrait",
+        "square"
+      ],
+      "default": "landscape"
+    },
+    "variant": {
+      "type": "enum",
+      "values": [
+        "elevated",
+        "bordered",
+        "compact"
+      ],
+      "default": "elevated"
+    }
   },
   "defaults": {
     "eyebrow": "Handpicked",
@@ -33,6 +97,11 @@
     "image_ratio": "landscape",
     "variant": "elevated"
   },
-  "variants": ["grid", "list", "slider"],
-  "validation": {}
+  "variants": [
+    "grid",
+    "list",
+    "slider"
+  ],
+  "validation": {},
+  "render_callback": "igp_pro_render_block"
 }

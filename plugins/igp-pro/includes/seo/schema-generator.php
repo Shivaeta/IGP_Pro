@@ -1,0 +1,325 @@
+<?php
+/**
+ * JSON-LD schema generator for IGP Pro.
+ *
+ * @package IGP_Pro
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Get graph data from post content first, then saved graph meta.
+ */
+function igp_pro_seo_get_content_graph( int $post_id ): array {
+	if ( function_exists( 'igp_pro_content_graph_from_post_content' ) ) {
+		$graph = igp_pro_content_graph_from_post_content( $post_id );
+		if ( is_array( $graph ) && ! empty( $graph['sections'] ) ) {
+			return $graph;
+		}
+	}
+
+	if ( function_exists( 'igp_pro_load_content_graph' ) ) {
+		$graph = igp_pro_load_content_graph( $post_id );
+		if ( is_array( $graph ) ) {
+			return $graph;
+		}
+	}
+
+	return array( 'version' => 'v1', 'sections' => array() );
+}
+
+/**
+ * Return all sections with a block ID.
+ */
+function igp_pro_seo_get_sections_by_block( array $graph, string $block_id ): array {
+	$found = array();
+	foreach ( $graph['sections'] ?? array() as $section ) {
+		if ( is_array( $section ) && isset( $section['block_id'] ) && sanitize_key( (string) $section['block_id'] ) === sanitize_key( $block_id ) ) {
+			$found[] = $section;
+		}
+	}
+	return $found;
+}
+
+/**
+ * Extract clean text from a section data key list.
+ */
+function igp_pro_seo_first_section_text( array $graph, array $block_ids, array $keys ): string {
+	foreach ( $block_ids as $block_id ) {
+		foreach ( igp_pro_seo_get_sections_by_block( $graph, $block_id ) as $section ) {
+			$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+			foreach ( $keys as $key ) {
+				if ( isset( $data[ $key ] ) && '' !== trim( wp_strip_all_tags( (string) $data[ $key ] ) ) ) {
+					return trim( wp_strip_all_tags( (string) $data[ $key ] ) );
+				}
+			}
+		}
+	}
+	return '';
+}
+
+/**
+ * Find a primary image URL from featured image or graph sections.
+ */
+function igp_pro_seo_get_primary_image( int $post_id, array $graph ): string {
+	$image = get_the_post_thumbnail_url( $post_id, 'full' );
+	if ( $image ) {
+		return esc_url_raw( $image );
+	}
+
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'hero' ) as $section ) {
+		$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		if ( isset( $data['background_image'] ) ) {
+			$url = function_exists( 'igp_pro_get_image_url' ) ? igp_pro_get_image_url( $data['background_image'] ) : '';
+			if ( '' !== $url ) {
+				return $url;
+			}
+		}
+	}
+
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'gallery' ) as $section ) {
+		$data   = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$images = isset( $data['images'] ) ? $data['images'] : array();
+		if ( is_string( $images ) ) {
+			$decoded = json_decode( $images, true );
+			$images  = is_array( $decoded ) ? $decoded : array();
+		}
+		if ( is_array( $images ) ) {
+			foreach ( $images as $item ) {
+				$url = is_array( $item ) && isset( $item['url'] ) ? esc_url_raw( (string) $item['url'] ) : '';
+				if ( '' !== $url ) {
+					return $url;
+				}
+			}
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Extract FAQ structured data from the Content Graph.
+ */
+function igp_pro_seo_get_faq_entities( array $graph ): array {
+	$entities = array();
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'faq' ) as $section ) {
+		$data  = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$items = $data['items'] ?? array();
+		if ( is_string( $items ) ) {
+			$decoded = json_decode( $items, true );
+			$items   = is_array( $decoded ) ? $decoded : array();
+		}
+		foreach ( is_array( $items ) ? $items : array() as $item ) {
+			if ( ! is_array( $item ) ) {
+				continue;
+			}
+			$question = trim( wp_strip_all_tags( (string) ( $item['question'] ?? '' ) ) );
+			$answer   = trim( wp_strip_all_tags( (string) ( $item['answer'] ?? '' ) ) );
+			if ( '' !== $question && '' !== $answer ) {
+				$entities[] = array(
+					'@type'          => 'Question',
+					'name'           => $question,
+					'acceptedAnswer' => array(
+						'@type' => 'Answer',
+						'text'  => $answer,
+					),
+				);
+			}
+		}
+	}
+	return $entities;
+}
+
+/**
+ * Build BreadcrumbList item data.
+ */
+function igp_pro_seo_get_breadcrumb_items( WP_Post $post ): array {
+	$items = array(
+		array(
+			'@type'    => 'ListItem',
+			'position' => 1,
+			'name'     => get_bloginfo( 'name' ),
+			'item'     => home_url( '/' ),
+		),
+	);
+
+	if ( 'tour' === $post->post_type ) {
+		$items[] = array(
+			'@type'    => 'ListItem',
+			'position' => 2,
+			'name'     => __( 'Tours', 'igp-pro' ),
+			'item'     => get_post_type_archive_link( 'tour' ) ?: home_url( '/tours/' ),
+		);
+	} elseif ( 'destination' === $post->post_type ) {
+		$items[] = array(
+			'@type'    => 'ListItem',
+			'position' => 2,
+			'name'     => __( 'Destinations', 'igp-pro' ),
+			'item'     => get_post_type_archive_link( 'destination' ) ?: home_url( '/destinations/' ),
+		);
+	}
+
+	$items[] = array(
+		'@type'    => 'ListItem',
+		'position' => count( $items ) + 1,
+		'name'     => get_the_title( $post ),
+		'item'     => get_permalink( $post ),
+	);
+
+	return $items;
+}
+
+/**
+ * Generate JSON-LD payload derived from post data and the Content Graph.
+ */
+function igp_pro_generate_json_ld( int $post_id ): array {
+	$post = get_post( $post_id );
+	if ( ! $post instanceof WP_Post ) {
+		return array();
+	}
+
+	$graph       = igp_pro_seo_get_content_graph( $post_id );
+	$url         = get_permalink( $post );
+	$title       = get_the_title( $post );
+	$description = function_exists( 'igp_pro_generate_meta_description' ) ? igp_pro_generate_meta_description( $post_id ) : wp_trim_words( wp_strip_all_tags( $post->post_content ), 30 );
+	$image       = igp_pro_seo_get_primary_image( $post_id, $graph );
+	$site_name   = get_bloginfo( 'name' );
+	$settings    = function_exists( 'igp_pro_get_seo_settings' ) ? igp_pro_get_seo_settings() : array();
+	$org_name    = ! empty( $settings['organization_name'] ) ? (string) $settings['organization_name'] : $site_name;
+	$org_logo    = ! empty( $settings['organization_logo'] ) ? esc_url_raw( (string) $settings['organization_logo'] ) : '';
+
+	$entities = array(
+		array_filter(
+			array(
+				'@type' => 'TravelAgency',
+				'@id'   => home_url( '/#organization' ),
+				'name'  => $org_name,
+				'url'   => home_url( '/' ),
+				'logo'  => '' !== $org_logo ? array( '@type' => 'ImageObject', 'url' => $org_logo ) : null,
+			)
+		),
+		array(
+			'@type'     => 'WebSite',
+			'@id'       => home_url( '/#website' ),
+			'url'       => home_url( '/' ),
+			'name'      => $site_name,
+			'publisher' => array( '@id' => home_url( '/#organization' ) ),
+		),
+		array_filter(
+			array(
+				'@type'              => 'WebPage',
+				'@id'                => trailingslashit( $url ) . '#webpage',
+				'url'                => $url,
+				'name'               => $title,
+				'description'        => $description,
+				'isPartOf'           => array( '@id' => home_url( '/#website' ) ),
+				'primaryImageOfPage' => '' !== $image ? array( '@type' => 'ImageObject', 'url' => $image ) : null,
+			)
+		),
+		array(
+			'@type'           => 'BreadcrumbList',
+			'@id'             => trailingslashit( $url ) . '#breadcrumb',
+			'itemListElement' => igp_pro_seo_get_breadcrumb_items( $post ),
+		),
+	);
+
+	if ( 'tour' === $post->post_type ) {
+		$price       = function_exists( 'igp_pro_parse_money' ) ? igp_pro_parse_money( get_post_meta( $post_id, '_igp_booking_base_price', true ) ) : (float) get_post_meta( $post_id, '_igp_booking_base_price', true );
+		if ( $price <= 0 ) {
+			$price = function_exists( 'igp_pro_parse_money' ) ? igp_pro_parse_money( get_post_meta( $post_id, '_igp_price', true ) ) : (float) get_post_meta( $post_id, '_igp_price', true );
+		}
+		$currency_symbol = (string) get_post_meta( $post_id, '_igp_booking_currency', true );
+		$currency        = igp_pro_schema_currency_from_symbol( $currency_symbol );
+		$duration        = get_post_meta( $post_id, '_igp_duration', true );
+
+		$entities[] = array_filter(
+			array(
+				'@type'       => 'TouristTrip',
+				'@id'         => trailingslashit( $url ) . '#tour',
+				'name'        => $title,
+				'description' => $description,
+				'url'         => $url,
+				'image'       => '' !== $image ? array( $image ) : null,
+				'itinerary'   => igp_pro_schema_itinerary_items( $graph ),
+				'offers'      => $price > 0 ? array(
+					'@type'         => 'Offer',
+					'price'         => $price,
+					'priceCurrency' => $currency,
+					'url'           => $url,
+					'availability'  => 'https://schema.org/InStock',
+				) : null,
+				'touristType' => '' !== (string) $duration ? (string) $duration : null,
+			)
+		);
+	} elseif ( 'destination' === $post->post_type ) {
+		$entities[] = array_filter(
+			array(
+				'@type'       => 'TouristDestination',
+				'@id'         => trailingslashit( $url ) . '#destination',
+				'name'        => $title,
+				'description' => $description,
+				'url'         => $url,
+				'image'       => '' !== $image ? array( $image ) : null,
+			)
+		);
+	}
+
+	$faq_entities = igp_pro_seo_get_faq_entities( $graph );
+	if ( ! empty( $faq_entities ) ) {
+		$entities[] = array(
+			'@type'      => 'FAQPage',
+			'@id'        => trailingslashit( $url ) . '#faq',
+			'mainEntity' => $faq_entities,
+		);
+	}
+
+	return array(
+		'@context' => 'https://schema.org',
+		'@graph'   => array_values( array_filter( $entities ) ),
+	);
+}
+
+/**
+ * Return itinerary graph values.
+ */
+function igp_pro_schema_itinerary_items( array $graph ): array {
+	$items = array();
+	foreach ( igp_pro_seo_get_sections_by_block( $graph, 'itinerary' ) as $section ) {
+		$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$days = $data['days'] ?? array();
+		if ( is_string( $days ) ) {
+			$decoded = json_decode( $days, true );
+			$days    = is_array( $decoded ) ? $decoded : array();
+		}
+		foreach ( is_array( $days ) ? $days : array() as $day ) {
+			if ( ! is_array( $day ) ) {
+				continue;
+			}
+			$name = trim( wp_strip_all_tags( (string) ( $day['day_title'] ?? '' ) ) );
+			$text = trim( wp_strip_all_tags( (string) ( $day['description'] ?? '' ) ) );
+			if ( '' !== $name || '' !== $text ) {
+				$items[] = array_filter(
+					array(
+						'@type'       => 'TouristAttraction',
+						'name'        => '' !== $name ? $name : __( 'Itinerary item', 'igp-pro' ),
+						'description' => $text,
+					)
+				);
+			}
+		}
+	}
+	return $items;
+}
+
+/**
+ * Convert common currency symbols to ISO-ish codes for schema.
+ */
+function igp_pro_schema_currency_from_symbol( string $symbol ): string {
+	$symbol = trim( $symbol );
+	$map    = array( '₹' => 'INR', '$' => 'USD', '€' => 'EUR', '£' => 'GBP' );
+	if ( isset( $map[ $symbol ] ) ) {
+		return $map[ $symbol ];
+	}
+	$upper = strtoupper( preg_replace( '/[^A-Z]/i', '', $symbol ) ?? '' );
+	return '' !== $upper ? substr( $upper, 0, 3 ) : 'INR';
+}

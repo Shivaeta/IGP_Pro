@@ -4,13 +4,40 @@
   "category": "trust",
   "data_source": "manual",
   "fields": {
-    "eyebrow": { "type": "string", "default": "Trusted Travel Partner" },
-    "title": { "type": "string", "default": "Proof that helps travellers decide" },
-    "rating": { "type": "string", "default": "4.9/5" },
-    "source": { "type": "string", "default": "Verified guest reviews" },
-    "layout": { "type": "enum", "values": ["cards", "strip", "logos", "split"], "default": "cards" },
-    "items": { "type": "repeater", "default": [] },
-    "logos": { "type": "repeater", "default": [] }
+    "eyebrow": {
+      "type": "string",
+      "default": "Trusted Travel Partner"
+    },
+    "title": {
+      "type": "string",
+      "default": "Proof that helps travellers decide"
+    },
+    "rating": {
+      "type": "string",
+      "default": "4.9/5"
+    },
+    "source": {
+      "type": "string",
+      "default": "Verified guest reviews"
+    },
+    "layout": {
+      "type": "enum",
+      "values": [
+        "cards",
+        "strip",
+        "logos",
+        "split"
+      ],
+      "default": "cards"
+    },
+    "items": {
+      "type": "repeater",
+      "default": []
+    },
+    "logos": {
+      "type": "repeater",
+      "default": []
+    }
   },
   "defaults": {
     "eyebrow": "Trusted Travel Partner",
@@ -21,6 +48,12 @@
     "items": [],
     "logos": []
   },
-  "variants": ["cards", "strip", "logos", "split"],
-  "validation": {}
+  "variants": [
+    "cards",
+    "strip",
+    "logos",
+    "split"
+  ],
+  "validation": {},
+  "render_callback": "igp_pro_render_block"
 }

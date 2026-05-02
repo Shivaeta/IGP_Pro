@@ -85,13 +85,16 @@ function igp_pro_save_content_graph( int $post_id, $graph ) {
 		return new WP_Error( 'igp_pro_invalid_graph', __( 'Content graph must be an array or valid JSON object.', 'igp-pro' ) );
 	}
 
-	$graph = function_exists( 'igp_pro_sanitize_content_graph_payload' ) ? igp_pro_sanitize_content_graph_payload( $graph ) : $graph;
-
+	// Strictly validate the raw graph before any sanitizer/defaults can
+	// normalize invalid data. This preserves the charter rule that invalid
+	// structured content is rejected before persistence.
 	$validation = igp_pro_validate_content_graph( $graph );
 
 	if ( is_wp_error( $validation ) ) {
 		return $validation;
 	}
+
+	$graph = function_exists( 'igp_pro_sanitize_content_graph_payload' ) ? igp_pro_sanitize_content_graph_payload( $graph ) : $graph;
 
 	$encoded = wp_json_encode( $graph, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 

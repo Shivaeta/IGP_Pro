@@ -48,5 +48,6 @@
     "masonry",
     "slider"
   ],
-  "validation": {}
+  "validation": {},
+  "render_callback": "igp_pro_render_block"
 }

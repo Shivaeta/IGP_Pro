@@ -114,6 +114,15 @@ function igp_pro_get_default_block_definitions(): array {
 			'folder'      => 'pricing-summary',
 		),
 		array(
+			'id'          => 'rich_text',
+			'title'       => __( 'IGP Rich Text', 'igp-pro' ),
+			'description' => __( 'Schema-driven formatted content section.', 'igp-pro' ),
+			'icon'        => 'editor-alignleft',
+			'category'    => 'content',
+			'data_source' => 'manual',
+			'folder'      => 'rich-text',
+		),
+		array(
 			'id'          => 'breadcrumb',
 			'title'       => __( 'IGP Breadcrumb', 'igp-pro' ),
 			'description' => __( 'Structured breadcrumb navigation.', 'igp-pro' ),

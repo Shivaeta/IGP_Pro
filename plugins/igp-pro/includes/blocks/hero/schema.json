@@ -31,8 +31,29 @@
       "default": false
     }
   },
-  "variants": ["full", "split", "overlay"],
+  "variants": [
+    "full",
+    "split",
+    "overlay"
+  ],
   "validation": {
-    "required": ["heading", "background_image"]
+    "required": [
+      "heading",
+      "background_image"
+    ]
+  },
+  "render_callback": "igp_pro_render_block",
+  "defaults": {
+    "heading": "",
+    "subheading": "",
+    "background_image": {
+      "url": "",
+      "alt": ""
+    },
+    "cta": {
+      "label": "",
+      "url": ""
+    },
+    "enable_search": false
   }
 }

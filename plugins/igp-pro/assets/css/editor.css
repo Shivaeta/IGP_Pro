@@ -19,3 +19,6 @@
 .editor-styles-wrapper .igp-pro-hero__search {
   width: min(680px, 100%);
 }
+
+/* Rich Text editor preview */
+.igp-pro-editor-block--rich_text { padding: 18px; border: 1px dashed #d0d7de; border-radius: 12px; background: #fff; }

@@ -16,38 +16,46 @@ defined( 'ABSPATH' ) || exit;
  * @return string
  */
 function igp_pro_render_block( string $block_id, array $data = array(), array $context = array() ): string {
-	$block = igp_pro_get_registered_block( $block_id );
+	$render_callback = static function () use ( $block_id, $data, $context ): string {
+		$block = igp_pro_get_registered_block( $block_id );
 
-	if ( ! $block ) {
-		return igp_pro_render_block_fallback( $block_id, 'missing_block' );
+		if ( ! $block ) {
+			return igp_pro_render_block_fallback( $block_id, 'missing_block' );
+		}
+
+		$render_path = isset( $block['render_path'] ) ? (string) $block['render_path'] : '';
+
+		if ( '' === $render_path || ! file_exists( $render_path ) ) {
+			return igp_pro_render_block_fallback( $block_id, 'missing_render_path' );
+		}
+
+		$resolved_data = igp_pro_resolve_block_data( $block, $data, $context );
+		$validation    = igp_pro_validate_block_data( $block, $resolved_data );
+
+		if ( is_wp_error( $validation ) ) {
+			return igp_pro_render_block_fallback( $block_id, $validation->get_error_code() );
+		}
+
+		ob_start();
+		$result = include $render_path;
+		$output = ob_get_clean();
+
+		if ( is_string( $result ) && '' !== $result ) {
+			$output .= $result;
+		}
+
+		if ( '' === trim( $output ) ) {
+			return igp_pro_render_block_fallback( $block_id, 'empty_output' );
+		}
+
+		return $output;
+	};
+
+	if ( function_exists( 'igp_pro_cache_block_render' ) ) {
+		return igp_pro_cache_block_render( $block_id, $data, $context, $render_callback );
 	}
 
-	$render_path = isset( $block['render_path'] ) ? (string) $block['render_path'] : '';
-
-	if ( '' === $render_path || ! file_exists( $render_path ) ) {
-		return igp_pro_render_block_fallback( $block_id, 'missing_render_path' );
-	}
-
-	$resolved_data = igp_pro_resolve_block_data( $block, $data, $context );
-	$validation    = igp_pro_validate_block_data( $block, $resolved_data );
-
-	if ( is_wp_error( $validation ) ) {
-		return igp_pro_render_block_fallback( $block_id, $validation->get_error_code() );
-	}
-
-	ob_start();
-	$result = include $render_path;
-	$output = ob_get_clean();
-
-	if ( is_string( $result ) && '' !== $result ) {
-		$output .= $result;
-	}
-
-	if ( '' === trim( $output ) ) {
-		return igp_pro_render_block_fallback( $block_id, 'empty_output' );
-	}
-
-	return $output;
+	return $render_callback();
 }
 
 /**

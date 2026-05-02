@@ -4,18 +4,78 @@
   "category": "discovery",
   "data_source": "hybrid",
   "fields": {
-    "eyebrow": { "type": "string", "default": "Vacation Packages" },
-    "title": { "type": "string", "default": "Trending Destinations" },
-    "description": { "type": "text", "default": "" },
-    "source": { "type": "enum", "values": ["manual", "query"], "default": "query" },
-    "items": { "type": "relationship", "post_type": "destination", "default": [] },
-    "layout": { "type": "enum", "values": ["grid", "slider", "mosaic"], "default": "grid" },
-    "columns": { "type": "number", "default": 4, "min": 2, "max": 4 },
-    "limit": { "type": "number", "default": 6, "min": 1, "max": 12 },
-    "show_excerpt": { "type": "boolean", "default": true },
-    "show_count": { "type": "boolean", "default": true },
-    "image_ratio": { "type": "enum", "values": ["landscape", "portrait", "square"], "default": "portrait" },
-    "variant": { "type": "enum", "values": ["elevated", "overlay", "bordered"], "default": "overlay" }
+    "eyebrow": {
+      "type": "string",
+      "default": "Vacation Packages"
+    },
+    "title": {
+      "type": "string",
+      "default": "Trending Destinations"
+    },
+    "description": {
+      "type": "text",
+      "default": ""
+    },
+    "source": {
+      "type": "enum",
+      "values": [
+        "manual",
+        "query"
+      ],
+      "default": "query"
+    },
+    "items": {
+      "type": "relationship",
+      "post_type": "destination",
+      "default": []
+    },
+    "layout": {
+      "type": "enum",
+      "values": [
+        "grid",
+        "slider",
+        "mosaic"
+      ],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "default": 4,
+      "min": 2,
+      "max": 4
+    },
+    "limit": {
+      "type": "number",
+      "default": 6,
+      "min": 1,
+      "max": 12
+    },
+    "show_excerpt": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_count": {
+      "type": "boolean",
+      "default": true
+    },
+    "image_ratio": {
+      "type": "enum",
+      "values": [
+        "landscape",
+        "portrait",
+        "square"
+      ],
+      "default": "portrait"
+    },
+    "variant": {
+      "type": "enum",
+      "values": [
+        "elevated",
+        "overlay",
+        "bordered"
+      ],
+      "default": "overlay"
+    }
   },
   "defaults": {
     "eyebrow": "Vacation Packages",
@@ -31,6 +91,13 @@
     "image_ratio": "portrait",
     "variant": "overlay"
   },
-  "variants": ["grid", "slider", "mosaic"],
-  "validation": { "manual_min_items": 1 }
+  "variants": [
+    "grid",
+    "slider",
+    "mosaic"
+  ],
+  "validation": {
+    "manual_min_items": 1
+  },
+  "render_callback": "igp_pro_render_block"
 }

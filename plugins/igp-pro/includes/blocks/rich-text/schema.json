@@ -1,0 +1,64 @@
+{
+  "id": "rich_text",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "render_callback": "igp_pro_render_block",
+  "fields": {
+    "eyebrow": {
+      "type": "string",
+      "default": ""
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    },
+    "content": {
+      "type": "text",
+      "default": "Add rich text content."
+    },
+    "alignment": {
+      "type": "enum",
+      "values": [
+        "left",
+        "center",
+        "right"
+      ],
+      "default": "left"
+    },
+    "width": {
+      "type": "enum",
+      "values": [
+        "normal",
+        "wide",
+        "narrow"
+      ],
+      "default": "normal"
+    },
+    "variant": {
+      "type": "enum",
+      "values": [
+        "default",
+        "lead",
+        "panel",
+        "quote"
+      ],
+      "default": "default"
+    }
+  },
+  "defaults": {
+    "eyebrow": "",
+    "title": "",
+    "content": "Add rich text content.",
+    "alignment": "left",
+    "width": "normal",
+    "variant": "default"
+  },
+  "validation": {},
+  "variants": [
+    "default",
+    "lead",
+    "panel",
+    "quote"
+  ]
+}

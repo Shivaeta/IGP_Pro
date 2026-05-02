@@ -4,39 +4,117 @@
   "category": "conversion",
   "data_source": "manual",
   "fields": {
-    "eyebrow": { "type": "string", "default": "Ready to travel?" },
-    "heading": { "type": "string", "default": "Plan your next private tour with confidence" },
-    "subheading": { "type": "string", "default": "Talk to a specialist and convert your idea into a structured itinerary." },
+    "eyebrow": {
+      "type": "string",
+      "default": "Ready to travel?"
+    },
+    "heading": {
+      "type": "string",
+      "default": "Plan your next private tour with confidence"
+    },
+    "subheading": {
+      "type": "string",
+      "default": "Talk to a specialist and convert your idea into a structured itinerary."
+    },
     "button": {
       "type": "object",
       "fields": {
-        "label": { "type": "string", "default": "Start planning" },
-        "url": { "type": "string", "default": "/contact/" }
+        "label": {
+          "type": "string",
+          "default": "Start planning"
+        },
+        "url": {
+          "type": "string",
+          "default": "/contact/"
+        }
       }
     },
     "secondary_button": {
       "type": "object",
       "fields": {
-        "label": { "type": "string", "default": "Browse tours" },
-        "url": { "type": "string", "default": "/tours/" }
+        "label": {
+          "type": "string",
+          "default": "Browse tours"
+        },
+        "url": {
+          "type": "string",
+          "default": "/tours/"
+        }
       }
     },
-    "alignment": { "type": "enum", "values": ["center", "left", "right"], "default": "center" },
-    "variant": { "type": "enum", "values": ["solid", "outline", "minimal", "split", "dark"], "default": "solid" },
-    "show_badges": { "type": "boolean", "default": true },
-    "badges": { "type": "repeater", "default": [ { "label": "Best-price guidance" }, { "label": "Flexible itinerary" }, { "label": "Local support" } ] }
+    "alignment": {
+      "type": "enum",
+      "values": [
+        "center",
+        "left",
+        "right"
+      ],
+      "default": "center"
+    },
+    "variant": {
+      "type": "enum",
+      "values": [
+        "solid",
+        "outline",
+        "minimal",
+        "split",
+        "dark"
+      ],
+      "default": "solid"
+    },
+    "show_badges": {
+      "type": "boolean",
+      "default": true
+    },
+    "badges": {
+      "type": "repeater",
+      "default": [
+        {
+          "label": "Best-price guidance"
+        },
+        {
+          "label": "Flexible itinerary"
+        },
+        {
+          "label": "Local support"
+        }
+      ]
+    }
   },
   "defaults": {
     "eyebrow": "Ready to travel?",
     "heading": "Plan your next private tour with confidence",
     "subheading": "Talk to a specialist and convert your idea into a structured itinerary.",
-    "button": { "label": "Start planning", "url": "/contact/" },
-    "secondary_button": { "label": "Browse tours", "url": "/tours/" },
+    "button": {
+      "label": "Start planning",
+      "url": "/contact/"
+    },
+    "secondary_button": {
+      "label": "Browse tours",
+      "url": "/tours/"
+    },
     "alignment": "center",
     "variant": "solid",
     "show_badges": true,
-    "badges": [ { "label": "Best-price guidance" }, { "label": "Flexible itinerary" }, { "label": "Local support" } ]
+    "badges": [
+      {
+        "label": "Best-price guidance"
+      },
+      {
+        "label": "Flexible itinerary"
+      },
+      {
+        "label": "Local support"
+      }
+    ]
   },
-  "variants": ["solid", "outline", "minimal", "split", "dark"],
-  "validation": {}
+  "variants": [
+    "solid",
+    "outline",
+    "minimal",
+    "split",
+    "dark"
+  ],
+  "validation": {},
+  "render_callback": "igp_pro_render_block"
 }

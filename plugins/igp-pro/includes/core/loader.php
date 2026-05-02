@@ -25,6 +25,11 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/core/assets.php';
 	}
 
+	// Phase 5 cache primitives must be available before block rendering starts.
+	if ( file_exists( IGP_PRO_PATH . 'includes/performance/cache.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/performance/cache.php';
+	}
+
 	require_once IGP_PRO_PATH . 'includes/cpt/taxonomies.php';
 	require_once IGP_PRO_PATH . 'includes/cpt/register-cpt.php';
 	require_once IGP_PRO_PATH . 'includes/blocks/registry.php';
@@ -68,6 +73,19 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/booking/booking-engine.php';
 	}
 
+	// Phase 5 SEO and performance modules.
+	if ( file_exists( IGP_PRO_PATH . 'includes/seo/schema-generator.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/seo/schema-generator.php';
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/seo/seo-engine.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/seo/seo-engine.php';
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/performance/cwv.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/performance/cwv.php';
+	}
+
 	if ( file_exists( IGP_PRO_PATH . 'includes/admin/content-editor.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/admin/content-editor.php';
 	}
@@ -76,9 +94,12 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/admin/booking-panel.php';
 	}
 
-
 	if ( file_exists( IGP_PRO_PATH . 'includes/admin/payment-settings.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/admin/payment-settings.php';
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/admin/seo-panel.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/seo-panel.php';
 	}
 
 	add_action( 'init', 'igp_pro_register_taxonomies', 0 );
@@ -95,6 +116,14 @@ function igp_pro_load(): void {
 		add_action( 'enqueue_block_editor_assets', 'igp_pro_enqueue_editor_styles', 20 );
 	}
 
+	if ( function_exists( 'igp_pro_register_cache_module' ) ) {
+		igp_pro_register_cache_module();
+	}
+
+	if ( function_exists( 'igp_pro_register_seo_module' ) ) {
+		igp_pro_register_seo_module();
+	}
+
 	if ( function_exists( 'igp_pro_register_booking_module' ) ) {
 		igp_pro_register_booking_module();
 	}
@@ -109,5 +138,9 @@ function igp_pro_load(): void {
 
 	if ( is_admin() && function_exists( 'igp_pro_register_payment_settings_admin' ) ) {
 		igp_pro_register_payment_settings_admin();
+	}
+
+	if ( is_admin() && function_exists( 'igp_pro_register_seo_admin' ) ) {
+		igp_pro_register_seo_admin();
 	}
 }
