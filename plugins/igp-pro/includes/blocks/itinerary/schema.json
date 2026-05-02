@@ -1,0 +1,50 @@
+{
+  "id": "itinerary",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string",
+      "default": "Itinerary"
+    },
+    "days": {
+      "type": "repeater",
+      "min_items": 1,
+      "fields": {
+        "day_title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        },
+        "meals": {
+          "type": "string"
+        },
+        "stay": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "defaults": {
+    "title": "Itinerary",
+    "days": [
+      {
+        "day_title": "Day 1",
+        "description": "Add itinerary details.",
+        "meals": "",
+        "stay": ""
+      }
+    ]
+  },
+  "variants": [
+    "timeline",
+    "cards"
+  ],
+  "validation": {
+    "required": [
+      "days"
+    ]
+  }
+}

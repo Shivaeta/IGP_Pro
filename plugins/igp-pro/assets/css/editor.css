@@ -1,0 +1,21 @@
+.editor-styles-wrapper .igp-pro-editor-block { border: 1px solid #e8edf3; border-radius: 14px; padding: 14px; background: #fff; }
+.editor-styles-wrapper .igp-pro-editor-block .components-placeholder { min-height: auto; }
+.editor-styles-wrapper .igp-pro-editor-innerblocks { border: 1px dashed #cbd5e1; border-radius: 12px; padding: 16px; min-height: 72px; }
+.editor-styles-wrapper .igp-pro-section__content { outline: 1px dashed rgba(253,70,33,.35); outline-offset: 6px; }
+
+/* Hero block editor preview: match frontend enough to avoid plain stacked output in Gutenberg. */
+.editor-styles-wrapper .igp-pro-hero {
+  width: 100%;
+  min-height: 420px;
+  margin: 12px 0;
+  border-radius: 28px;
+}
+.editor-styles-wrapper .igp-pro-hero__content {
+  padding: 44px;
+}
+.editor-styles-wrapper .igp-pro-hero__heading {
+  font-size: clamp(38px, 6vw, 68px);
+}
+.editor-styles-wrapper .igp-pro-hero__search {
+  width: min(680px, 100%);
+}

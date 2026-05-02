@@ -29,6 +29,11 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 	}
 
 	$resolved_data = igp_pro_resolve_block_data( $block, $data, $context );
+	$validation    = igp_pro_validate_block_data( $block, $resolved_data );
+
+	if ( is_wp_error( $validation ) ) {
+		return igp_pro_render_block_fallback( $block_id, $validation->get_error_code() );
+	}
 
 	ob_start();
 	$result = include $render_path;

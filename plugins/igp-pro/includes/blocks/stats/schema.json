@@ -1,0 +1,41 @@
+{
+  "id": "stats",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "value": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        }
+      }
+    },
+    "columns": {
+      "type": "number",
+      "default": 4,
+      "min": 1,
+      "max": 4
+    }
+  },
+  "defaults": {
+    "title": "",
+    "items": [],
+    "columns": 4
+  },
+  "variants": [
+    "cards",
+    "inline"
+  ],
+  "validation": {}
+}

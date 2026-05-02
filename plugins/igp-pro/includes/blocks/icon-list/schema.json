@@ -1,0 +1,41 @@
+{
+  "id": "icon_list",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "icon": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "description": {
+          "type": "text"
+        }
+      }
+    },
+    "columns": {
+      "type": "number",
+      "default": 2,
+      "min": 1,
+      "max": 4
+    }
+  },
+  "defaults": {
+    "title": "",
+    "items": [],
+    "columns": 2
+  },
+  "variants": [
+    "grid",
+    "list"
+  ],
+  "validation": {}
+}

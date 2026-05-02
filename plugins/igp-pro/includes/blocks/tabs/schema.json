@@ -1,0 +1,36 @@
+{
+  "id": "tabs",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "tab_title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "text"
+        }
+      }
+    }
+  },
+  "defaults": {
+    "title": "",
+    "items": [
+      {
+        "tab_title": "Overview",
+        "content": "Add tab content."
+      }
+    ]
+  },
+  "variants": [
+    "horizontal",
+    "vertical"
+  ],
+  "validation": {}
+}

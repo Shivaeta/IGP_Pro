@@ -1,0 +1,39 @@
+{
+  "id": "map",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "embed_url": {
+      "type": "string"
+    },
+    "height": {
+      "type": "number",
+      "default": 360,
+      "min": 160,
+      "max": 720
+    },
+    "link_label": {
+      "type": "string",
+      "default": "Open map"
+    }
+  },
+  "defaults": {
+    "title": "",
+    "address": "",
+    "embed_url": "",
+    "height": 360,
+    "link_label": "Open map"
+  },
+  "variants": [
+    "embed",
+    "link"
+  ],
+  "validation": {}
+}

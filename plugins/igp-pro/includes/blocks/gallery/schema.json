@@ -1,0 +1,52 @@
+{
+  "id": "gallery",
+  "version": "v1",
+  "category": "media",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string"
+    },
+    "images": {
+      "type": "repeater",
+      "fields": {
+        "url": {
+          "type": "string"
+        },
+        "alt": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
+    "layout": {
+      "type": "enum",
+      "values": [
+        "grid",
+        "masonry",
+        "slider"
+      ],
+      "default": "grid"
+    },
+    "columns": {
+      "type": "number",
+      "min": 1,
+      "max": 4,
+      "default": 3
+    }
+  },
+  "defaults": {
+    "title": "",
+    "images": [],
+    "layout": "grid",
+    "columns": 3
+  },
+  "variants": [
+    "grid",
+    "masonry",
+    "slider"
+  ],
+  "validation": {}
+}

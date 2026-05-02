@@ -1,0 +1,40 @@
+{
+  "id": "breadcrumb",
+  "version": "v1",
+  "category": "navigation",
+  "data_source": "hybrid",
+  "fields": {
+    "source": {
+      "type": "enum",
+      "values": [
+        "auto",
+        "manual"
+      ],
+      "default": "auto"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "label": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
+    "show_current": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "defaults": {
+    "source": "auto",
+    "items": [],
+    "show_current": true
+  },
+  "variants": [
+    "inline"
+  ],
+  "validation": {}
+}

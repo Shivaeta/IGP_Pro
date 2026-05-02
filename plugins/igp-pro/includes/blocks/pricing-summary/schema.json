@@ -1,0 +1,45 @@
+{
+  "id": "pricing_summary",
+  "version": "v1",
+  "category": "conversion",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string",
+      "default": "Pricing Summary"
+    },
+    "currency": {
+      "type": "string",
+      "default": "₹"
+    },
+    "base_price": {
+      "type": "string"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "note": {
+      "type": "text"
+    }
+  },
+  "defaults": {
+    "title": "Pricing Summary",
+    "currency": "₹",
+    "base_price": "",
+    "items": [],
+    "note": ""
+  },
+  "variants": [
+    "card",
+    "table"
+  ],
+  "validation": {}
+}

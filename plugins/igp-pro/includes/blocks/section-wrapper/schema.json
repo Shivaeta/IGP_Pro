@@ -1,0 +1,30 @@
+{
+  "id": "section",
+  "version": "v1",
+  "category": "layout",
+  "data_source": "manual",
+  "fields": {
+    "eyebrow": { "type": "string", "default": "" },
+    "title": { "type": "string", "default": "" },
+    "description": { "type": "text", "default": "" },
+    "layout": { "type": "enum", "values": ["grid", "list", "carousel", "split"], "default": "grid" },
+    "columns": { "type": "number", "min": 1, "max": 4, "default": 3 },
+    "spacing": { "type": "enum", "values": ["compact", "normal", "relaxed"], "default": "normal" },
+    "variant": { "type": "enum", "values": ["default", "contained", "wide", "panel", "accent", "dark"], "default": "default" },
+    "align": { "type": "enum", "values": ["left", "center", "right"], "default": "left" },
+    "background": { "type": "enum", "values": ["none", "soft", "white", "sand", "dark", "brand"], "default": "none" }
+  },
+  "defaults": {
+    "eyebrow": "",
+    "title": "",
+    "description": "",
+    "layout": "grid",
+    "columns": 3,
+    "spacing": "normal",
+    "variant": "default",
+    "align": "left",
+    "background": "none"
+  },
+  "variants": ["default", "contained", "wide", "panel", "accent", "dark"],
+  "validation": {}
+}

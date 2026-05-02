@@ -1,0 +1,37 @@
+{
+  "id": "faq",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string",
+      "default": "Frequently Asked Questions"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "question": {
+          "type": "string"
+        },
+        "answer": {
+          "type": "text"
+        }
+      }
+    }
+  },
+  "defaults": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "Question",
+        "answer": "Answer"
+      }
+    ]
+  },
+  "variants": [
+    "accordion",
+    "list"
+  ],
+  "validation": {}
+}

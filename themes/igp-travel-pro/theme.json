@@ -1,0 +1,45 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "layout": {
+      "contentSize": "760px",
+      "wideSize": "1180px"
+    },
+    "color": {
+      "palette": [
+        { "slug": "brand", "color": "#fd4621", "name": "Brand" },
+        { "slug": "ink", "color": "#111827", "name": "Ink" },
+        { "slug": "muted", "color": "#5b667a", "name": "Muted" },
+        { "slug": "soft", "color": "#f6f8fb", "name": "Soft" },
+        { "slug": "sand", "color": "#fff6ef", "name": "Sand" },
+        { "slug": "white", "color": "#ffffff", "name": "White" }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        { "slug": "system", "name": "System", "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }
+      ]
+    },
+    "spacing": { "units": ["px", "rem", "%", "vw", "vh"] },
+    "custom": {
+      "igp": {
+        "radius": "20px",
+        "shadow": "0 18px 45px rgba(17,24,39,.10)"
+      }
+    }
+  },
+  "styles": {
+    "color": { "text": "#111827", "background": "#ffffff" },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--system)",
+      "fontSize": "16px",
+      "lineHeight": "1.65"
+    },
+    "elements": {
+      "link": { "color": { "text": "#fd4621" } },
+      "heading": { "typography": { "fontWeight": "750", "lineHeight": "1.12" }, "color": { "text": "#111827" } }
+    }
+  }
+}

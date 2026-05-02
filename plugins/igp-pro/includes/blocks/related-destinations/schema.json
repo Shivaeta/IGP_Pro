@@ -1,0 +1,41 @@
+{
+  "id": "related_destinations",
+  "version": "v1",
+  "category": "discovery",
+  "data_source": "query",
+  "fields": {
+    "title": {
+      "type": "string",
+      "default": "Related Destinations"
+    },
+    "limit": {
+      "type": "number",
+      "default": 3,
+      "min": 1,
+      "max": 12
+    },
+    "layout": {
+      "type": "enum",
+      "values": [
+        "grid",
+        "list"
+      ],
+      "default": "grid"
+    },
+    "show_excerpt": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "defaults": {
+    "title": "Related Destinations",
+    "limit": 3,
+    "layout": "grid",
+    "show_excerpt": true
+  },
+  "variants": [
+    "grid",
+    "list"
+  ],
+  "validation": {}
+}

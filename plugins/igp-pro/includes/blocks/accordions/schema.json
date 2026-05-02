@@ -1,0 +1,35 @@
+{
+  "id": "accordions",
+  "version": "v1",
+  "category": "content",
+  "data_source": "manual",
+  "fields": {
+    "title": {
+      "type": "string"
+    },
+    "items": {
+      "type": "repeater",
+      "fields": {
+        "heading": {
+          "type": "string"
+        },
+        "content": {
+          "type": "text"
+        }
+      }
+    }
+  },
+  "defaults": {
+    "title": "",
+    "items": [
+      {
+        "heading": "Accordion heading",
+        "content": "Accordion content."
+      }
+    ]
+  },
+  "variants": [
+    "default"
+  ],
+  "validation": {}
+}
