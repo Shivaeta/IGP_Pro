@@ -724,3 +724,126 @@
 	padding: .65rem .95rem;
 	text-decoration: none;
 }
+
+/* Fix batch: make schema-driven block variations operational, stable, and responsive. */
+.igp-block.igp-styled-block { --igp-variant-gap: var(--igp-phase9-block-gap, 24px); }
+.igp-block.igp-density--compact { --igp-variant-gap: 12px; }
+.igp-block.igp-density--comfortable { --igp-variant-gap: 22px; }
+.igp-block.igp-density--spacious { --igp-variant-gap: 34px; }
+.igp-block.igp-theme--dark :is(.igp-pro-block-title,.igp-pro-block-description,.igp-pro-cta__heading,.igp-pro-cta__subheading,.igp-pro-cta__eyebrow) { color: #fff; }
+.igp-block.igp-theme--accent > *:first-child { background: linear-gradient(135deg, var(--igp-sand), #fff); }
+.igp-block.igp-surface--card > *:first-child { border: 1px solid var(--igp-line); border-radius: var(--igp-radius-lg); background: #fff; }
+.igp-block.igp-surface--elevated > *:first-child { border-radius: var(--igp-radius-lg); }
+.igp-block.igp-container--narrow > * { width: min(820px, calc(100vw - 40px)); margin-inline: auto; }
+.igp-block.igp-container--default > * { width: min(1040px, calc(100vw - 40px)); margin-inline: auto; }
+.igp-block.igp-container--wide > * { width: var(--igp-container); margin-inline: auto; }
+.igp-block.igp-container--full > * { width: 100%; max-width: none; margin-inline: 0; border-radius: 0; }
+
+/* Hero variants mapped to the actual hero markup; no missing __inner dependency. */
+.igp-block--hero.igp-variant--full-width .igp-pro-hero { width: 100%; border-radius: 0; margin-top: 0; }
+.igp-block--hero.igp-variant--centered-minimal .igp-pro-hero__content { margin-inline: auto; align-items: center; text-align: center; }
+.igp-block--hero.igp-variant--centered-minimal .igp-pro-hero::after { left: 50%; right: auto; transform: translateX(-50%); }
+.igp-block--hero.igp-variant--image-left .igp-pro-hero,
+.igp-block--hero.igp-variant--image-right .igp-pro-hero { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); min-height: clamp(460px, 58vh, 660px); background: #0f172a; }
+.igp-block--hero.igp-variant--image-right .igp-pro-hero { grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); }
+.igp-block--hero.igp-variant--image-left .igp-pro-hero::before,
+.igp-block--hero.igp-variant--image-right .igp-pro-hero::before { background: linear-gradient(90deg, rgba(15,23,42,.92), rgba(15,23,42,.78)); }
+.igp-block--hero.igp-variant--image-left .igp-pro-hero__media,
+.igp-block--hero.igp-variant--image-right .igp-pro-hero__media { position: relative; min-height: clamp(320px, 45vw, 640px); }
+.igp-block--hero.igp-variant--image-left .igp-pro-hero__content,
+.igp-block--hero.igp-variant--image-right .igp-pro-hero__content { width: auto; min-height: 100%; }
+.igp-block--hero.igp-variant--image-left .igp-pro-hero__media { order: 1; }
+.igp-block--hero.igp-variant--image-left .igp-pro-hero__content { order: 2; }
+.igp-block--hero.igp-variant--image-right .igp-pro-hero__content { order: 1; }
+.igp-block--hero.igp-variant--image-right .igp-pro-hero__media { order: 2; }
+.igp-block--hero.igp-variant--split-overlay .igp-pro-hero::before { background: linear-gradient(90deg, rgba(15,23,42,.96) 0%, rgba(15,23,42,.70) 54%, rgba(15,23,42,.28) 100%); }
+
+/* Conversion block variants. */
+.igp-block--cta.igp-variant--inline .igp-pro-cta__inner { display: flex; align-items: center; justify-content: space-between; gap: var(--igp-variant-gap); }
+.igp-block--cta.igp-variant--banner .igp-pro-cta { width: 100%; border-radius: 0; }
+.igp-block--cta.igp-variant--split .igp-pro-cta__inner { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--igp-variant-gap); }
+.igp-block--cta.igp-variant--card .igp-pro-cta { width: min(920px, calc(100vw - 40px)); }
+.igp-block--cta.igp-variant--card .igp-pro-cta__inner { box-shadow: var(--igp-shadow-soft); background: #fff; }
+.igp-block--brochure-cta.igp-variant--inline .igp-pro-brochure-cta { display: flex; justify-content: space-between; }
+.igp-block--brochure-cta.igp-variant--banner .igp-pro-brochure-cta { width: 100%; border-radius: 0; background: var(--igp-soft); }
+.igp-block--brochure-cta.igp-variant--card .igp-pro-brochure-cta { box-shadow: var(--igp-shadow-soft); }
+.igp-block--expert-box.igp-variant--profile .igp-pro-expert-box__card { grid-template-columns: 180px minmax(0, 1fr); }
+.igp-block--expert-box.igp-variant--profile .igp-pro-expert-box__image { width: 180px; border-radius: 999px; }
+.igp-block--expert-box.igp-variant--compact .igp-pro-expert-box__card { grid-template-columns: 88px minmax(0, 1fr); gap: 14px; padding: 16px; }
+.igp-block--expert-box.igp-variant--compact .igp-pro-expert-box__image { width: 88px; }
+
+/* Listing/card variants. */
+.igp-block--tour-cards.igp-variant--grid .igp-pro-card-grid,
+.igp-block--destination-cards.igp-variant--grid .igp-pro-card-grid,
+.igp-block--featured-listings.igp-variant--grid .igp-pro-card-grid,
+.igp-block--related-tours.igp-variant--grid .igp-pro-card-grid,
+.igp-block--related-destinations.igp-variant--grid .igp-pro-card-grid { gap: var(--igp-variant-gap); }
+.igp-block--tour-cards.igp-variant--featured .igp-pro-card:first-child,
+.igp-block--destination-cards.igp-variant--featured .igp-pro-card:first-child,
+.igp-block--featured-listings.igp-variant--featured .igp-pro-card:first-child { grid-column: span 2; min-height: 100%; }
+.igp-block--tour-cards.igp-variant--carousel-safe .igp-pro-card-grid,
+.igp-block--destination-cards.igp-variant--carousel-safe .igp-pro-card-grid,
+.igp-block--featured-listings.igp-variant--carousel-safe .igp-pro-card-grid,
+.igp-block--related-tours.igp-variant--carousel-safe .igp-pro-card-grid,
+.igp-block--related-destinations.igp-variant--carousel-safe .igp-pro-card-grid { contain: layout paint; }
+
+/* Content/data block variants. */
+.igp-block--tour-facts.igp-variant--grid .igp-pro-tour-facts__grid,
+.igp-block--tour-facts.igp-variant--icons .igp-pro-tour-facts__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--igp-variant-gap); }
+.igp-block--tour-facts.igp-variant--icons .igp-pro-tour-facts__item { border: 1px solid var(--igp-line); border-radius: var(--igp-radius); padding: 16px; background: #fff; }
+.igp-block--tour-facts.igp-variant--compact .igp-pro-tour-facts__grid { gap: 10px; }
+.igp-block--inclusions-exclusions.igp-variant--two-column .igp-pro-inclusions-exclusions__columns { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.igp-block--inclusions-exclusions.igp-variant--compact .igp-pro-inclusions-exclusions__columns { gap: 12px; }
+.igp-block--inclusions-exclusions.igp-variant--compact .igp-pro-inclusions-exclusions__column { padding: 14px; }
+.igp-block--package-tiers.igp-variant--comparison .igp-pro-package-tiers__grid { align-items: stretch; }
+.igp-block--package-tiers.igp-variant--compact .igp-pro-package-tier { padding: 16px; }
+.igp-block--reviews-summary.igp-variant--summary .igp-pro-reviews-summary__testimonials { grid-template-columns: 1fr; }
+.igp-block--reviews-summary.igp-variant--cards .igp-pro-review-card { padding: 18px; border: 1px solid var(--igp-line); border-radius: var(--igp-radius); background: #fff; }
+.igp-block--visa-requirements.igp-variant--checklist .igp-pro-visa-requirements__list { grid-template-columns: 1fr; }
+.igp-block--best-time-to-visit.igp-variant--seasons .igp-pro-best-time-to-visit__seasons,
+.igp-block--best-time-to-visit.igp-variant--monthly .igp-pro-best-time-to-visit__seasons { gap: var(--igp-variant-gap); }
+.igp-block--best-time-to-visit.igp-variant--monthly .igp-pro-best-time-to-visit__seasons { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.igp-block--route-timeline.igp-variant--cards .igp-pro-route-timeline__list { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); border-left: 0; padding-left: 0; }
+.igp-block--route-timeline.igp-variant--cards .igp-pro-route-timeline__stop::before { display: none; }
+.igp-block--nearby-attractions.igp-variant--list .igp-pro-nearby-attractions__grid { grid-template-columns: 1fr; }
+.igp-block--nearby-attractions.igp-variant--list .igp-pro-nearby-attraction-card { display: grid; grid-template-columns: 220px minmax(0, 1fr); }
+.igp-block--nearby-attractions.igp-variant--list .igp-pro-nearby-attraction-card img { height: 100%; min-height: 180px; }
+
+/* Media, trust, navigation and utility variants. */
+.igp-block--gallery.igp-variant--grid .igp-pro-gallery__grid { display: grid; gap: var(--igp-variant-gap); }
+.igp-block--gallery.igp-variant--masonry-safe .igp-pro-gallery__image,
+.igp-block--gallery.igp-variant--slider-safe .igp-pro-gallery__image { aspect-ratio: 4 / 3; object-fit: cover; }
+.igp-block--trust.igp-variant--logo-strip .igp-pro-trust__logos { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--igp-variant-gap); }
+.igp-block--trust.igp-variant--testimonial-cards .igp-pro-trust__items { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--igp-variant-gap); }
+.igp-block--trust.igp-variant--stats .igp-pro-trust__summary { font-size: clamp(1.5rem, 3vw, 2.8rem); }
+.igp-block--breadcrumb.igp-variant--compact .igp-pro-breadcrumb { font-size: .88rem; }
+.igp-block--tabs.igp-variant--pills .igp-pro-tabs__nav button { border-radius: 999px; }
+.igp-block--tabs.igp-variant--underline .igp-pro-tabs__nav button { border-radius: 0; border-bottom: 2px solid currentColor; background: transparent; }
+.igp-block--tabs.igp-variant--boxed .igp-pro-tabs { border: 1px solid var(--igp-line); border-radius: var(--igp-radius); padding: 16px; }
+.igp-block--icon-list.igp-variant--grid .igp-pro-icon-list__items,
+.igp-block--icon-list.igp-variant--cards .igp-pro-icon-list__items { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--igp-variant-gap); }
+.igp-block--icon-list.igp-variant--cards .igp-pro-icon-list__item { border: 1px solid var(--igp-line); border-radius: var(--igp-radius); padding: 16px; background: #fff; }
+.igp-block--map.igp-variant--wide .igp-pro-map { width: var(--igp-container); }
+.igp-block--map.igp-variant--card .igp-pro-map { border: 1px solid var(--igp-line); border-radius: var(--igp-radius); padding: 16px; box-shadow: var(--igp-shadow-soft); }
+
+@media (max-width: 900px) {
+  .igp-block--hero.igp-variant--image-left .igp-pro-hero,
+  .igp-block--hero.igp-variant--image-right .igp-pro-hero,
+  .igp-block--cta.igp-variant--split .igp-pro-cta__inner,
+  .igp-block--cta.igp-variant--inline .igp-pro-cta__inner,
+  .igp-block--inclusions-exclusions.igp-variant--two-column .igp-pro-inclusions-exclusions__columns,
+  .igp-block--nearby-attractions.igp-variant--list .igp-pro-nearby-attraction-card { grid-template-columns: 1fr; display: grid; }
+  .igp-block--hero.igp-variant--image-left .igp-pro-hero__media,
+  .igp-block--hero.igp-variant--image-right .igp-pro-hero__media,
+  .igp-block--hero.igp-variant--image-left .igp-pro-hero__content,
+  .igp-block--hero.igp-variant--image-right .igp-pro-hero__content { order: initial; }
+  .igp-block--nearby-attractions.igp-variant--list .igp-pro-nearby-attraction-card img { min-height: auto; }
+}
+@media (max-width: 640px) {
+  .igp-block.igp-container--narrow > *,
+  .igp-block.igp-container--default > *,
+  .igp-block.igp-container--wide > * { width: min(100%, calc(100vw - 28px)); }
+  .igp-block--tour-cards.igp-variant--featured .igp-pro-card:first-child,
+  .igp-block--destination-cards.igp-variant--featured .igp-pro-card:first-child,
+  .igp-block--featured-listings.igp-variant--featured .igp-pro-card:first-child { grid-column: auto; }
+}

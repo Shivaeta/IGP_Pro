@@ -61,8 +61,26 @@ function igp_pro_cwv_get_report( string $url, string $strategy = 'mobile', bool 
 		}
 	}
 
+	$rate_limit_key = 'igp_pro_cwv_rate_limited_' . $key;
+	$rate_limited   = get_transient( $rate_limit_key );
+	if ( ! $force && is_string( $rate_limited ) && '' !== $rate_limited ) {
+		return new WP_Error(
+			'igp_pro_cwv_rate_limited_cooldown',
+			sprintf(
+				__( 'PageSpeed is temporarily rate-limited for this URL/strategy. Retry later or add a PageSpeed API key. Last response: %s', 'igp-pro' ),
+				$rate_limited
+			)
+		);
+	}
+
 	$fetched = igp_pro_cwv_fetch_pagespeed( $url, $strategy );
 	if ( is_wp_error( $fetched ) ) {
+		$error_data = $fetched->get_error_data();
+		$status     = is_array( $error_data ) && isset( $error_data['status'] ) ? absint( $error_data['status'] ) : 0;
+		if ( 429 === $status || 'igp_pro_cwv_rate_limited' === $fetched->get_error_code() ) {
+			set_transient( $rate_limit_key, $fetched->get_error_message(), 15 * MINUTE_IN_SECONDS );
+		}
+
 		$last_good = get_option( 'igp_pro_cwv_last_good_' . $key, array() );
 		if ( is_array( $last_good ) && ! empty( $last_good ) ) {
 			$last_good['cache_status'] = 'fallback_last_good';
@@ -103,6 +121,10 @@ function igp_pro_cwv_fetch_pagespeed( string $url, string $strategy ) {
 		$request_url,
 		array(
 			'timeout' => 20,
+			'headers' => array(
+				'Accept'     => 'application/json',
+				'User-Agent' => 'IGP-Pro/' . ( defined( 'IGP_PRO_VERSION' ) ? IGP_PRO_VERSION : 'unknown' ) . '; ' . home_url( '/' ),
+			),
 		)
 	);
 
@@ -113,7 +135,32 @@ function igp_pro_cwv_fetch_pagespeed( string $url, string $strategy ) {
 	$code = wp_remote_retrieve_response_code( $response );
 	$body = wp_remote_retrieve_body( $response );
 	if ( $code < 200 || $code >= 300 ) {
-		return new WP_Error( 'igp_pro_cwv_http_error', sprintf( __( 'PageSpeed request failed with HTTP %d.', 'igp-pro' ), $code ) );
+		$error_detail = '';
+		$decoded_error = json_decode( $body, true );
+		if ( is_array( $decoded_error ) ) {
+			$error_detail = (string) ( $decoded_error['error']['message'] ?? $decoded_error['message'] ?? '' );
+		}
+		if ( '' === $error_detail ) {
+			$error_detail = trim( wp_strip_all_tags( substr( (string) $body, 0, 240 ) ) );
+		}
+
+		if ( 429 === (int) $code ) {
+			return new WP_Error(
+				'igp_pro_cwv_rate_limited',
+				'' !== $error_detail
+					? sprintf( __( 'PageSpeed request was rate-limited with HTTP 429: %s', 'igp-pro' ), $error_detail )
+					: __( 'PageSpeed request was rate-limited with HTTP 429. Retry later or add a PageSpeed API key.', 'igp-pro' ),
+				array( 'status' => 429, 'details' => $error_detail )
+			);
+		}
+
+		return new WP_Error(
+			'igp_pro_cwv_http_error',
+			'' !== $error_detail
+				? sprintf( __( 'PageSpeed request failed with HTTP %1$d: %2$s', 'igp-pro' ), $code, $error_detail )
+				: sprintf( __( 'PageSpeed request failed with HTTP %d.', 'igp-pro' ), $code ),
+			array( 'status' => absint( $code ), 'details' => $error_detail )
+		);
 	}
 
 	$data = json_decode( $body, true );

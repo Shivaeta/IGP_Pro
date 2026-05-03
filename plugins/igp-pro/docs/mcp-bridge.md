@@ -1,43 +1,85 @@
 # IGP MCP Bridge
 
-The IGP MCP Bridge exposes AI Copilot functionality to MCP clients through the WordPress REST API only.
+The IGP MCP Bridge exposes AI Copilot capabilities to an external MCP server without allowing direct WordPress database, post-meta, SQL, plugin-file, or publish operations.
 
-## Boundary
+## WordPress REST namespace
+
+The bridge uses:
 
 ```text
-MCP client
-  → Node MCP Bridge
-  → WordPress REST API
-  → IGP_AI_Copilot_Service
-  → Parser / normalizer / validator / compiler
-  → Content Graph validator
-  → preview, draft save, or changeset creation
+/wp-json/igp/v1
 ```
 
-The bridge must not write post meta directly, write Content Graph JSON directly, execute SQL, edit plugin files, or publish content.
+## Required WordPress endpoints
 
-## Feature flag
+```text
+GET  /wp-json/igp/v1/ai-copilot/contract
+GET  /wp-json/igp/v1/ai-copilot/blocks
+POST /wp-json/igp/v1/ai-copilot/validate
+POST /wp-json/igp/v1/ai-copilot/compile
+POST /wp-json/igp/v1/ai-copilot/preview
+POST /wp-json/igp/v1/ai-copilot/create-draft
+POST /wp-json/igp/v1/ai-copilot/create-changeset
+GET  /wp-json/igp/v1/mcp/status
+GET  /wp-json/igp/v1/mcp/tools
+POST /wp-json/igp/v1/mcp/log
+```
 
-The bridge is disabled unless the `enable_mcp_bridge` feature flag is enabled. The external Node server also requires `IGP_MCP_ENABLED=true`.
+## Exposed MCP tools
 
-## Safe tools
+```text
+igp_ai_get_yaml_contract
+igp_ai_get_supported_blocks
+igp_ai_validate_yaml
+igp_ai_compile_yaml
+igp_ai_preview_yaml
+igp_ai_create_draft_from_yaml
+igp_ai_create_changeset_from_yaml
+```
 
-- Get YAML contract
-- Get supported blocks
-- Validate YAML
-- Compile YAML
-- Preview YAML
-- Create draft from YAML
-- Create changeset from YAML
+## Forbidden operations
 
-## Human review
+The bridge must not expose tools for:
 
-The safest production workflow is:
+```text
+igp_write_post_meta
+igp_write_content_graph_json
+igp_execute_sql
+igp_edit_plugin_file
+igp_publish_without_review
+```
 
-1. MCP submits YAML.
-2. IGP validates/compiles it.
-3. MCP creates a changeset.
-4. A human reviews the changeset in **IGP Pro → AI Changesets**.
-5. Human approves or rejects.
-6. Approval saves draft-safe content; it does not publish.
-7. Rollback uses the snapshot created during approval.
+## External server setup
+
+The included MCP server uses Streamable HTTP.
+
+```bash
+cd wp-content/plugins/igp-pro/mcp-server
+npm install
+cp .env.example .env
+npm run check
+npm start
+```
+
+Required environment variables:
+
+```text
+WP_BASE_URL=https://your-wordpress-site.com
+WP_USERNAME=your-wordpress-username
+WP_APP_PASSWORD=your-wordpress-application-password
+MCP_BEARER_TOKEN=choose-a-long-random-token
+PORT=3000
+```
+
+The WordPress user must have permission to use IGP AI Copilot endpoints.
+Use a WordPress Application Password for server-to-WordPress authentication.
+
+## Health checks
+
+```text
+GET /health
+GET /debug/tools
+GET /debug/wordpress
+```
+
+`/debug/wordpress` verifies that the WordPress bridge endpoints are reachable and that the MCP bridge feature flag is enabled.

@@ -130,10 +130,60 @@
     },
     "items": {
       "type": "repeater",
+      "label": "Testimonials",
+      "fields": {
+        "quote": {
+          "type": "text",
+          "label": "Quote",
+          "default": ""
+        },
+        "name": {
+          "type": "string",
+          "label": "Name",
+          "default": ""
+        },
+        "label": {
+          "type": "string",
+          "label": "Role / source label",
+          "default": ""
+        },
+        "image": {
+          "type": "image",
+          "label": "Avatar image",
+          "default": {
+            "url": "",
+            "alt": ""
+          }
+        }
+      },
       "default": []
     },
     "logos": {
       "type": "repeater",
+      "label": "Logos / trust badges",
+      "fields": {
+        "url": {
+          "type": "string",
+          "label": "Logo image URL",
+          "format": "image-url",
+          "default": ""
+        },
+        "alt": {
+          "type": "string",
+          "label": "Logo alt text",
+          "default": ""
+        },
+        "label": {
+          "type": "string",
+          "label": "Text label",
+          "default": ""
+        },
+        "link": {
+          "type": "string",
+          "label": "Optional link URL",
+          "default": ""
+        }
+      },
       "default": []
     }
   },

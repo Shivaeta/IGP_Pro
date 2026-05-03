@@ -114,15 +114,23 @@
       "type": "repeater",
       "fields": {
         "url": {
-          "type": "string"
+          "type": "string",
+          "label": "Image URL",
+          "format": "image-url",
+          "default": ""
         },
         "alt": {
-          "type": "string"
+          "type": "string",
+          "label": "Alt text",
+          "default": ""
         },
         "caption": {
-          "type": "string"
+          "type": "string",
+          "label": "Caption",
+          "default": ""
         }
-      }
+      },
+      "label": "Images"
     },
     "layout": {
       "type": "enum",

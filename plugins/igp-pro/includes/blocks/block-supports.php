@@ -93,7 +93,7 @@ function igp_pro_build_html_attributes( array $attributes ): string {
  */
 function igp_pro_apply_semantic_block_wrapper( string $block_id, string $html, array $data, array $context = array() ): string {
 	$semantic_enabled = function_exists( 'igp_pro_semantic_outline_enabled' ) && igp_pro_semantic_outline_enabled();
-	$style_enabled    = function_exists( 'igp_pro_smart_block_variants_enabled' ) && igp_pro_smart_block_variants_enabled();
+	$style_enabled    = function_exists( 'igp_pro_should_apply_block_style_support' ) ? igp_pro_should_apply_block_style_support( $block_id, $data ) : ( function_exists( 'igp_pro_smart_block_variants_enabled' ) && igp_pro_smart_block_variants_enabled() );
 
 	if ( ! $semantic_enabled && ! $style_enabled ) {
 		return $html;

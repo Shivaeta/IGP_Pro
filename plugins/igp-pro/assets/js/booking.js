@@ -10,9 +10,7 @@
   }
 
   function escSel(value) {
-    if (window.CSS && typeof window.CSS.escape === 'function') {
-      return window.CSS.escape(value);
-    }
+    if (window.CSS && typeof window.CSS.escape === 'function') return window.CSS.escape(value);
     return String(value).replace(/[^a-zA-Z0-9_-]/g, '\\$&');
   }
 
@@ -22,23 +20,20 @@
     return (currency || '₹') + number.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }
 
-  function formatDateLabel(value) {
-    if (!value) return 'Date';
-    var parts = value.split('-').map(function (part) { return parseInt(part, 10); });
-    if (parts.length !== 3) return value;
-    var date = new Date(parts[0], parts[1] - 1, parts[2]);
-    return date.toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' });
-  }
-
   function ymd(date) {
-    var year = date.getFullYear();
-    var month = String(date.getMonth() + 1).padStart(2, '0');
-    var day = String(date.getDate()).padStart(2, '0');
-    return year + '-' + month + '-' + day;
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
   }
 
-  function monthTitle(date) {
-    return date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+  function parseYmd(value) {
+    var parts = String(value || '').split('-').map(function (part) { return parseInt(part, 10); });
+    if (parts.length !== 3 || !parts[0] || !parts[1] || !parts[2]) return null;
+    return new Date(parts[0], parts[1] - 1, parts[2]);
+  }
+
+  function formatDateLabel(value) {
+    var date = parseYmd(value);
+    if (!date) return 'Date';
+    return date.toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' });
   }
 
   function serializeForm(form) {
@@ -61,53 +56,11 @@
     if (!notice) return;
     notice.textContent = message || '';
     notice.dataset.type = type || '';
-  }
-
-  function getAvailabilityPanel(panel) {
-    if (panel && panel.__igpAvailabilityPanel) return panel.__igpAvailabilityPanel;
-    var local = qs(panel, '[data-igp-availability-panel]');
-    if (local) return local;
-    var form = qs(panel, '[data-igp-booking-form]');
-    if (form && form.id) {
-      return document.querySelector('[data-igp-availability-panel][data-igp-availability-for="' + escSel(form.id) + '"]');
-    }
-    return null;
-  }
-
-  function getBookingScopes(panel) {
-    var scopes = [panel];
-    var availability = getAvailabilityPanel(panel);
-    if (availability && availability !== panel && !panel.contains(availability)) scopes.push(availability);
-    return scopes;
-  }
-
-  function qsaBooking(panel, selector) {
-    var nodes = [];
-    getBookingScopes(panel).forEach(function (scope) {
-      qsa(scope, selector).forEach(function (node) {
-        if (nodes.indexOf(node) === -1) nodes.push(node);
-      });
-    });
-    return nodes;
-  }
-
-  function qsBooking(panel, selector) {
-    var scopes = getBookingScopes(panel);
-    for (var i = 0; i < scopes.length; i += 1) {
-      var node = qs(scopes[i], selector);
-      if (node) return node;
-    }
-    return null;
+    notice.classList.toggle('is-visible', !!message);
   }
 
   function setLoading(form, isLoading) {
-    var buttons = qsa(form, 'button[type="submit"]');
-    if (form && form.id) {
-      qsa(document, 'button[type="submit"][form="' + escSel(form.id) + '"]').forEach(function (button) {
-        if (buttons.indexOf(button) === -1) buttons.push(button);
-      });
-    }
-    buttons.forEach(function (button) {
+    qsa(form, 'button[type="submit"], button[data-igp-check-availability]').forEach(function (button) {
       button.disabled = !!isLoading;
       button.classList.toggle('is-loading', !!isLoading);
     });
@@ -125,9 +78,7 @@
       credentials: 'same-origin',
       body: data
     })
-      .then(function (response) {
-        return response.json();
-      })
+      .then(function (response) { return response.json(); })
       .then(function (payload) {
         setLoading(form, false);
         if (!payload || !payload.success) {
@@ -138,11 +89,7 @@
 
         var data = payload.data || {};
         setMessage(form, data.message || 'Success.', 'success');
-
-        if (data.redirect_url) {
-          window.location.href = data.redirect_url;
-        }
-
+        if (data.redirect_url) window.location.href = data.redirect_url;
         return payload;
       })
       .catch(function () {
@@ -159,31 +106,40 @@
     return totalGuests;
   }
 
+  function updateGuestButtons(scope) {
+    qsa(scope, '[data-igp-quantity]').forEach(function (control) {
+      var input = qs(control, 'input[type="number"]');
+      var minus = qs(control, '[data-igp-qty-minus]');
+      if (!input || !minus) return;
+      var value = Math.max(0, parseInt(input.value || '0', 10) || 0);
+      minus.classList.toggle('disabled', value <= 0);
+      minus.disabled = value <= 0;
+    });
+  }
+
   function updateTravelerSummary(panel) {
     var totalGuests = getTotalGuests(panel);
     var summary = qs(panel, '[data-igp-traveler-summary]');
     if (!summary) return;
+    summary.textContent = totalGuests < 1 ? 'Guest' : totalGuests + ' ' + (totalGuests === 1 ? 'guest' : 'guests');
+  }
 
-    if (totalGuests < 1) {
-      summary.textContent = 'Guest';
-      return;
-    }
-
-    summary.textContent = totalGuests + ' ' + (totalGuests === 1 ? 'guest' : 'guests');
+  function getCurrency(panel) {
+    var totalBox = qs(panel, '.igp-booking-total');
+    if (totalBox && totalBox.dataset && totalBox.dataset.currency) return totalBox.dataset.currency;
+    var popover = qs(panel, '[data-igp-date-popover]');
+    return popover && popover.dataset ? (popover.dataset.currency || '₹') : '₹';
   }
 
   function updateCancelNote(panel) {
     var input = qs(panel, '[data-igp-tour-date]');
-    var note = qsBooking(panel, '[data-igp-cancel-note]');
+    var note = qs(panel, '[data-igp-cancel-note]');
     if (!input || !note) return;
-
-    if (!input.value) {
+    var date = parseYmd(input.value);
+    if (!date) {
       note.textContent = 'Select a date to see the cancellation window.';
       return;
     }
-
-    var parts = input.value.split('-').map(function (part) { return parseInt(part, 10); });
-    var date = new Date(parts[0], parts[1] - 1, parts[2]);
     date.setDate(date.getDate() - 1);
     note.textContent = 'Cancel before 9:00 AM on ' + date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + ' for a full refund';
   }
@@ -192,15 +148,13 @@
     var checkbox = qs(row, '[data-igp-addon-check]');
     var input = qs(row, '[data-igp-addon-qty]');
     if (!checkbox || !input) return;
-
     var qty = Math.max(0, parseInt(input.value || '0', 10) || 0);
     checkbox.checked = qty > 0;
     row.classList.toggle('is-selected', qty > 0);
   }
 
   function updateTotal(panel) {
-    var totalBox = qsBooking(panel, '.igp-booking-total');
-    var currency = totalBox && totalBox.dataset ? (totalBox.dataset.currency || '₹') : '₹';
+    var currency = getCurrency(panel);
     var total = 0;
     var totalGuests = 0;
 
@@ -211,126 +165,171 @@
       totalGuests += qty;
     });
 
-    var option = qsBooking(panel, '[data-igp-tour-option]:checked');
-    if (option) {
-      total += (Number(option.dataset.price || '0') || 0) * Math.max(1, totalGuests);
-    }
+    var option = qs(panel, '[data-igp-tour-option]:checked');
+    if (option) total += (Number(option.dataset.price || '0') || 0) * Math.max(1, totalGuests);
 
-    qsaBooking(panel, '[data-igp-addon-row]').forEach(function (row) {
+    qsa(panel, '[data-igp-addon-row]').forEach(function (row) {
       syncAddonRow(row);
       var input = qs(row, '[data-igp-addon-qty]');
       if (!input) return;
-      var qty = Math.max(0, parseInt(input.value || '0', 10) || 0);
-      var price = Number(input.dataset.price || '0') || 0;
-      total += qty * price;
+      total += Math.max(0, parseInt(input.value || '0', 10) || 0) * (Number(input.dataset.price || '0') || 0);
     });
 
-    var totalEl = qsBooking(panel, '[data-igp-total]');
+    var totalEl = qs(panel, '[data-igp-total]');
     if (totalEl) totalEl.textContent = formatMoney(total, currency);
-
     updateTravelerSummary(panel);
+    updateGuestButtons(panel);
     updateCancelNote(panel);
   }
 
-  function buildMonth(panel, root, monthDate, selectedValue, priceLabel) {
-    var month = document.createElement('div');
-    month.className = 'igp-date-month';
+  function getCalendarRules(popover) {
+    try {
+      var parsed = JSON.parse(popover.getAttribute('data-dates') || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (e) {
+      return [];
+    }
+  }
 
-    var title = document.createElement('h4');
-    title.textContent = monthTitle(monthDate);
-    month.appendChild(title);
-
-    var grid = document.createElement('div');
-    grid.className = 'igp-date-grid';
-
-    ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].forEach(function (day) {
-      var cell = document.createElement('span');
-      cell.className = 'igp-date-weekday';
-      cell.textContent = day;
-      grid.appendChild(cell);
+  function isAllowedDate(date, rules) {
+    if (!rules.length) return true;
+    var value = ymd(date);
+    var dayName = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][date.getDay()];
+    return rules.some(function (rule) {
+      var start = rule.start_date || '';
+      var end = rule.end_date || 'no_end_date';
+      var days = Array.isArray(rule.trip_days) ? rule.trip_days : [];
+      if (start && value < start) return false;
+      if (end && end !== 'no_end_date' && value > end) return false;
+      if (days.length && days.indexOf(dayName) === -1) return false;
+      return true;
     });
+  }
 
-    var first = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
-    var last = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0);
+  function priceForDate(popover, date) {
+    var rules = getCalendarRules(popover);
+    var match = rules.filter(function (rule) {
+      var value = ymd(date);
+      var start = rule.start_date || '';
+      var end = rule.end_date || 'no_end_date';
+      if (start && value < start) return false;
+      if (end && end !== 'no_end_date' && value > end) return false;
+      return true;
+    })[0];
+    if (match && match.format_price) return match.format_price;
+    var price = Number(popover.dataset.price || '0') || 0;
+    return price > 0 ? formatMoney(price, popover.dataset.currency || '₹') : 'Available';
+  }
+
+  function renderCalendar(panel, monthDate) {
+    var popover = qs(panel, '[data-igp-date-popover]');
+    var dates = qs(panel, '[data-igp-date-calendar]');
+    var title = qs(panel, '[data-igp-calendar-title]');
+    var input = qs(panel, '[data-igp-tour-date]');
+    if (!popover || !dates || !input) return;
+
+    var date = monthDate || panel.__igpCalendarMonth || new Date();
+    date = new Date(date.getFullYear(), date.getMonth(), 1);
+    panel.__igpCalendarMonth = date;
+
+    if (title) title.textContent = date.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    dates.innerHTML = '';
+
+    var first = new Date(date.getFullYear(), date.getMonth(), 1);
+    var last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     var offset = (first.getDay() + 6) % 7;
     var today = new Date();
     today.setHours(0, 0, 0, 0);
+    var rules = getCalendarRules(popover);
 
-    for (var i = 0; i < offset; i += 1) {
-      var empty = document.createElement('span');
-      empty.className = 'igp-date-empty';
-      grid.appendChild(empty);
-    }
+    for (var i = 0; i < offset; i += 1) dates.appendChild(document.createElement('div'));
 
-    for (var dayNumber = 1; dayNumber <= last.getDate(); dayNumber += 1) {
-      var date = new Date(monthDate.getFullYear(), monthDate.getMonth(), dayNumber);
-      var value = ymd(date);
-      var button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'igp-date-day';
-      button.dataset.date = value;
-      button.innerHTML = '<strong>' + dayNumber + '</strong><small>' + priceLabel + '</small>';
-      if (date < today) {
-        button.disabled = true;
-        button.innerHTML = '<strong>' + dayNumber + '</strong><small>-</small>';
+    for (var day = 1; day <= last.getDate(); day += 1) {
+      var current = new Date(date.getFullYear(), date.getMonth(), day);
+      var value = ymd(current);
+      var item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'date';
+      item.dataset.date = value;
+      item.innerHTML = '<span>' + day + '</span><div class="price">' + priceForDate(popover, current) + '</div>';
+      if (current < today || !isAllowedDate(current, rules)) {
+        item.classList.add('disabled');
+        item.disabled = true;
+        if (!isAllowedDate(current, rules)) item.querySelector('.price').textContent = '-';
       }
-      if (value === selectedValue) button.classList.add('is-selected');
-      grid.appendChild(button);
+      if (value === input.value) item.classList.add('selected');
+      if (value === ymd(today)) item.classList.add('today');
+      dates.appendChild(item);
     }
-
-    month.appendChild(grid);
-    root.appendChild(month);
-  }
-
-  function renderCalendar(panel) {
-    var popover = qs(panel, '[data-igp-date-popover]');
-    var calendar = qs(panel, '[data-igp-date-calendar]');
-    var input = qs(panel, '[data-igp-tour-date]');
-    if (!popover || !calendar || !input) return;
-
-    var currency = popover.dataset.currency || '₹';
-    var price = Number(popover.dataset.price || '0') || 0;
-    var priceLabel = price > 0 ? formatMoney(price, currency) : 'Available';
-    var start = new Date();
-    start.setDate(1);
-
-    calendar.innerHTML = '';
-    buildMonth(panel, calendar, start, input.value, priceLabel);
-    buildMonth(panel, calendar, new Date(start.getFullYear(), start.getMonth() + 1, 1), input.value, priceLabel);
   }
 
   function initDatePicker(panel) {
     var toggle = qs(panel, '[data-igp-date-toggle]');
     var popover = qs(panel, '[data-igp-date-popover]');
     var input = qs(panel, '[data-igp-tour-date]');
+    var bookingDate = qs(panel, 'input[name="booking_date"]');
     var label = qs(panel, '[data-igp-date-label]');
     if (!toggle || !popover || !input) return;
 
     renderCalendar(panel);
 
-    toggle.addEventListener('click', function () {
-      var open = popover.hidden;
+    function close() {
+      popover.hidden = true;
+      popover.classList.remove('is-active');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function open() {
       renderCalendar(panel);
-      popover.hidden = !open;
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      popover.hidden = false;
+      popover.classList.add('is-active');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    toggle.addEventListener('click', function (event) {
+      event.preventDefault();
+      popover.hidden ? open() : close();
     });
 
     popover.addEventListener('click', function (event) {
+      var prev = event.target.closest('[data-igp-calendar-prev]');
+      var next = event.target.closest('[data-igp-calendar-next]');
+      var apply = event.target.closest('[data-igp-calendar-apply]');
+      var closer = event.target.closest('[data-igp-calendar-close]');
       var day = event.target.closest('[data-date]');
-      if (!day || day.disabled) return;
-      input.value = day.dataset.date;
-      if (label) label.textContent = formatDateLabel(input.value);
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-      popover.hidden = true;
-      toggle.setAttribute('aria-expanded', 'false');
-      renderCalendar(panel);
+
+      if (prev) {
+        event.preventDefault();
+        var p = panel.__igpCalendarMonth || new Date();
+        renderCalendar(panel, new Date(p.getFullYear(), p.getMonth() - 1, 1));
+        return;
+      }
+      if (next) {
+        event.preventDefault();
+        var n = panel.__igpCalendarMonth || new Date();
+        renderCalendar(panel, new Date(n.getFullYear(), n.getMonth() + 1, 1));
+        return;
+      }
+      if (apply || closer) {
+        event.preventDefault();
+        close();
+        return;
+      }
+      if (day && !day.disabled) {
+        event.preventDefault();
+        input.value = day.dataset.date;
+        if (bookingDate) bookingDate.value = day.dataset.date;
+        if (label) label.textContent = formatDateLabel(input.value);
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+        renderCalendar(panel);
+        close();
+      }
     });
 
     document.addEventListener('click', function (event) {
       if (popover.hidden) return;
       if (popover.contains(event.target) || toggle.contains(event.target)) return;
-      popover.hidden = true;
-      toggle.setAttribute('aria-expanded', 'false');
+      close();
     });
   }
 
@@ -338,136 +337,80 @@
     var toggle = qs(panel, '[data-igp-traveler-toggle]');
     var pickerPanel = qs(panel, '[data-igp-traveler-panel]');
     var apply = qs(panel, '[data-igp-traveler-apply]');
+    if (!toggle || !pickerPanel) return;
 
-    if (toggle && pickerPanel) {
-      toggle.addEventListener('click', function () {
-        var open = pickerPanel.hidden;
-        pickerPanel.hidden = !open;
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
+    function close() {
+      pickerPanel.hidden = true;
+      pickerPanel.classList.remove('is-active');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+    function open() {
+      pickerPanel.hidden = false;
+      pickerPanel.classList.add('is-active');
+      toggle.setAttribute('aria-expanded', 'true');
     }
 
-    if (apply && pickerPanel && toggle) {
-      apply.addEventListener('click', function () {
+    toggle.addEventListener('click', function (event) {
+      event.preventDefault();
+      pickerPanel.hidden ? open() : close();
+    });
+
+    if (apply) {
+      apply.addEventListener('click', function (event) {
+        event.preventDefault();
         if (getTotalGuests(panel) < 1) {
-          setInlineNotice(panel, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select at least one traveller.'), 'error');
+          setInlineNotice(panel, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select guests'), 'error');
           return;
         }
         setInlineNotice(panel, '', '');
-        pickerPanel.hidden = true;
-        toggle.setAttribute('aria-expanded', 'false');
+        close();
         updateTotal(panel);
       });
     }
 
     document.addEventListener('click', function (event) {
-      if (!pickerPanel || pickerPanel.hidden) return;
-      if (pickerPanel.contains(event.target) || (toggle && toggle.contains(event.target))) return;
-      pickerPanel.hidden = true;
-      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      if (pickerPanel.hidden) return;
+      if (pickerPanel.contains(event.target) || toggle.contains(event.target)) return;
+      close();
     });
   }
 
-  function bindQuantityScope(scope, panel) {
-    if (!scope || scope.__igpQuantityBound) return;
-    scope.__igpQuantityBound = true;
-
-    scope.addEventListener('click', function (event) {
+  function bindQuantities(panel) {
+    panel.addEventListener('click', function (event) {
       var plus = event.target.closest('[data-igp-qty-plus]');
       var minus = event.target.closest('[data-igp-qty-minus]');
       if (!plus && !minus) return;
+      event.preventDefault();
 
       var control = event.target.closest('[data-igp-quantity]');
       var input = qs(control, 'input[type="number"]');
       if (!input) return;
-
-      if (input.hasAttribute('data-igp-addon-qty') && getTotalGuests(panel) < 1) {
-        var form = qs(panel, '[data-igp-booking-form]') || panel;
-        setMessage(form, 'Please select at least one guest before adding extra services.', 'error');
-        var toggle = qs(panel, '[data-igp-traveler-toggle]');
-        if (toggle) toggle.click();
-        return;
-      }
-
-      var value = parseInt(input.value || '0', 10) || 0;
-      if (plus) value += 1;
+      var max = input.max ? parseInt(input.max, 10) : 9999;
+      var value = Math.max(0, parseInt(input.value || '0', 10) || 0);
+      if (plus) value = Math.min(max, value + 1);
       if (minus) value = Math.max(0, value - 1);
       input.value = String(value);
       input.dispatchEvent(new Event('change', { bubbles: true }));
     });
 
-    scope.addEventListener('change', function (event) {
+    panel.addEventListener('change', function (event) {
       if (!event.target.matches('input, select')) return;
-
       if (event.target.matches('[data-igp-addon-check]')) {
         var row = event.target.closest('[data-igp-addon-row]');
         var addonQty = qs(row, '[data-igp-addon-qty]');
-        if (event.target.checked && getTotalGuests(panel) < 1) {
-          event.target.checked = false;
-          setMessage(qs(panel, '[data-igp-booking-form]') || panel, 'Please select at least one guest before adding extra services.', 'error');
-          return;
-        }
         if (addonQty) addonQty.value = event.target.checked ? '1' : '0';
       }
       updateTotal(panel);
     });
 
-    scope.addEventListener('input', function (event) {
+    panel.addEventListener('input', function (event) {
       if (event.target.matches('input[type="number"]')) updateTotal(panel);
     });
-  }
 
-  function initQuantities(panel) {
-    getBookingScopes(panel).forEach(function (scope) { bindQuantityScope(scope, panel); });
     updateTotal(panel);
   }
 
-  function findOverviewHeading(content) {
-    var headings = qsa(content, 'h1, h2, h3, h4');
-    for (var i = 0; i < headings.length; i += 1) {
-      if ((headings[i].textContent || '').trim().toLowerCase() === 'overview') return headings[i];
-    }
-    return null;
-  }
-
-  function prepareAvailabilityDock(panel) {
-    var availability = qs(panel, '[data-igp-availability-panel]');
-    if (!availability || availability.__igpDocked) {
-      if (availability) panel.__igpAvailabilityPanel = availability;
-      return;
-    }
-
-    var content = panel.closest('.igp-theme-tour-content') || document.querySelector('.igp-theme-tour-content') || panel.parentElement;
-    if (!content) {
-      panel.__igpAvailabilityPanel = availability;
-      return;
-    }
-
-    var dock = document.createElement('div');
-    dock.className = 'igp-availability-dock';
-    dock.dataset.igpAvailabilityDock = '';
-
-    var galleries = qsa(content, '.wp-block-gallery, .igp-pro-gallery, .igp-gallery, .igp-tour-gallery, .gallery, figure.gallery');
-    var anchor = galleries.length ? galleries[galleries.length - 1] : null;
-    var overview = findOverviewHeading(content);
-
-    if (anchor && anchor.parentNode) {
-      anchor.parentNode.insertBefore(dock, anchor.nextSibling);
-    } else if (overview && overview.parentNode) {
-      overview.parentNode.insertBefore(dock, overview);
-    } else if (panel.parentNode) {
-      panel.parentNode.insertBefore(dock, panel);
-    } else {
-      content.appendChild(dock);
-    }
-
-    dock.appendChild(availability);
-    availability.__igpDocked = true;
-    panel.__igpAvailabilityPanel = availability;
-    bindQuantityScope(availability, panel);
-  }
-
-  function openAvailability(panel) {
+  function revealAvailability(panel) {
     var form = qs(panel, '[data-igp-booking-form]');
     var date = qs(panel, '[data-igp-tour-date]');
     if (date && !date.value) {
@@ -476,47 +419,41 @@
       if (dateToggle) dateToggle.click();
       return false;
     }
-
     if (getTotalGuests(panel) < 1) {
-      setMessage(form, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select at least one traveller.'), 'error');
+      setMessage(form, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select guests'), 'error');
       var guestToggle = qs(panel, '[data-igp-traveler-toggle]');
       if (guestToggle) guestToggle.click();
       return false;
     }
 
     setMessage(form, '', '');
-    prepareAvailabilityDock(panel);
-    var details = getAvailabilityPanel(panel);
-    if (details) {
-      details.hidden = false;
-      details.classList.add('is-visible');
-      if (details.parentElement) details.parentElement.classList.add('is-visible');
-      details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var availability = qs(panel, '[data-igp-availability-panel]');
+    if (availability) {
+      availability.hidden = false;
+      availability.classList.add('is-visible');
+      document.documentElement.classList.add('igp-availability-panel-open');
+      var first = qs(availability, 'input, button, select, textarea, a');
+      if (first) first.focus({ preventScroll: true });
     }
     updateTotal(panel);
     return true;
   }
 
-  function validateBookingForm(form, panel) {
-    if (!openAvailability(panel)) return false;
-
-    if (!form.checkValidity()) {
-      form.reportValidity();
-      return false;
-    }
-
-    if (getTotalGuests(panel) < 1) {
-      setMessage(form, (window.igpProBooking && window.igpProBooking.i18n ? window.igpProBooking.i18n.chooseGuests : 'Please select at least one traveller.'), 'error');
-      return false;
-    }
-
-    return true;
+  function closeAvailability(panel) {
+    var availability = qs(panel, '[data-igp-availability-panel]');
+    if (!availability) return;
+    availability.hidden = true;
+    availability.classList.remove('is-visible');
+    document.documentElement.classList.remove('igp-availability-panel-open');
+    var trigger = qs(panel, '[data-igp-check-availability]');
+    if (trigger) trigger.focus({ preventScroll: true });
   }
 
   function openEnquiry(panel) {
     var modal = qs(panel, '[data-igp-enquiry-modal]');
     if (!modal) return;
     modal.hidden = false;
+    modal.classList.add('is-active');
     document.documentElement.classList.add('igp-enquiry-modal-open');
     var first = qs(modal, 'input, textarea, button');
     if (first) first.focus();
@@ -526,32 +463,64 @@
     var modal = qs(panel, '[data-igp-enquiry-modal]');
     if (!modal) return;
     modal.hidden = true;
+    modal.classList.remove('is-active');
     document.documentElement.classList.remove('igp-enquiry-modal-open');
+  }
+
+  function initFloatingLabels(panel) {
+    qsa(panel, '.igp-enquiry-form input, .igp-enquiry-form textarea').forEach(function (field) {
+      function sync() {
+        var group = field.closest('.igp-enquiry-field');
+        if (group) group.classList.toggle('focus', !!field.value || document.activeElement === field);
+      }
+      field.addEventListener('focus', sync);
+      field.addEventListener('blur', sync);
+      field.addEventListener('input', sync);
+      sync();
+    });
   }
 
   function initForms(panel) {
     var availabilityButton = qs(panel, '[data-igp-check-availability]');
-    if (availabilityButton) {
-      availabilityButton.addEventListener('click', function () { openAvailability(panel); });
-    }
+    if (availabilityButton) availabilityButton.addEventListener('click', function () { revealAvailability(panel); });
+
+    qsa(panel, '[data-igp-close-availability]').forEach(function (button) {
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        closeAvailability(panel);
+      });
+    });
 
     qsa(panel, '[data-igp-open-enquiry]').forEach(function (button) {
-      button.addEventListener('click', function () { openEnquiry(panel); });
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        openEnquiry(panel);
+      });
     });
 
     qsa(panel, '[data-igp-close-enquiry]').forEach(function (button) {
-      button.addEventListener('click', function () { closeEnquiry(panel); });
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        closeEnquiry(panel);
+      });
     });
 
     panel.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape') closeEnquiry(panel);
+      if (event.key === 'Escape') {
+        closeAvailability(panel);
+        closeEnquiry(panel);
+      }
     });
 
     var bookingForm = qs(panel, '[data-igp-booking-form]');
     if (bookingForm) {
       bookingForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        if (!validateBookingForm(bookingForm, panel)) return;
+        if (!revealAvailability(panel)) return;
+        if (!bookingForm.checkValidity()) {
+          bookingForm.reportValidity();
+          return;
+        }
         ajaxSubmit(bookingForm);
       });
     }
@@ -565,9 +534,7 @@
           return;
         }
         ajaxSubmit(enquiryForm).then(function (payload) {
-          if (payload && payload.success) {
-            setTimeout(function () { closeEnquiry(panel); }, 900);
-          }
+          if (payload && payload.success) setTimeout(function () { closeEnquiry(panel); }, 900);
         });
       });
     }
@@ -584,9 +551,9 @@
   function initPanel(panel) {
     initDatePicker(panel);
     initTravelerPicker(panel);
-    prepareAvailabilityDock(panel);
-    initQuantities(panel);
+    bindQuantities(panel);
     initForms(panel);
+    initFloatingLabels(panel);
   }
 
   document.addEventListener('DOMContentLoaded', function () {

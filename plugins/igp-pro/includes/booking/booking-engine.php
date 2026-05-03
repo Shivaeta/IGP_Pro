@@ -275,22 +275,76 @@ function igp_pro_get_booking_benefits(): array {
 	);
 }
 
+
+/**
+ * Render a compact inline SVG icon used by the cloned booking form UI.
+ */
+function igp_pro_render_booking_svg_icon( string $icon ): void {
+	$icons = array(
+		'calendar' => '<svg aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12C3 7.75736 3 6.63604 4.31802 5.31802C5.63604 4 7.75736 4 12 4C16.2426 4 18.364 4 19.682 5.31802C21 6.63604 21 7.75736 21 12C21 16.2426 21 18.364 19.682 19.682C18.364 21 16.2426 21 12 21C7.75736 21 5.63604 21 4.31802 19.682C3 18.364 3 16.2426 3 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16.5 5V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7.5 5V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M3.25 8H20.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+		'guest'    => '<svg aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17 19.5C17 17.8431 14.7614 16.5 12 16.5C9.23858 16.5 7 17.8431 7 19.5M21 16.5004C21 15.2702 19.7659 14.2129 18 13.75M3 16.5004C3 15.2702 4.2341 14.2129 6 13.75M18 9.73611C18.6137 9.18679 19 8.3885 19 7.5C19 5.84315 17.6569 4.5 16 4.5C15.2316 4.5 14.5308 4.78885 14 5.26389M6 9.73611C5.38625 9.18679 5 8.3885 5 7.5C5 5.84315 6.34315 4.5 8 4.5C8.76835 4.5 9.46924 4.78885 10 5.26389M12 13.5C10.3431 13.5 9 12.1569 9 10.5C9 8.84315 10.3431 7.5 12 7.5C13.6569 7.5 15 8.84315 15 10.5C15 12.1569 13.6569 13.5 12 13.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+		'chev_l'   => '<svg aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+		'chev_r'   => '<svg aria-hidden="true" role="img" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+		'close'    => '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6.00005L6 18M5.99995 6L17.9999 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>',
+	);
+
+	if ( ! isset( $icons[ $icon ] ) ) {
+		return;
+	}
+
+	echo '<span class="igp-booking-icon">' . $icons[ $icon ] . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static SVG whitelist.
+}
+
+/**
+ * Return cloned-form calendar availability data.
+ */
+function igp_pro_get_booking_calendar_payload( array $config ): array {
+	$days = array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' );
+	return array(
+		array(
+			'start_date'   => current_time( 'Y-m-d' ),
+			'end_date'     => 'no_end_date',
+			'price'        => (string) max( 0, (float) $config['base_price'] ),
+			'format_price' => igp_pro_format_money( (float) $config['base_price'], (string) $config['currency'] ),
+			'trip_days'    => $days,
+		),
+	);
+}
+
+/**
+ * Return month names for cloned calendar markup.
+ */
+function igp_pro_get_booking_month_names(): array {
+	return array_values(
+		array_map(
+			static function ( int $month ): string {
+				return date_i18n( 'F', mktime( 0, 0, 0, $month, 1 ) );
+			},
+			range( 1, 12 )
+		)
+	);
+}
+
 /**
  * Render one traveler quantity row.
  */
 function igp_pro_render_guest_quantity_row( string $type, array $guest, string $currency ): void {
+	$type      = sanitize_key( $type );
+	$max_guest = isset( $guest['max'] ) ? max( 1, absint( $guest['max'] ) ) : 20;
 	?>
-	<div class="igp-booking-guest-row" data-igp-guest-row>
-		<div class="igp-booking-guest-copy">
-			<strong><?php echo esc_html( $guest['label'] ); ?></strong>
+	<div class="igp-guest-row igp-booking-guest-row" data-igp-guest-row>
+		<div class="igp-guest-row__name">
+			<span class="igp-guest-row__label"><?php echo esc_html( $guest['label'] ); ?></span>
 			<?php if ( ! empty( $guest['description'] ) ) : ?>
-				<span><?php echo esc_html( (string) $guest['description'] ); ?></span>
+				<span class="igp-guest-row__desc"><?php echo esc_html( (string) $guest['description'] ); ?></span>
 			<?php endif; ?>
 		</div>
-		<div class="igp-quantity" data-igp-quantity>
-			<button type="button" data-igp-qty-minus aria-label="<?php esc_attr_e( 'Decrease quantity', 'igp-pro' ); ?>">−</button>
-			<input type="number" min="0" max="9999" value="0" name="guest_qty[<?php echo esc_attr( $type ); ?>]" data-price="<?php echo esc_attr( (float) $guest['price'] ); ?>" aria-label="<?php echo esc_attr( $guest['label'] ); ?>">
-			<button type="button" data-igp-qty-plus aria-label="<?php esc_attr_e( 'Increase quantity', 'igp-pro' ); ?>">+</button>
+		<div class="igp-quantity">
+			<div class="igp-quantity__control" data-igp-quantity>
+				<button type="button" class="igp-quantity__minus disabled" data-igp-qty-minus aria-label="<?php esc_attr_e( 'Decrease quantity', 'igp-pro' ); ?>">-</button>
+				<span class="igp-quantity__number"><input type="number" min="0" max="<?php echo esc_attr( $max_guest ); ?>" value="0" name="guest_qty[<?php echo esc_attr( $type ); ?>]" data-price="<?php echo esc_attr( (float) $guest['price'] ); ?>" aria-label="<?php echo esc_attr( $guest['label'] ); ?>"></span>
+				<button type="button" class="igp-quantity__plus" data-igp-qty-plus aria-label="<?php esc_attr_e( 'Increase quantity', 'igp-pro' ); ?>">+</button>
+			</div>
 		</div>
 	</div>
 	<?php
@@ -346,16 +400,53 @@ function igp_pro_render_addon_quantity_row( array $addon, string $currency, stri
 /**
  * Render the date picker shell. JavaScript populates the visible calendar.
  */
-function igp_pro_render_booking_date_picker( string $currency, float $base_price ): void {
+function igp_pro_render_booking_date_picker( string $currency, float $base_price, array $config = array() ): void {
+	$payload = ! empty( $config ) ? igp_pro_get_booking_calendar_payload( $config ) : array(
+		array(
+			'start_date'   => current_time( 'Y-m-d' ),
+			'end_date'     => 'no_end_date',
+			'price'        => (string) max( 0, $base_price ),
+			'format_price' => igp_pro_format_money( $base_price, $currency ),
+			'trip_days'    => array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' ),
+		),
+	);
+	$months = igp_pro_get_booking_month_names();
+	$uid    = 'igp-calendar-' . wp_generate_password( 8, false, false );
 	?>
-	<div class="igp-booking-picker igp-booking-picker--date" data-igp-date-picker>
+	<div class="igp-booking-field igp-booking-picker igp-booking-picker--date" data-igp-date-picker>
 		<button type="button" class="igp-booking-choice" data-igp-date-toggle aria-expanded="false">
-			<span class="igp-booking-choice__icon" aria-hidden="true">▣</span>
-			<strong data-igp-date-label><?php esc_html_e( 'Date', 'igp-pro' ); ?></strong>
+			<?php igp_pro_render_booking_svg_icon( 'calendar' ); ?>
+			<span class="igp-booking-choice__label" data-igp-date-label><?php esc_html_e( 'Date', 'igp-pro' ); ?></span>
 		</button>
+		<input type="hidden" name="cutoff_time" value="">
 		<input type="hidden" name="tour_date" value="" required data-igp-tour-date>
-		<div class="igp-booking-date-popover" data-igp-date-popover hidden data-currency="<?php echo esc_attr( $currency ); ?>" data-price="<?php echo esc_attr( $base_price ); ?>">
-			<div class="igp-date-calendar" data-igp-date-calendar></div>
+		<input type="hidden" name="booking_date" value="">
+		<div class="igp-calendar-popover" data-igp-date-popover data-currency="<?php echo esc_attr( $currency ); ?>" data-price="<?php echo esc_attr( $base_price ); ?>" data-dates="<?php echo esc_attr( wp_json_encode( $payload ) ); ?>" data-months-name="<?php echo esc_attr( wp_json_encode( $months ) ); ?>" hidden>
+			<div class="igp-calendar-popover__inner">
+				<div class="igp-calendar-popover__container">
+					<div class="igp-calendar" id="<?php echo esc_attr( $uid ); ?>-prev">
+						<div class="igp-calendar__header">
+							<button type="button" class="igp-calendar__prev" data-igp-calendar-prev><?php igp_pro_render_booking_svg_icon( 'chev_l' ); ?></button>
+							<h6 data-igp-calendar-title><?php echo esc_html( date_i18n( 'F Y' ) ); ?></h6>
+							<button type="button" class="igp-calendar__next" data-igp-calendar-next><?php igp_pro_render_booking_svg_icon( 'chev_r' ); ?></button>
+						</div>
+						<div class="igp-calendar__days">
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Mon', 'igp-pro' ); ?></div>
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Tue', 'igp-pro' ); ?></div>
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Wed', 'igp-pro' ); ?></div>
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Thu', 'igp-pro' ); ?></div>
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Fri', 'igp-pro' ); ?></div>
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Sat', 'igp-pro' ); ?></div>
+							<div class="igp-calendar__day-name"><?php esc_html_e( 'Sun', 'igp-pro' ); ?></div>
+						</div>
+						<div class="igp-calendar__dates" data-igp-date-calendar></div>
+					</div>
+				</div>
+				<div class="igp-calendar__actions">
+					<span class="igp-calendar__close" data-igp-calendar-close><?php esc_html_e( 'Close', 'igp-pro' ); ?></span>
+					<a href="#" class="igp-booking-calendar-apply" data-igp-calendar-apply><?php esc_html_e( 'Apply', 'igp-pro' ); ?></a>
+				</div>
+			</div>
 		</div>
 	</div>
 	<?php
@@ -376,139 +467,144 @@ function igp_pro_render_booking_enquiry_panel( int $tour_id ): string {
 
 	$price_label   = $config['base_price'] > 0 ? igp_pro_format_money( (float) $config['base_price'], (string) $config['currency'] ) : __( 'On request', 'igp-pro' );
 	$compare_label = ! empty( $config['compare_price'] ) && (float) $config['compare_price'] > (float) $config['base_price'] ? igp_pro_format_money( (float) $config['compare_price'], (string) $config['currency'] ) : '';
-	$booking_date  = current_time( 'Y-m-d' );
 	$form_mode     = isset( $config['form_mode'] ) && 'enquiry_only' === $config['form_mode'] ? 'enquiry_only' : 'booking_enquiry';
 	$unit_label    = (string) $config['pricing_unit'];
 	$form_id       = 'igp-booking-form-' . absint( $tour_id );
+	$max_guests    = 0;
+	foreach ( $config['guest_types'] as $guest ) {
+		$max_guests += 20;
+	}
+	if ( $max_guests <= 0 ) {
+		$max_guests = 20;
+	}
 
 	ob_start();
 	?>
-	<aside class="igp-booking-shell" data-igp-booking-panel data-tour-id="<?php echo esc_attr( $tour_id ); ?>" data-form-mode="<?php echo esc_attr( $form_mode ); ?>" aria-label="<?php esc_attr_e( 'Booking and enquiry panel', 'igp-pro' ); ?>">
-		<div class="igp-booking-panel">
-			<div class="igp-booking-price-row">
-				<div class="igp-booking-panel__price">
-					<span><?php esc_html_e( 'from', 'igp-pro' ); ?></span>
-					<div>
-						<?php if ( '' !== $compare_label ) : ?>
-							<del><?php echo esc_html( $compare_label ); ?></del>
-						<?php endif; ?>
-						<strong><?php echo esc_html( $price_label ); ?></strong>
-						<em><?php echo esc_html( $unit_label ); ?></em>
-					</div>
+	<aside id="booking" class="igp-booking-shell igp-booking-shell--ota" data-igp-booking-panel data-tour-id="<?php echo esc_attr( $tour_id ); ?>" data-form-mode="<?php echo esc_attr( $form_mode ); ?>" aria-label="<?php esc_attr_e( 'Booking and enquiry panel', 'igp-pro' ); ?>">
+		<div class="igp-booking-card">
+			<div class="igp-booking-card__top">
+				<div class="igp-booking-price">
+					<span class="igp-booking-price__prefix"><?php esc_html_e( 'from', 'igp-pro' ); ?></span>
+					<?php if ( '' !== $compare_label ) : ?>
+						<span class="igp-booking-price__regular"><del><?php echo esc_html( $compare_label ); ?></del></span>
+					<?php endif; ?>
+					<span class="igp-booking-price__sale"><ins><?php echo esc_html( $price_label ); ?></ins></span>
+					<span class="igp-booking-price__suffix"> <?php echo esc_html( $unit_label ); ?></span>
 				</div>
 				<?php if ( '' !== (string) $config['discount_badge'] ) : ?>
-					<span class="igp-booking-discount"><?php echo esc_html( (string) $config['discount_badge'] ); ?></span>
+					<div class="igp-booking-discount"><?php echo esc_html( (string) $config['discount_badge'] ); ?></div>
 				<?php endif; ?>
 			</div>
 
-			<?php if ( 'booking_enquiry' === $form_mode ) : ?>
-				<form id="<?php echo esc_attr( $form_id ); ?>" class="igp-booking-form" data-igp-booking-form>
-					<input type="hidden" name="action" value="igp_pro_submit_booking">
-					<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'igp_pro_booking' ) ); ?>">
-					<input type="hidden" name="tour_id" value="<?php echo esc_attr( $tour_id ); ?>">
-					<input type="hidden" name="booking_date" value="<?php echo esc_attr( $booking_date ); ?>">
+			<div class="igp-booking-card__main">
+				<?php if ( 'booking_enquiry' === $form_mode ) : ?>
+					<form id="<?php echo esc_attr( $form_id ); ?>" action="#" method="post" class="igp-booking-form" data-layout="01" data-igp-booking-form>
+						<input type="hidden" name="action" value="igp_pro_submit_booking">
+						<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'igp_pro_booking' ) ); ?>">
+						<input type="hidden" name="tour_id" value="<?php echo esc_attr( $tour_id ); ?>">
+						<input type="hidden" name="trip_id" value="<?php echo esc_attr( $tour_id ); ?>">
 
-					<div class="igp-booking-choice-row">
-						<?php igp_pro_render_booking_date_picker( (string) $config['currency'], (float) $config['base_price'] ); ?>
+						<div class="igp-booking-fields">
+							<?php igp_pro_render_booking_date_picker( (string) $config['currency'], (float) $config['base_price'], $config ); ?>
 
-						<div class="igp-booking-picker igp-booking-picker--guest" data-igp-traveler-picker>
-							<button type="button" class="igp-booking-choice" data-igp-traveler-toggle aria-expanded="false">
-								<span class="igp-booking-choice__icon" aria-hidden="true">♙</span>
-								<strong data-igp-traveler-summary><?php esc_html_e( 'Guest', 'igp-pro' ); ?></strong>
-							</button>
-							<div class="igp-booking-traveler-panel" data-igp-traveler-panel hidden>
-								<div class="igp-booking-guests" data-igp-guest-wrap>
-									<?php foreach ( $config['guest_types'] as $type => $guest ) : ?>
-										<?php igp_pro_render_guest_quantity_row( (string) $type, $guest, (string) $config['currency'] ); ?>
-									<?php endforeach; ?>
+							<div class="igp-booking-field igp-booking-picker igp-booking-picker--guest" data-igp-traveler-picker>
+								<button type="button" class="igp-booking-choice" data-igp-traveler-toggle aria-expanded="false">
+									<?php igp_pro_render_booking_svg_icon( 'guest' ); ?>
+									<span class="igp-booking-choice__label" data-igp-traveler-summary><?php esc_html_e( 'Guest', 'igp-pro' ); ?></span>
+								</button>
+								<div class="igp-guest-panel" data-igp-traveler-panel hidden>
+									<div class="igp-guest-panel__items" data-igp-guest-wrap>
+										<?php foreach ( $config['guest_types'] as $type => $guest ) : ?>
+											<?php igp_pro_render_guest_quantity_row( (string) $type, $guest, (string) $config['currency'] ); ?>
+										<?php endforeach; ?>
+									</div>
+									<div class="igp-guest-panel__actions">
+										<p class="igp-booking-notice igp-booking-notice--error" data-igp-traveler-notice aria-live="polite"><?php esc_html_e( 'Please select guests', 'igp-pro' ); ?></p>
+										<a href="#" class="igp-guest-apply" data-igp-traveler-apply><?php esc_html_e( 'Apply', 'igp-pro' ); ?></a>
+									</div>
 								</div>
-								<p class="igp-booking-message igp-booking-message--inline" data-igp-traveler-notice aria-live="polite"></p>
-								<button type="button" class="igp-booking-apply" data-igp-traveler-apply><?php esc_html_e( 'Apply', 'igp-pro' ); ?></button>
 							</div>
 						</div>
-					</div>
 
-					<p class="igp-booking-message" data-igp-form-message aria-live="polite"></p>
-					<button class="igp-booking-submit igp-booking-check" type="button" data-igp-check-availability><?php esc_html_e( 'Check availability', 'igp-pro' ); ?></button>
-					<button class="igp-booking-secondary" type="button" data-igp-open-enquiry><?php esc_html_e( 'Make enquiry', 'igp-pro' ); ?></button>
-
-					<div class="igp-availability-panel" data-igp-availability-panel data-igp-availability-for="<?php echo esc_attr( $form_id ); ?>" hidden>
-						<div class="igp-availability-main">
-							<?php if ( ! empty( $config['options'] ) ) : ?>
-								<div class="igp-tour-options">
-									<?php foreach ( $config['options'] as $index => $option ) : ?>
-										<label class="igp-tour-option-card">
-											<input type="radio" name="tour_option" value="<?php echo esc_attr( $option['id'] ); ?>" data-price="<?php echo esc_attr( (float) $option['price'] ); ?>" data-igp-tour-option<?php igp_pro_echo_form_attr( $form_id ); ?> <?php checked( 0 === $index ); ?>>
-											<span class="igp-tour-option-card__dot"></span>
-											<span class="igp-tour-option-card__copy">
-												<strong><?php echo esc_html( $option['label'] ); ?></strong>
-												<?php if ( '' !== (string) $option['description'] ) : ?><em><?php echo esc_html( (string) $option['description'] ); ?></em><?php endif; ?>
-											</span>
-											<span class="igp-tour-option-card__price"><?php echo esc_html( igp_pro_format_money( (float) $option['price'], (string) $config['currency'] ) ); ?></span>
-										</label>
-									<?php endforeach; ?>
-								</div>
-							<?php endif; ?>
-
-							<?php if ( ! empty( $config['addons'] ) ) : ?>
-								<div class="igp-booking-addons" data-igp-addons-wrap>
-									<p class="igp-booking-section-title"><?php esc_html_e( 'Extra Services', 'igp-pro' ); ?></p>
-									<?php foreach ( $config['addons'] as $addon ) : ?>
-										<?php igp_pro_render_addon_quantity_row( $addon, (string) $config['currency'], $form_id ); ?>
-									<?php endforeach; ?>
-								</div>
-							<?php endif; ?>
-
-							<p class="igp-booking-cancel-note" data-igp-cancel-note><?php esc_html_e( 'Select a date to see the cancellation window.', 'igp-pro' ); ?></p>
+						<p class="igp-booking-message" data-igp-form-message aria-live="polite"></p>
+						<div class="igp-booking-actions">
+							<input type="hidden" name="maximum_guests" value="<?php echo esc_attr( $max_guests ); ?>">
+							<input type="hidden" name="minimum_guests" value="1">
+							<button type="button" class="igp-booking-button igp-booking-button--primary igp-booking-check" data-igp-check-availability><?php esc_html_e( 'Check availability', 'igp-pro' ); ?></button>
+							<a href="#modal-enquiry-<?php echo esc_attr( $tour_id ); ?>" class="igp-booking-button igp-booking-button--secondary" data-igp-open-enquiry><?php esc_html_e( 'Make enquiry', 'igp-pro' ); ?></a>
 						</div>
-						<div class="igp-availability-actions">
-							<div class="igp-booking-total" data-currency="<?php echo esc_attr( (string) $config['currency'] ); ?>">
-								<span><?php esc_html_e( 'Total', 'igp-pro' ); ?></span>
-								<strong data-igp-total><?php echo esc_html( igp_pro_format_money( 0, (string) $config['currency'] ) ); ?></strong>
-								<em><?php esc_html_e( 'Payable after checkout details', 'igp-pro' ); ?></em>
+
+						<div class="igp-availability-panel igp-availability-panel--drawer" data-igp-availability-panel data-igp-availability-for="<?php echo esc_attr( $form_id ); ?>" role="dialog" aria-modal="false" aria-label="<?php esc_attr_e( 'Select tour package and add-ons', 'igp-pro' ); ?>" hidden>
+							<div class="igp-availability-panel__header">
+								<div>
+									<p class="igp-availability-panel__eyebrow"><?php esc_html_e( 'Availability confirmed', 'igp-pro' ); ?></p>
+									<h3 class="igp-availability-panel__title"><?php esc_html_e( 'Choose your tour type', 'igp-pro' ); ?></h3>
+								</div>
+								<button type="button" class="igp-availability-panel__close" data-igp-close-availability aria-label="<?php esc_attr_e( 'Close availability panel', 'igp-pro' ); ?>"><?php igp_pro_render_booking_svg_icon( 'close' ); ?></button>
 							</div>
-							<button class="igp-booking-submit" type="submit" form="<?php echo esc_attr( $form_id ); ?>"><?php esc_html_e( 'Book Now', 'igp-pro' ); ?></button>
-							<button class="igp-booking-secondary igp-booking-secondary--compact" type="button"><?php esc_html_e( 'Add to Cart', 'igp-pro' ); ?></button>
+							<div class="igp-availability-main">
+								<?php if ( ! empty( $config['options'] ) ) : ?>
+									<div class="igp-tour-options">
+										<p class="igp-booking-section-title"><?php esc_html_e( 'Available package', 'igp-pro' ); ?></p>
+										<?php foreach ( $config['options'] as $index => $option ) : ?>
+											<label class="igp-tour-option-card">
+												<input type="radio" name="tour_option" value="<?php echo esc_attr( $option['id'] ); ?>" data-price="<?php echo esc_attr( (float) $option['price'] ); ?>" data-igp-tour-option <?php checked( 0 === $index ); ?>>
+												<span class="igp-tour-option-card__dot"></span>
+												<span class="igp-tour-option-card__copy"><strong><?php echo esc_html( $option['label'] ); ?></strong><?php if ( '' !== (string) $option['description'] ) : ?><em><?php echo esc_html( (string) $option['description'] ); ?></em><?php endif; ?></span>
+												<span class="igp-tour-option-card__price"><?php echo esc_html( igp_pro_format_money( (float) $option['price'], (string) $config['currency'] ) ); ?></span>
+											</label>
+										<?php endforeach; ?>
+									</div>
+								<?php endif; ?>
+
+								<?php if ( ! empty( $config['addons'] ) ) : ?>
+									<div class="igp-booking-addons" data-igp-addons-wrap>
+										<p class="igp-booking-section-title"><?php esc_html_e( 'Extra services', 'igp-pro' ); ?></p>
+										<?php foreach ( $config['addons'] as $addon ) : ?>
+											<?php igp_pro_render_addon_quantity_row( $addon, (string) $config['currency'], $form_id ); ?>
+										<?php endforeach; ?>
+									</div>
+								<?php endif; ?>
+
+								<p class="igp-booking-cancel-note" data-igp-cancel-note><?php esc_html_e( 'Select a date to see the cancellation window.', 'igp-pro' ); ?></p>
+							</div>
+							<div class="igp-availability-actions">
+								<div class="igp-booking-total" data-currency="<?php echo esc_attr( (string) $config['currency'] ); ?>">
+									<span><?php esc_html_e( 'Total', 'igp-pro' ); ?></span>
+									<strong data-igp-total><?php echo esc_html( igp_pro_format_money( 0, (string) $config['currency'] ) ); ?></strong>
+									<em><?php esc_html_e( 'Payable after checkout details', 'igp-pro' ); ?></em>
+								</div>
+								<button class="igp-booking-button igp-booking-button--primary igp-booking-submit" type="submit"><?php esc_html_e( 'Book Now', 'igp-pro' ); ?></button>
+							</div>
 						</div>
+					</form>
+				<?php else : ?>
+					<div class="igp-enquiry-only-card">
+						<p><?php esc_html_e( 'This tour is available on request. Send an enquiry and the team will confirm availability and pricing.', 'igp-pro' ); ?></p>
+						<a href="#modal-enquiry-<?php echo esc_attr( $tour_id ); ?>" class="igp-booking-button igp-booking-button--primary" data-igp-open-enquiry><?php esc_html_e( 'Make enquiry', 'igp-pro' ); ?></a>
 					</div>
-				</form>
-			<?php else : ?>
-				<div class="igp-enquiry-only-card">
-					<p><?php esc_html_e( 'This tour is available on request. Send an enquiry and the team will confirm availability and pricing.', 'igp-pro' ); ?></p>
-					<button class="igp-booking-secondary igp-booking-secondary--full" type="button" data-igp-open-enquiry><?php esc_html_e( 'Make enquiry', 'igp-pro' ); ?></button>
+				<?php endif; ?>
+			</div>
+		</div>
+
+		<div id="modal-enquiry-<?php echo esc_attr( $tour_id ); ?>" class="igp-booking-modal igp-enquiry-modal" data-igp-enquiry-modal hidden>
+			<div class="igp-booking-modal__overlay" data-igp-close-enquiry></div>
+			<div class="igp-booking-modal__content" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Make enquiry', 'igp-pro' ); ?>">
+				<div class="igp-booking-modal__header">
+					<h3 class="igp-booking-modal__title"><?php esc_html_e( 'Make enquiry', 'igp-pro' ); ?></h3>
+					<button type="button" class="igp-booking-modal__close" data-igp-close-enquiry aria-label="<?php esc_attr_e( 'Close enquiry form', 'igp-pro' ); ?>"><?php igp_pro_render_booking_svg_icon( 'close' ); ?></button>
 				</div>
-			<?php endif; ?>
-		</div>
-
-		<div class="igp-booking-benefits">
-			<h3><?php esc_html_e( 'Why booking with IGP?', 'igp-pro' ); ?></h3>
-			<ul>
-				<?php foreach ( igp_pro_get_booking_benefits() as $benefit ) : ?>
-					<li><?php echo esc_html( $benefit ); ?></li>
-				<?php endforeach; ?>
-			</ul>
-		</div>
-
-		<div class="igp-enquiry-modal" data-igp-enquiry-modal hidden>
-			<div class="igp-enquiry-modal__overlay" data-igp-close-enquiry></div>
-			<div class="igp-enquiry-modal__dialog" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Make enquiry', 'igp-pro' ); ?>">
-				<button type="button" class="igp-enquiry-modal__close" data-igp-close-enquiry aria-label="<?php esc_attr_e( 'Close enquiry form', 'igp-pro' ); ?>">×</button>
-				<h3><?php esc_html_e( 'Make enquiry', 'igp-pro' ); ?></h3>
-				<p><?php esc_html_e( 'Have a question before booking? Message us to learn more.', 'igp-pro' ); ?></p>
-				<form class="igp-enquiry-form" data-igp-enquiry-form>
-					<input type="hidden" name="action" value="igp_pro_submit_enquiry">
-					<input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'igp_pro_booking' ) ); ?>">
-					<input type="hidden" name="tour_id" value="<?php echo esc_attr( $tour_id ); ?>">
-					<div class="igp-booking-customer">
-						<label class="igp-field"><input type="text" name="first_name" placeholder="<?php esc_attr_e( 'First name *', 'igp-pro' ); ?>" required></label>
-						<label class="igp-field"><input type="text" name="last_name" placeholder="<?php esc_attr_e( 'Last name *', 'igp-pro' ); ?>" required></label>
-						<label class="igp-field igp-field--full"><input type="email" name="email" placeholder="<?php esc_attr_e( 'Email *', 'igp-pro' ); ?>" required></label>
-						<label class="igp-field igp-field--full"><input type="tel" name="phone" placeholder="<?php esc_attr_e( 'Phone *', 'igp-pro' ); ?>" required></label>
-						<label class="igp-field igp-field--full"><textarea name="question" rows="6" placeholder="<?php esc_attr_e( 'Your question *', 'igp-pro' ); ?>" required></textarea></label>
-					</div>
-					<p class="igp-booking-message" data-igp-form-message aria-live="polite"></p>
-					<button class="igp-booking-submit" type="submit"><?php esc_html_e( 'Send enquiry', 'igp-pro' ); ?></button>
-				</form>
+				<div class="igp-booking-modal__body">
+					<p><?php esc_html_e( 'Have a question before booking? Message us to learn more.', 'igp-pro' ); ?></p>
+					<form action="#" method="post" class="igp-enquiry-form" data-igp-enquiry-form>
+						<div class="igp-enquiry-field igp-enquiry-field--half"><input type="text" name="first_name" id="igp-field-first-name-<?php echo esc_attr( $tour_id ); ?>" required><label for="igp-field-first-name-<?php echo esc_attr( $tour_id ); ?>" class="igp-enquiry-placeholder"><?php esc_html_e( 'First name', 'igp-pro' ); ?><span class="required">*</span></label></div>
+						<div class="igp-enquiry-field igp-enquiry-field--half"><input type="text" name="last_name" id="igp-field-last-name-<?php echo esc_attr( $tour_id ); ?>" required><label for="igp-field-last-name-<?php echo esc_attr( $tour_id ); ?>" class="igp-enquiry-placeholder"><?php esc_html_e( 'Last name', 'igp-pro' ); ?><span class="required">*</span></label></div>
+						<div class="igp-enquiry-field"><input type="email" id="igp-field-email-<?php echo esc_attr( $tour_id ); ?>" name="email" required><label for="igp-field-email-<?php echo esc_attr( $tour_id ); ?>" class="igp-enquiry-placeholder"><?php esc_html_e( 'Email', 'igp-pro' ); ?><span class="required">*</span></label></div>
+						<div class="igp-enquiry-field"><input type="tel" id="igp-field-phone-<?php echo esc_attr( $tour_id ); ?>" name="phone" required><label for="igp-field-phone-<?php echo esc_attr( $tour_id ); ?>" class="igp-enquiry-placeholder"><?php esc_html_e( 'Phone', 'igp-pro' ); ?><span class="required">*</span></label></div>
+						<div class="igp-enquiry-field igp-enquiry-field--full"><textarea id="igp-field-your-question-<?php echo esc_attr( $tour_id ); ?>" name="question" required></textarea><label for="igp-field-your-question-<?php echo esc_attr( $tour_id ); ?>" class="igp-enquiry-placeholder"><?php esc_html_e( 'Your question', 'igp-pro' ); ?><span class="required">*</span></label></div>
+						<div class="igp-booking-actions"><p class="igp-booking-message" data-igp-form-message aria-live="polite"></p><input type="hidden" name="tour_id" value="<?php echo esc_attr( $tour_id ); ?>"><input type="hidden" name="trip_id" value="<?php echo esc_attr( $tour_id ); ?>"><input type="hidden" name="action" value="igp_pro_submit_enquiry"><input type="hidden" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'igp_pro_booking' ) ); ?>"><button type="submit" class="igp-booking-button igp-booking-button--primary"><?php esc_html_e( 'Send enquiry', 'igp-pro' ); ?></button></div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</aside>

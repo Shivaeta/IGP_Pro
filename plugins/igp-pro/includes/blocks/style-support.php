@@ -28,6 +28,40 @@ function igp_pro_style_css_slug( string $value ): string {
 	return '' !== $value ? $value : 'default';
 }
 
+
+/**
+ * Determine whether style classes should be applied for a rendered block.
+ *
+ * The editor exposes style/variant controls from schema. If style data exists,
+ * classes must be rendered even when the historical feature flag has not been
+ * toggled yet; otherwise the dropdown becomes decorative and misleading.
+ *
+ * @param string              $block_id Block ID.
+ * @param array<string,mixed> $data     Resolved block data.
+ * @return bool
+ */
+function igp_pro_should_apply_block_style_support( string $block_id, array $data = array() ): bool {
+	if ( function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_smart_block_variants' ) ) {
+		return true;
+	}
+
+	if ( isset( $data['style'] ) && is_array( $data['style'] ) ) {
+		return true;
+	}
+
+	if ( function_exists( 'igp_pro_get_registered_block' ) && function_exists( 'igp_pro_get_block_schema' ) ) {
+		$block = igp_pro_get_registered_block( $block_id );
+		if ( is_array( $block ) ) {
+			$schema = igp_pro_get_block_schema( $block );
+			if ( is_array( $schema ) ) {
+				return ! empty( $schema['supports']['style'] ) || isset( $schema['fields']['style'] );
+			}
+		}
+	}
+
+	return false;
+}
+
 /**
  * Return common style enum values.
  *

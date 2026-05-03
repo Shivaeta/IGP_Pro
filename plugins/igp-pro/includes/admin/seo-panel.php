@@ -356,7 +356,13 @@ function igp_pro_render_cwv_report_card( $report ): void {
 	}
 
 	if ( is_wp_error( $report ) ) {
-		printf( '<div class="notice notice-warning inline"><p>%s</p></div>', esc_html( $report->get_error_message() ) );
+		$error_data = $report->get_error_data();
+		$status     = is_array( $error_data ) && isset( $error_data['status'] ) ? absint( $error_data['status'] ) : 0;
+		echo '<div class="notice notice-warning inline"><p>' . esc_html( $report->get_error_message() ) . '</p>';
+		if ( 429 === $status || in_array( $report->get_error_code(), array( 'igp_pro_cwv_rate_limited', 'igp_pro_cwv_rate_limited_cooldown' ), true ) ) {
+			echo '<p>' . esc_html__( 'IGP Pro has cached the rate-limit state briefly to avoid repeated PageSpeed calls. Add a PageSpeed API key in SEO Output Settings or retry after the cooldown.', 'igp-pro' ) . '</p>';
+		}
+		echo '</div>';
 		return;
 	}
 

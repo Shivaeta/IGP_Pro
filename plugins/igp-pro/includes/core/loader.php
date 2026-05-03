@@ -327,6 +327,9 @@ function igp_pro_load(): void {
 
 	add_action( 'init', 'igp_pro_register_taxonomies', 0 );
 	add_action( 'init', 'igp_pro_register_post_types', 1 );
+	if ( is_admin() && function_exists( 'igp_pro_register_cpt_post_id_admin_ui' ) ) {
+		igp_pro_register_cpt_post_id_admin_ui();
+	}
 	add_action( 'init', 'igp_pro_register_core_blocks', 9 );
 	add_action( 'init', 'igp_pro_register_wordpress_blocks', 10 );
 	add_action( 'enqueue_block_editor_assets', 'igp_pro_enqueue_block_editor_assets' );

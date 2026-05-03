@@ -21,7 +21,10 @@
 		dirty: false,
 		collapsed: {},
 		jsonOpen: false,
-		contentSource: ''
+		contentSource: '',
+		postSearch: '',
+		searchTimer: null,
+		searchingPosts: false
 	};
 
 	function t(key, fallback) {
@@ -165,12 +168,70 @@
 		return value;
 	}
 
-	function renderInput(label, field, value, onChange) {
+
+	function isMediaUrlField(label, field, path) {
+		var type = field.type || 'string';
+		if (type !== 'string' && type !== 'url') {
+			return false;
+		}
+		var name = String(label || '').toLowerCase();
+		var pathText = (path || []).join('.').toLowerCase();
+		if (field.media === true || field.format === 'image-url') {
+			return true;
+		}
+		if (/image|media|photo|avatar|logo|thumbnail|background/.test(name)) {
+			return true;
+		}
+		if (name === 'url' && /(^|\.)(images|logos)(\.|$)/.test(pathText)) {
+			return true;
+		}
+		return false;
+	}
+
+	function renderMediaUrlInput(label, field, value, onChange) {
+		var wrapper = el('div', { className: 'igp-pro-field igp-pro-field--media-url' });
+		var required = field.required ? el('span', { className: 'igp-pro-required', text: ' *' }) : null;
+		wrapper.appendChild(el('label', {}, [document.createTextNode(field.label || labelize(label)), required]));
+		var input = el('input', {
+			type: 'url',
+			value: value === undefined || value === null ? '' : value,
+			placeholder: 'https://example.com/image.jpg or /wp-content/uploads/image.jpg',
+			onInput: function (event) { onChange(event.target.value); }
+		});
+		var mediaButton = el('button', {
+			type: 'button',
+			className: 'button',
+			text: 'Media',
+			onClick: function () {
+				if (!window.wp || !window.wp.media) {
+					return;
+				}
+				var frame = window.wp.media({ title: t('chooseImage', 'Choose image'), button: { text: t('useImage', 'Use this image') }, multiple: false });
+				frame.on('select', function () {
+					var attachment = frame.state().get('selection').first().toJSON();
+					onChange(attachment.url || '', { render: true });
+				});
+				frame.open();
+			}
+		});
+		wrapper.appendChild(el('div', { className: 'igp-pro-image-control' }, [input, mediaButton]));
+		wrapper.appendChild(el('small', { text: 'Use the media picker for uploaded WordPress images. Add/edit alt text in the adjacent Alt field when available.' }));
+		if (value) {
+			wrapper.appendChild(el('img', { className: 'igp-pro-image-preview', src: value, alt: '' }));
+		}
+		return wrapper;
+	}
+
+	function renderInput(label, field, value, onChange, path) {
 		var type = field.type || 'string';
 		var wrapper = el('div', { className: 'igp-pro-field' });
 		var required = field.required ? el('span', { className: 'igp-pro-required', text: ' *' }) : null;
 		var labelNode = el('label', {}, [document.createTextNode(field.label || labelize(label)), required]);
 		wrapper.appendChild(labelNode);
+
+		if (isMediaUrlField(label, field, path || [])) {
+			return renderMediaUrlInput(label, field, value, onChange);
+		}
 
 		if (type === 'text') {
 			wrapper.appendChild(el('textarea', {
@@ -311,7 +372,7 @@
 
 			container.appendChild(renderInput(fieldName, field, value, function (next, options) {
 				updateSectionData(sectionIndex, path, next, options || {});
-			}));
+			}, path));
 		});
 	}
 
@@ -372,21 +433,92 @@
 		return wrapper;
 	}
 
+
+	function formatPostOption(post) {
+		return '[' + post.post_type + '] ' + post.title + ' #' + post.id;
+	}
+
+	function postMatchesSearch(post, term) {
+		term = String(term || '').trim().toLowerCase();
+		if (!term) {
+			return true;
+		}
+		var haystack = [formatPostOption(post), post.status || '', post.post_type || '', String(post.id || '')].join(' ').toLowerCase();
+		return haystack.indexOf(term) !== -1;
+	}
+
+	function populatePostSelect(select, term) {
+		var current = state.selectedPostId || select.value || '';
+		select.innerHTML = '';
+		select.appendChild(el('option', { value: '', text: 'Select a page, tour, or destination' }));
+		state.posts.filter(function (post) {
+			return postMatchesSearch(post, term);
+		}).forEach(function (post) {
+			select.appendChild(el('option', { value: post.id, text: formatPostOption(post) }));
+		});
+
+		var hasCurrent = Array.prototype.some.call(select.options, function (option) {
+			return String(option.value) === String(current);
+		});
+		select.value = hasCurrent ? current : '';
+	}
+
+	function searchContentTargets(term) {
+		term = String(term || '').trim();
+		if (state.searchTimer) {
+			window.clearTimeout(state.searchTimer);
+		}
+		state.searchTimer = window.setTimeout(function () {
+			if (!term || term.length < 2) {
+				return;
+			}
+			state.searchingPosts = true;
+			request('igp_pro_search_content_editor_posts', { search: term, limit: 80 }).then(function (data) {
+				state.searchingPosts = false;
+				var existing = {};
+				state.posts.forEach(function (post) { existing[String(post.id)] = post; });
+				(data.posts || []).forEach(function (post) { existing[String(post.id)] = post; });
+				state.posts = Object.keys(existing).map(function (id) { return existing[id]; }).sort(function (a, b) {
+					return String(formatPostOption(a)).localeCompare(String(formatPostOption(b)));
+				});
+				var select = document.getElementById('igp-pro-content-target-select');
+				if (select) {
+					populatePostSelect(select, state.postSearch);
+				}
+			}).catch(function () {
+				state.searchingPosts = false;
+			});
+		}, 350);
+	}
+
 	function renderToolbar() {
 		var select = el('select', {
+			id: 'igp-pro-content-target-select',
 			onChange: function (event) {
 				state.selectedPostId = event.target.value;
-				render();
 			}
 		});
-		select.appendChild(el('option', { value: '', text: 'Select a page, tour, or destination' }));
-		state.posts.forEach(function (post) {
-			select.appendChild(el('option', { value: post.id, text: '[' + post.post_type + '] ' + post.title + ' #' + post.id }));
+		populatePostSelect(select, state.postSearch);
+
+		var searchInput = el('input', {
+			type: 'search',
+			value: state.postSearch || '',
+			placeholder: 'Search by title, type, status, or #ID',
+			autocomplete: 'off',
+			onInput: function (event) {
+				state.postSearch = event.target.value;
+				populatePostSelect(select, state.postSearch);
+				searchContentTargets(state.postSearch);
+			}
 		});
-		select.value = state.selectedPostId || '';
 
 		return el('div', { className: 'igp-pro-admin-card igp-pro-toolbar' }, [
-			el('div', {}, [el('label', { text: 'Content target' }), select]),
+			el('div', { className: 'igp-pro-content-target-control' }, [
+				el('label', { text: 'Content target' }),
+				searchInput,
+				select,
+				el('small', { text: 'Naming convention preserved: [post_type] Title #ID. Type two or more characters to search beyond the initial recent list.' })
+			]),
 			el('button', { type: 'button', className: 'button', text: 'Load', onClick: loadSelectedPost }),
 			el('button', { type: 'button', className: 'button button-primary', text: 'Save graph', onClick: saveCurrentGraph }),
 			el('button', { type: 'button', className: 'button', text: 'Refresh list', onClick: bootstrap })

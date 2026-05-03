@@ -156,12 +156,22 @@ function igp_pro_media_inventory_add_image( array &$images, array $image ): void
 		$filename = wp_basename( wp_parse_url( $url, PHP_URL_PATH ) ?: $url );
 	}
 
+	$post_id        = absint( $image['post_id'] ?? 0 );
+	$loading_policy = sanitize_key( (string) ( $image['loading_policy'] ?? '' ) );
+	if ( $post_id > 0 && $attachment_id > 0 && function_exists( 'igp_pro_get_media_loading_policy' ) ) {
+		$effective_policy = igp_pro_get_media_loading_policy( $post_id, $attachment_id, 'auto' );
+		if ( 'auto' !== $effective_policy ) {
+			$loading_policy = $effective_policy;
+		}
+	}
+
 	$images[] = array(
 		'source'        => sanitize_key( (string) ( $image['source'] ?? 'graph_image' ) ),
 		'context'       => sanitize_text_field( (string) ( $image['context'] ?? '' ) ),
 		'path'          => sanitize_text_field( (string) ( $image['path'] ?? '' ) ),
 		'block_id'      => sanitize_key( (string) ( $image['block_id'] ?? '' ) ),
 		'section_id'    => sanitize_key( (string) ( $image['section_id'] ?? '' ) ),
+		'post_id'       => $post_id,
 		'attachment_id' => $attachment_id,
 		'url'           => $url,
 		'alt'           => $alt,
@@ -174,7 +184,7 @@ function igp_pro_media_inventory_add_image( array &$images, array $image ): void
 		'is_lcp'        => false,
 		'missing'       => $missing,
 		'placeholder'   => ! empty( $image['placeholder'] ),
-		'loading_policy'=> sanitize_key( (string) ( $image['loading_policy'] ?? '' ) ),
+		'loading_policy'=> $loading_policy,
 	);
 }
 
@@ -190,6 +200,7 @@ function igp_pro_media_inventory_add_featured_image( WP_Post $post, array &$imag
 			$images,
 			array(
 				'source'         => 'featured_image',
+				'post_id'        => (int) $post->ID,
 				'context'        => __( 'Featured image', 'igp-pro' ),
 				'attachment_id'  => $thumb_id,
 				'path'           => 'featured_image',
@@ -213,6 +224,7 @@ function igp_pro_media_inventory_add_seo_images( WP_Post $post, array $graph, ar
 				$images,
 				array(
 					'source'        => 'og_image',
+					'post_id'       => (int) $post->ID,
 					'context'       => __( 'Open Graph image', 'igp-pro' ),
 					'attachment_id' => $og_image_id,
 					'path'          => $key,
@@ -230,6 +242,7 @@ function igp_pro_media_inventory_add_seo_images( WP_Post $post, array $graph, ar
 				$images,
 				array(
 					'source'        => 'schema_image',
+					'post_id'       => (int) $post->ID,
 					'context'       => __( 'Schema image', 'igp-pro' ),
 					'attachment_id' => $schema_image_id,
 					'path'          => $key,
@@ -246,6 +259,7 @@ function igp_pro_media_inventory_add_seo_images( WP_Post $post, array $graph, ar
 				$images,
 				array(
 					'source'  => 'schema_primary_image',
+					'post_id' => (int) $post->ID,
 					'context' => __( 'Schema primary image fallback', 'igp-pro' ),
 					'url'     => $primary,
 					'path'    => 'schema.primaryImageOfPage',
@@ -278,6 +292,7 @@ function igp_pro_media_inventory_add_starter_placeholders( WP_Post $post, array 
 			$images,
 			array(
 				'source'      => 'starter_placeholder',
+				'post_id'     => (int) $post->ID,
 				'context'     => sanitize_text_field( (string) ( $placeholder['role'] ?? __( 'Starter media placeholder', 'igp-pro' ) ) ),
 				'url'         => '',
 				'alt'         => sanitize_text_field( (string) ( $placeholder['alt'] ?? '' ) ),
@@ -311,6 +326,7 @@ function igp_pro_media_inventory_add_graph_images( WP_Post $post, array $graph, 
 				$data['background_image'],
 				array(
 					'source'         => 'hero_image',
+					'post_id'        => (int) $post->ID,
 					'context'        => __( 'Hero / likely LCP image', 'igp-pro' ),
 					'path'           => 'sections.' . $index . '.data.background_image',
 					'block_id'       => $block_id,
@@ -327,6 +343,7 @@ function igp_pro_media_inventory_add_graph_images( WP_Post $post, array $graph, 
 					$image,
 					array(
 						'source'         => 'gallery_image',
+						'post_id'        => (int) $post->ID,
 						'context'        => __( 'Gallery image', 'igp-pro' ),
 						'path'           => 'sections.' . $index . '.data.images.' . $gallery_index,
 						'block_id'       => $block_id,
@@ -341,7 +358,7 @@ function igp_pro_media_inventory_add_graph_images( WP_Post $post, array $graph, 
 			igp_pro_media_inventory_add_card_block_images( $post, $block_id, $data, $images, $index, $section_id );
 		}
 
-		igp_pro_media_inventory_collect_recursive( $data, 'sections.' . $index . '.data', $images, $block_id, $section_id );
+		igp_pro_media_inventory_collect_recursive( $data, 'sections.' . $index . '.data', $images, $block_id, $section_id, (int) $post->ID );
 	}
 }
 
@@ -410,6 +427,7 @@ function igp_pro_media_inventory_add_card_block_images( WP_Post $post, string $b
 			$images,
 			array(
 				'source'         => 'card_image',
+				'post_id'        => (int) $post->ID,
 				'context'        => sprintf( __( '%1$s card image: %2$s', 'igp-pro' ), igp_pro_block_id_to_title( $block_id ), get_the_title( $related_id ) ),
 				'attachment_id'  => $thumb_id,
 				'path'           => 'sections.' . $section_index . '.data.card_posts.' . $card_index,
@@ -427,7 +445,7 @@ function igp_pro_media_inventory_add_card_block_images( WP_Post $post, string $b
  * @param mixed                         $value      Raw value.
  * @param array<int,array<string,mixed>> $images     Images.
  */
-function igp_pro_media_inventory_collect_recursive( $value, string $path, array &$images, string $block_id = '', string $section_id = '' ): void {
+function igp_pro_media_inventory_collect_recursive( $value, string $path, array &$images, string $block_id = '', string $section_id = '', int $post_id = 0 ): void {
 	if ( ! is_array( $value ) ) {
 		return;
 	}
@@ -441,6 +459,7 @@ function igp_pro_media_inventory_collect_recursive( $value, string $path, array 
 			$value,
 			array(
 				'source'         => 'block_image',
+				'post_id'        => $post_id,
 				'context'        => igp_pro_block_id_to_title( $block_id ),
 				'path'           => $path,
 				'block_id'       => $block_id,
@@ -451,7 +470,7 @@ function igp_pro_media_inventory_collect_recursive( $value, string $path, array 
 	}
 
 	foreach ( $value as $key => $child ) {
-		igp_pro_media_inventory_collect_recursive( $child, $path . '.' . sanitize_key( (string) $key ), $images, $block_id, $section_id );
+		igp_pro_media_inventory_collect_recursive( $child, $path . '.' . sanitize_key( (string) $key ), $images, $block_id, $section_id, $post_id );
 	}
 }
 
@@ -547,5 +566,8 @@ function igp_pro_media_inventory_invalidate_post( int $post_id ): void {
 		return;
 	}
 
-	wp_cache_delete( igp_pro_media_inventory_cache_key( $post ), IGP_PRO_MEDIA_INVENTORY_CACHE_GROUP );
+	$cache_key     = igp_pro_media_inventory_cache_key( $post );
+	$transient_key = 'igp_media_inventory_' . md5( $cache_key );
+	wp_cache_delete( $cache_key, IGP_PRO_MEDIA_INVENTORY_CACHE_GROUP );
+	delete_transient( $transient_key );
 }

@@ -1,21 +1,16 @@
 {
-  "name": "igp-mcp-bridge",
-  "version": "1.0.0",
-  "description": "MCP bridge for IGP Pro AI Copilot REST services.",
-  "private": true,
+  "name": "wordpress-igp-ai-copilot-mcp",
+  "version": "0.4.0",
   "type": "module",
-  "bin": {
-    "igp-mcp-bridge": "./server.js"
-  },
+  "private": true,
   "scripts": {
-    "start": "node ./server.js",
-    "check": "node --check ./server.js && node --check ./src/client.js && node --check ./src/tools.js"
+    "start": "node server.js",
+    "check": "node --check server.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/server": "^1.0.0",
-    "zod": "^4.0.0"
-  },
-  "engines": {
-    "node": ">=20.0.0"
+    "@modelcontextprotocol/sdk": "latest",
+    "dotenv": "latest",
+    "express": "latest",
+    "zod": "latest"
   }
 }

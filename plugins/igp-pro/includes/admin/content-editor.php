@@ -14,6 +14,7 @@ function igp_pro_register_content_editor_admin(): void {
 	add_action( 'admin_menu', 'igp_pro_register_content_editor_menu' );
 	add_action( 'admin_enqueue_scripts', 'igp_pro_enqueue_content_editor_assets' );
 	add_action( 'wp_ajax_igp_pro_content_editor_bootstrap', 'igp_pro_ajax_content_editor_bootstrap' );
+	add_action( 'wp_ajax_igp_pro_search_content_editor_posts', 'igp_pro_ajax_search_content_editor_posts' );
 	add_action( 'wp_ajax_igp_pro_load_content_graph', 'igp_pro_ajax_load_content_graph' );
 	add_action( 'wp_ajax_igp_pro_save_content_graph', 'igp_pro_ajax_save_content_graph' );
 	add_action( 'wp_ajax_igp_pro_import_content_graph', 'igp_pro_ajax_import_content_graph' );
@@ -165,6 +166,28 @@ function igp_pro_ajax_content_editor_bootstrap(): void {
 		array(
 			'posts'  => igp_pro_get_content_editor_post_options(),
 			'blocks' => igp_pro_get_content_editor_block_options(),
+		)
+	);
+}
+
+
+/**
+ * AJAX: search posts available to the content editor.
+ */
+function igp_pro_ajax_search_content_editor_posts(): void {
+	$permission = igp_pro_content_editor_permission_check();
+	if ( is_wp_error( $permission ) ) {
+		igp_pro_send_json_error( $permission );
+	}
+
+	$search = isset( $_REQUEST['search'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['search'] ) ) : '';
+	$limit  = isset( $_REQUEST['limit'] ) ? absint( $_REQUEST['limit'] ) : 80;
+	$limit  = min( 120, max( 20, $limit ) );
+
+	wp_send_json_success(
+		array(
+			'posts'  => igp_pro_get_content_editor_post_options( $search, $limit ),
+			'search' => $search,
 		)
 	);
 }
@@ -336,20 +359,32 @@ function igp_pro_ajax_export_content_graph(): void {
  *
  * @return array
  */
-function igp_pro_get_content_editor_post_options(): array {
-	$query = new WP_Query(
-		array(
-			'post_type'              => array( 'page', 'tour', 'destination' ),
-			'post_status'            => array( 'publish', 'draft', 'private', 'pending', 'future' ),
-			'posts_per_page'         => 200,
-			'orderby'                => 'modified',
-			'order'                  => 'DESC',
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => false,
-			'update_post_term_cache' => false,
-		)
+function igp_pro_get_content_editor_post_options( string $search = '', int $limit = 200 ): array {
+	$search = trim( wp_strip_all_tags( $search ) );
+	$limit  = min( 250, max( 20, absint( $limit ) ) );
+
+	$args = array(
+		'post_type'              => array( 'page', 'tour', 'destination' ),
+		'post_status'            => array( 'publish', 'draft', 'private', 'pending', 'future' ),
+		'posts_per_page'         => $limit,
+		'orderby'                => 'modified',
+		'order'                  => 'DESC',
+		'no_found_rows'          => true,
+		'update_post_meta_cache' => false,
+		'update_post_term_cache' => false,
 	);
 
+	if ( '' !== $search ) {
+		$maybe_id = ltrim( $search, '# ' );
+		if ( ctype_digit( $maybe_id ) ) {
+			$args['post__in'] = array( absint( $maybe_id ) );
+			$args['orderby']  = 'post__in';
+		} else {
+			$args['s'] = $search;
+		}
+	}
+
+	$query   = new WP_Query( $args );
 	$options = array();
 
 	foreach ( $query->posts as $post ) {

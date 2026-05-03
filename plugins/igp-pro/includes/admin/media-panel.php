@@ -18,6 +18,7 @@ function igp_pro_register_media_admin(): void {
 	add_action( 'admin_menu', 'igp_pro_register_media_menu' );
 	add_action( 'admin_enqueue_scripts', 'igp_pro_enqueue_media_admin_assets' );
 	add_action( 'admin_post_igp_pro_media_bulk_alt_update', 'igp_pro_handle_media_bulk_alt_update' );
+	add_action( 'admin_post_igp_pro_media_bulk_image_update', 'igp_pro_handle_media_bulk_image_update' );
 	add_action( 'admin_post_igp_pro_generate_webp', 'igp_pro_handle_generate_webp' );
 }
 
@@ -73,7 +74,7 @@ function igp_pro_render_media_panel_page(): void {
 	?>
 	<div class="wrap igp-pro-admin-wrap igp-pro-media-admin">
 		<h1><?php esc_html_e( 'IGP Media SEO / Optimization', 'igp-pro' ); ?></h1>
-		<p class="description"><?php esc_html_e( 'Phase 12 tools for page-level media inventory, accessibility/SEO audits, lazy-loading policy checks, and manual WebP generation.', 'igp-pro' ); ?></p>
+		<p class="description"><?php esc_html_e( 'Central image auditing and modification dashboard for page-level inventory, alt text, filenames, dimensions, aspect ratios, lazy-loading policy, and WebP generation.', 'igp-pro' ); ?></p>
 
 		<?php igp_pro_render_media_notices(); ?>
 
@@ -105,8 +106,21 @@ function igp_pro_render_media_notices(): void {
 	if ( isset( $_GET['igp_media_alt_updated'] ) ) {
 		printf( '<div class="notice notice-success"><p>%s</p></div>', esc_html( sprintf( __( 'Updated alt text for %d attachment(s).', 'igp-pro' ), absint( $_GET['igp_media_alt_updated'] ) ) ) );
 	}
+	if ( isset( $_GET['igp_media_bulk_updated'] ) ) {
+		printf( '<div class="notice notice-success"><p>%s</p></div>', esc_html( sprintf( __( 'Updated image controls for %d attachment(s).', 'igp-pro' ), absint( $_GET['igp_media_bulk_updated'] ) ) ) );
+	}
 	if ( isset( $_GET['igp_media_webp'] ) ) {
 		printf( '<div class="notice notice-success"><p>%s</p></div>', esc_html__( 'WebP generation completed.', 'igp-pro' ) );
+	}
+	if ( isset( $_GET['igp_media_bulk_errors'] ) ) {
+		$errors = json_decode( base64_decode( (string) wp_unslash( $_GET['igp_media_bulk_errors'] ) ), true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+		if ( is_array( $errors ) && ! empty( $errors ) ) {
+			echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'Some media updates need attention:', 'igp-pro' ) . '</strong></p><ul>';
+			foreach ( array_slice( $errors, 0, 8 ) as $error ) {
+				echo '<li>' . esc_html( (string) $error ) . '</li>';
+			}
+			echo '</ul></div>';
+		}
 	}
 	if ( isset( $_GET['igp_media_error'] ) ) {
 		printf( '<div class="notice notice-error"><p>%s</p></div>', esc_html( sanitize_text_field( wp_unslash( $_GET['igp_media_error'] ) ) ) );
@@ -224,58 +238,103 @@ function igp_pro_render_media_audit( $audit, int $post_id ): void {
 			</tbody>
 		</table>
 
-		<?php igp_pro_render_media_alt_update_form( $audit, $post_id ); ?>
+		<?php igp_pro_render_media_bulk_editor_form( $audit, $post_id ); ?>
 	</section>
 	<?php
 }
 
 /**
- * Render bulk alt update form for attachment-backed images.
+ * Render central bulk image editor for attachment-backed images.
  */
-function igp_pro_render_media_alt_update_form( array $audit, int $post_id ): void {
+function igp_pro_render_media_bulk_editor_form( array $audit, int $post_id ): void {
 	$inventory = isset( $audit['inventory'] ) && is_array( $audit['inventory'] ) ? $audit['inventory'] : array();
 	$images    = isset( $inventory['images'] ) && is_array( $inventory['images'] ) ? $inventory['images'] : array();
 	$rows      = array();
 
 	foreach ( $images as $image ) {
 		$attachment_id = absint( $image['attachment_id'] ?? 0 );
-		if ( $attachment_id <= 0 ) {
+		if ( $attachment_id <= 0 || isset( $rows[ $attachment_id ] ) ) {
 			continue;
 		}
-		$alt = (string) ( $image['alt'] ?? '' );
-		if ( '' === trim( $alt ) || ( function_exists( 'igp_pro_media_audit_is_weak_alt' ) && igp_pro_media_audit_is_weak_alt( $alt ) ) ) {
-			$rows[ $attachment_id ] = $image;
-		}
+		$rows[ $attachment_id ] = $image;
 	}
 
 	if ( empty( $rows ) ) {
 		return;
 	}
+
+	$ratio_options   = function_exists( 'igp_pro_media_get_aspect_ratio_options' ) ? igp_pro_media_get_aspect_ratio_options() : array( 'keep' => array( 'label' => __( 'Keep current', 'igp-pro' ) ) );
+	$loading_options = function_exists( 'igp_pro_media_get_loading_policy_options' ) ? igp_pro_media_get_loading_policy_options() : array( 'auto' => __( 'Auto', 'igp-pro' ), 'eager' => __( 'Eager', 'igp-pro' ), 'lazy' => __( 'Lazy', 'igp-pro' ) );
 	?>
-	<h3><?php esc_html_e( 'Bulk Alt Text Update', 'igp-pro' ); ?></h3>
-	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-		<?php wp_nonce_field( 'igp_pro_media_bulk_alt_update' ); ?>
-		<input type="hidden" name="action" value="igp_pro_media_bulk_alt_update">
+	<h3><?php esc_html_e( 'Bulk Image Editing', 'igp-pro' ); ?></h3>
+	<p class="description"><?php esc_html_e( 'Edit attachment-backed images from this page inventory. Resize/aspect-ratio edits create a new optimized full-size file and preserve the previous original file on disk. Filename edits change the WordPress attachment file reference. A snapshot is created before each changed attachment.', 'igp-pro' ); ?></p>
+	<form class="igp-media-bulk-image-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+		<?php wp_nonce_field( 'igp_pro_media_bulk_image_update' ); ?>
+		<input type="hidden" name="action" value="igp_pro_media_bulk_image_update">
 		<input type="hidden" name="post_id" value="<?php echo esc_attr( (string) $post_id ); ?>">
-		<table class="widefat striped">
-			<thead><tr><th><?php esc_html_e( 'Attachment', 'igp-pro' ); ?></th><th><?php esc_html_e( 'Current context', 'igp-pro' ); ?></th><th><?php esc_html_e( 'New alt text', 'igp-pro' ); ?></th></tr></thead>
+		<table class="widefat striped igp-media-bulk-editor-table">
+			<thead>
+				<tr>
+					<th><?php esc_html_e( 'Attachment', 'igp-pro' ); ?></th>
+					<th><?php esc_html_e( 'Alt text', 'igp-pro' ); ?></th>
+					<th><?php esc_html_e( 'Filename base', 'igp-pro' ); ?></th>
+					<th><?php esc_html_e( 'Width', 'igp-pro' ); ?></th>
+					<th><?php esc_html_e( 'Height', 'igp-pro' ); ?></th>
+					<th><?php esc_html_e( 'Aspect ratio', 'igp-pro' ); ?></th>
+					<th><?php esc_html_e( 'Lazy loading', 'igp-pro' ); ?></th>
+				</tr>
+			</thead>
 			<tbody>
 			<?php foreach ( $rows as $attachment_id => $image ) : ?>
+				<?php
+				$current_policy = (string) ( $image['loading_policy'] ?? 'auto' );
+				if ( ! array_key_exists( $current_policy, $loading_options ) ) {
+					$current_policy = 'auto';
+				}
+				$filename_base = pathinfo( (string) ( $image['filename'] ?? '' ), PATHINFO_FILENAME );
+				?>
 				<tr>
-					<td><?php echo esc_html( '#' . (string) $attachment_id . ' ' . ( $image['filename'] ?? '' ) ); ?></td>
-					<td><?php echo esc_html( (string) ( $image['context'] ?? $image['path'] ?? '' ) ); ?></td>
-					<td><input type="text" class="regular-text" name="alt[<?php echo esc_attr( (string) $attachment_id ); ?>]" value="<?php echo esc_attr( (string) ( $image['alt'] ?? '' ) ); ?>"></td>
+					<td>
+						<strong><?php echo esc_html( '#' . (string) $attachment_id ); ?></strong><br>
+						<small><?php echo esc_html( (string) ( $image['context'] ?? $image['path'] ?? '' ) ); ?></small><br>
+						<small><?php echo esc_html( (string) ( $image['filename'] ?? '' ) ); ?> · <?php echo esc_html( absint( $image['width'] ?? 0 ) . '×' . absint( $image['height'] ?? 0 ) ); ?></small>
+					</td>
+					<td><input type="text" class="regular-text" name="media[<?php echo esc_attr( (string) $attachment_id ); ?>][alt]" value="<?php echo esc_attr( (string) ( $image['alt'] ?? '' ) ); ?>"></td>
+					<td><input type="text" class="regular-text" name="media[<?php echo esc_attr( (string) $attachment_id ); ?>][filename]" value="<?php echo esc_attr( $filename_base ); ?>" placeholder="<?php esc_attr_e( 'seo-friendly-file-name', 'igp-pro' ); ?>"></td>
+					<td><input type="number" min="1" max="6000" step="1" style="width:90px" name="media[<?php echo esc_attr( (string) $attachment_id ); ?>][width]" placeholder="<?php echo esc_attr( (string) absint( $image['width'] ?? 0 ) ); ?>"></td>
+					<td><input type="number" min="1" max="6000" step="1" style="width:90px" name="media[<?php echo esc_attr( (string) $attachment_id ); ?>][height]" placeholder="<?php echo esc_attr( (string) absint( $image['height'] ?? 0 ) ); ?>"></td>
+					<td>
+						<select name="media[<?php echo esc_attr( (string) $attachment_id ); ?>][aspect_ratio]">
+							<?php foreach ( $ratio_options as $ratio => $definition ) : ?>
+								<option value="<?php echo esc_attr( (string) $ratio ); ?>"><?php echo esc_html( (string) ( $definition['label'] ?? $ratio ) ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+					<td>
+						<select name="media[<?php echo esc_attr( (string) $attachment_id ); ?>][lazy_loading]">
+							<?php foreach ( $loading_options as $policy => $label ) : ?>
+								<option value="<?php echo esc_attr( (string) $policy ); ?>" <?php selected( $current_policy, (string) $policy ); ?>><?php echo esc_html( (string) $label ); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>
 		</table>
-		<?php submit_button( __( 'Update Attachment Alt Text', 'igp-pro' ), 'primary' ); ?>
+		<?php submit_button( __( 'Apply Bulk Image Edits', 'igp-pro' ), 'primary' ); ?>
 	</form>
 	<?php
 }
 
 /**
- * Handle bulk alt text update.
+ * Backward-compatible alt-only form wrapper retained for older callbacks.
+ */
+function igp_pro_render_media_alt_update_form( array $audit, int $post_id ): void {
+	igp_pro_render_media_bulk_editor_form( $audit, $post_id );
+}
+
+/**
+ * Handle legacy bulk alt text update.
  */
 function igp_pro_handle_media_bulk_alt_update(): void {
 	$capability = function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'media' ) : 'manage_options';
@@ -297,7 +356,47 @@ function igp_pro_handle_media_bulk_alt_update(): void {
 	$result  = function_exists( 'igp_pro_media_bulk_update_alt_text' ) ? igp_pro_media_bulk_update_alt_text( $updates ) : array( 'updated' => 0 );
 	$updated = isset( $result['updated'] ) ? absint( $result['updated'] ) : 0;
 
-	wp_safe_redirect( add_query_arg( array( 'page' => 'igp-pro-media', 'post_id' => $post_id, 'igp_media_alt_updated' => $updated ), admin_url( 'admin.php' ) ) );
+	wp_safe_redirect( add_query_arg( array( 'page' => 'igp-pro-media', 'post_id' => $post_id, 'force_refresh' => 1, 'igp_media_alt_updated' => $updated ), admin_url( 'admin.php' ) ) );
+	exit;
+}
+
+/**
+ * Handle central bulk image editor submission.
+ */
+function igp_pro_handle_media_bulk_image_update(): void {
+	$capability = function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'media' ) : 'manage_options';
+	if ( ! current_user_can( $capability ) ) {
+		wp_die( esc_html__( 'You do not have permission to update media.', 'igp-pro' ) );
+	}
+	check_admin_referer( 'igp_pro_media_bulk_image_update' );
+
+	$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+	$raw     = isset( $_POST['media'] ) && is_array( $_POST['media'] ) ? wp_unslash( $_POST['media'] ) : array();
+	$updates = array();
+
+	foreach ( $raw as $attachment_id => $control ) {
+		$attachment_id = absint( $attachment_id );
+		if ( $attachment_id <= 0 || ! is_array( $control ) ) {
+			continue;
+		}
+		$updates[ $attachment_id ] = array(
+			'alt'          => isset( $control['alt'] ) ? sanitize_text_field( (string) $control['alt'] ) : '',
+			'filename'     => isset( $control['filename'] ) ? sanitize_file_name( (string) $control['filename'] ) : '',
+			'width'        => isset( $control['width'] ) ? absint( $control['width'] ) : 0,
+			'height'       => isset( $control['height'] ) ? absint( $control['height'] ) : 0,
+			'aspect_ratio' => isset( $control['aspect_ratio'] ) ? sanitize_key( (string) $control['aspect_ratio'] ) : 'keep',
+			'lazy_loading' => isset( $control['lazy_loading'] ) ? sanitize_key( (string) $control['lazy_loading'] ) : 'auto',
+		);
+	}
+
+	$result  = function_exists( 'igp_pro_media_bulk_update_image_controls' ) ? igp_pro_media_bulk_update_image_controls( $updates, $post_id ) : array( 'updated' => 0, 'errors' => array( __( 'Media edit service unavailable.', 'igp-pro' ) ) );
+	$updated = isset( $result['updated'] ) ? absint( $result['updated'] ) : 0;
+	$args    = array( 'page' => 'igp-pro-media', 'post_id' => $post_id, 'force_refresh' => 1, 'igp_media_bulk_updated' => $updated );
+	if ( ! empty( $result['errors'] ) && is_array( $result['errors'] ) ) {
+		$args['igp_media_bulk_errors'] = rawurlencode( base64_encode( wp_json_encode( array_values( $result['errors'] ) ) ) ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	}
+
+	wp_safe_redirect( add_query_arg( $args, admin_url( 'admin.php' ) ) );
 	exit;
 }
 
@@ -315,7 +414,7 @@ function igp_pro_handle_generate_webp(): void {
 	check_admin_referer( 'igp_pro_generate_webp_' . $attachment_id );
 
 	$result = function_exists( 'igp_pro_generate_webp_for_attachment' ) ? igp_pro_generate_webp_for_attachment( $attachment_id ) : new WP_Error( 'igp_pro_webp_unavailable', __( 'WebP service unavailable.', 'igp-pro' ) );
-	$args   = array( 'page' => 'igp-pro-media', 'post_id' => $post_id );
+	$args   = array( 'page' => 'igp-pro-media', 'post_id' => $post_id, 'force_refresh' => 1 );
 	if ( is_wp_error( $result ) ) {
 		$args['igp_media_error'] = rawurlencode( $result->get_error_message() );
 	} else {

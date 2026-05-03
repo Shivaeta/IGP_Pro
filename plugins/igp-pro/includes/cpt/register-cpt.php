@@ -73,3 +73,81 @@ function igp_pro_register_post_types(): void {
 		);
 	}
 }
+
+
+/**
+ * Register read-only Post ID UI for Tour and Destination admin screens.
+ */
+function igp_pro_register_cpt_post_id_admin_ui(): void {
+	add_action( 'add_meta_boxes_tour', 'igp_pro_add_cpt_post_id_meta_box' );
+	add_action( 'add_meta_boxes_destination', 'igp_pro_add_cpt_post_id_meta_box' );
+
+	add_filter( 'manage_tour_posts_columns', 'igp_pro_add_cpt_post_id_column' );
+	add_filter( 'manage_destination_posts_columns', 'igp_pro_add_cpt_post_id_column' );
+	add_action( 'manage_tour_posts_custom_column', 'igp_pro_render_cpt_post_id_column', 10, 2 );
+	add_action( 'manage_destination_posts_custom_column', 'igp_pro_render_cpt_post_id_column', 10, 2 );
+}
+
+/**
+ * Add the read-only Post ID meta box.
+ *
+ * @param WP_Post $post Current post.
+ */
+function igp_pro_add_cpt_post_id_meta_box( WP_Post $post ): void {
+	add_meta_box(
+		'igp_pro_post_id',
+		__( 'IGP Post ID', 'igp-pro' ),
+		'igp_pro_render_cpt_post_id_meta_box',
+		sanitize_key( $post->post_type ),
+		'side',
+		'high'
+	);
+}
+
+/**
+ * Render the read-only Post ID meta box.
+ *
+ * @param WP_Post $post Current post.
+ */
+function igp_pro_render_cpt_post_id_meta_box( WP_Post $post ): void {
+	?>
+	<p class="description"><?php esc_html_e( 'Use this ID in IGP relationships, MCP changesets, and Content Graph targeting.', 'igp-pro' ); ?></p>
+	<input type="text" readonly class="widefat code" value="<?php echo esc_attr( (string) $post->ID ); ?>" onclick="this.select();">
+	<?php
+}
+
+/**
+ * Add a compact Post ID column to Tour/Destination lists.
+ *
+ * @param array<string,string> $columns Existing columns.
+ * @return array<string,string>
+ */
+function igp_pro_add_cpt_post_id_column( array $columns ): array {
+	$next = array();
+	foreach ( $columns as $key => $label ) {
+		$next[ $key ] = $label;
+		if ( 'cb' === $key ) {
+			$next['igp_post_id'] = __( 'ID', 'igp-pro' );
+		}
+	}
+
+	if ( ! isset( $next['igp_post_id'] ) ) {
+		$next['igp_post_id'] = __( 'ID', 'igp-pro' );
+	}
+
+	return $next;
+}
+
+/**
+ * Render the compact Post ID column.
+ *
+ * @param string $column  Column name.
+ * @param int    $post_id Post ID.
+ */
+function igp_pro_render_cpt_post_id_column( string $column, int $post_id ): void {
+	if ( 'igp_post_id' !== $column ) {
+		return;
+	}
+
+	echo '<code>' . esc_html( (string) absint( $post_id ) ) . '</code>';
+}
