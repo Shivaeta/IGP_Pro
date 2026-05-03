@@ -74,7 +74,8 @@ function igp_pro_run_seo_audit( int $post_id ): array {
 		'permalink'     => is_string( $permalink ) ? $permalink : '',
 		'groups'        => $groups,
 		'checks'        => $checks,
-		'hints'         => igp_pro_get_internal_link_hints( $post ),
+		'hints'         => function_exists( 'igp_pro_get_internal_link_hints' ) ? igp_pro_get_internal_link_hints( $post ) : array(),
+		'link_intel'    => function_exists( 'igp_pro_generate_internal_link_opportunities' ) ? igp_pro_generate_internal_link_opportunities( $post->ID, array( 'limit' => 8 ) ) : array(),
 		'score'         => igp_pro_seo_audit_score( $checks ),
 		'frontend_html' => array(
 			'source' => (string) ( $frontend_html['source'] ?? 'none' ),
@@ -789,6 +790,24 @@ function igp_pro_seo_audit_integration_checks(): array {
  * @return array<int,array<string,string>>
  */
 function igp_pro_get_internal_link_hints( WP_Post $post ): array {
+	if ( function_exists( 'igp_pro_generate_internal_link_opportunities' ) ) {
+		$report = igp_pro_generate_internal_link_opportunities( $post->ID, array( 'limit' => 6 ) );
+		if ( is_array( $report ) && ! empty( $report['opportunities'] ) ) {
+			$hints = array();
+			foreach ( $report['opportunities'] as $opportunity ) {
+				if ( ! is_array( $opportunity ) || 'suggested' !== ( $opportunity['status'] ?? 'suggested' ) ) {
+					continue;
+				}
+				$hints[] = array(
+					'title' => (string) ( $opportunity['target_title'] ?? $opportunity['anchor'] ?? '' ),
+					'url'   => (string) ( $opportunity['url'] ?? '' ),
+					'type'  => (string) ( $opportunity['source'] ?? $opportunity['target_type'] ?? 'internal' ),
+				);
+			}
+			return $hints;
+		}
+	}
+
 	$hints      = array();
 	$post_types = 'tour' === $post->post_type ? array( 'destination', 'tour' ) : array( 'tour', 'destination' );
 	$content    = strtolower( wp_strip_all_tags( (string) $post->post_content ) );

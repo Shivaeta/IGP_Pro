@@ -338,6 +338,12 @@ function igp_pro_get_current_snapshot_object_data( string $object_type, int $obj
 		return function_exists( 'igp_pro_get_relationships' ) ? igp_pro_get_relationships( $object_id, true ) : get_post_meta( $object_id );
 	}
 
+	if ( 'attachment_media_seo' === $object_type ) {
+		return array(
+			'_wp_attachment_image_alt' => (string) get_post_meta( $object_id, '_wp_attachment_image_alt', true ),
+		);
+	}
+
 	if ( 'settings' === $object_type ) {
 		return array(
 			'feature_flags'     => function_exists( 'igp_get_feature_flags' ) ? igp_get_feature_flags() : array(),

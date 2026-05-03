@@ -296,6 +296,7 @@ function igp_pro_get_surface_capability( string $surface ): string {
 	$surface = sanitize_key( $surface );
 	$map     = array(
 		'content_editor'      => 'igp_edit_content_graph',
+		'ai_copilot'          => 'igp_edit_content_graph',
 		'import_content'      => 'igp_import_content',
 		'settings'            => 'igp_manage_settings',
 		'seo'                 => 'igp_manage_seo',
@@ -305,6 +306,7 @@ function igp_pro_get_surface_capability( string $surface ): string {
 		'diagnostics'         => 'igp_manage_settings',
 		'templates'           => 'igp_manage_templates',
 		'media_optimization'  => 'igp_manage_media_optimization',
+		'media'               => 'igp_manage_media_optimization',
 		'mcp'                 => 'igp_use_mcp_bridge',
 	);
 

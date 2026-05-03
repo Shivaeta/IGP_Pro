@@ -15,6 +15,9 @@ function igp_pro_register_seo_admin(): void {
 	add_action( 'admin_enqueue_scripts', 'igp_pro_enqueue_seo_admin_assets' );
 	add_action( 'admin_post_igp_pro_save_seo_settings', 'igp_pro_handle_save_seo_settings' );
 	add_action( 'admin_post_igp_pro_purge_performance_cache', 'igp_pro_handle_purge_performance_cache' );
+	if ( function_exists( 'igp_pro_register_internal_linking_admin_handlers' ) ) {
+		igp_pro_register_internal_linking_admin_handlers();
+	}
 }
 
 /**
@@ -75,6 +78,15 @@ function igp_pro_render_seo_panel_page(): void {
 		<?php if ( isset( $_GET['cache-purged'] ) ) : ?>
 			<div class="notice notice-success"><p><?php esc_html_e( 'IGP Pro cache invalidated.', 'igp-pro' ); ?></p></div>
 		<?php endif; ?>
+		<?php if ( isset( $_GET['approved'] ) ) : ?>
+			<div class="notice notice-success"><p><?php esc_html_e( 'Internal link opportunity approved and stored in the Content Graph.', 'igp-pro' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['rejected'] ) ) : ?>
+			<div class="notice notice-success"><p><?php esc_html_e( 'Internal link opportunity rejected.', 'igp-pro' ); ?></p></div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['internal-link-error'] ) ) : ?>
+			<div class="notice notice-error"><p><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['internal-link-error'] ) ) ); ?></p></div>
+		<?php endif; ?>
 
 		<div class="igp-seo-grid">
 			<section class="igp-seo-card">
@@ -121,6 +133,8 @@ function igp_pro_render_seo_panel_page(): void {
 
 				<?php igp_pro_render_seo_audit_results( $audit, $selected_id ); ?>
 			</section>
+
+			<?php igp_pro_render_internal_link_intelligence_card( $selected_id ); ?>
 
 			<section class="igp-seo-card igp-seo-card--wide">
 				<h2><?php esc_html_e( 'Core Web Vitals / PageSpeed', 'igp-pro' ); ?></h2>
@@ -221,6 +235,115 @@ function igp_pro_render_seo_audit_results( $audit, int $selected_id ): void {
 	<?php else : ?>
 		<p><?php esc_html_e( 'No obvious internal-link hints found.', 'igp-pro' ); ?></p>
 	<?php endif; ?>
+	<?php
+}
+
+
+/**
+ * Render Internal Link Intelligence controls.
+ *
+ * @param int $selected_id Selected post ID.
+ */
+function igp_pro_render_internal_link_intelligence_card( int $selected_id ): void {
+	?>
+	<section class="igp-seo-card igp-seo-card--wide">
+		<h2><?php esc_html_e( 'Internal Link Intelligence', 'igp-pro' ); ?></h2>
+		<p class="description"><?php esc_html_e( 'Generate relationship-aware internal link opportunities, approve useful links into the Content Graph, or reject poor-fit suggestions. No links are auto-inserted.', 'igp-pro' ); ?></p>
+		<form method="get" class="igp-seo-audit-form">
+			<input type="hidden" name="page" value="igp-pro-seo-performance">
+			<input type="hidden" name="igp_internal_links" value="1">
+			<label><?php esc_html_e( 'Post/Page/Tour/Destination ID', 'igp-pro' ); ?><input type="number" min="1" name="post_id" value="<?php echo esc_attr( (string) $selected_id ); ?>"></label>
+			<?php submit_button( __( 'Generate Link Opportunities', 'igp-pro' ), 'secondary', 'submit', false ); ?>
+		</form>
+		<?php
+		if ( $selected_id <= 0 || ! isset( $_GET['igp_internal_links'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			return;
+		}
+		if ( ! function_exists( 'igp_pro_generate_internal_link_opportunities' ) ) {
+			echo '<div class="notice notice-warning inline"><p>' . esc_html__( 'Internal Link Intelligence service is not available.', 'igp-pro' ) . '</p></div>';
+			return;
+		}
+		$report = igp_pro_generate_internal_link_opportunities( $selected_id, array( 'limit' => 24 ) );
+		if ( is_wp_error( $report ) ) {
+			echo '<div class="notice notice-error inline"><p>' . esc_html( $report->get_error_message() ) . '</p></div>';
+			return;
+		}
+		igp_pro_render_internal_link_intelligence_report( $selected_id, is_array( $report ) ? $report : array() );
+		?>
+	</section>
+	<?php
+}
+
+/**
+ * Render an Internal Link Intelligence report.
+ *
+ * @param int   $post_id Post ID.
+ * @param array $report  Report.
+ */
+function igp_pro_render_internal_link_intelligence_report( int $post_id, array $report ): void {
+	$opportunities = isset( $report['opportunities'] ) && is_array( $report['opportunities'] ) ? $report['opportunities'] : array();
+	$orphan         = isset( $report['orphan_risk'] ) && is_array( $report['orphan_risk'] ) ? $report['orphan_risk'] : array();
+	$anchor_report  = isset( $report['anchor_report'] ) && is_array( $report['anchor_report'] ) ? $report['anchor_report'] : array();
+	?>
+	<div class="igp-internal-link-summary">
+		<p><strong><?php esc_html_e( 'Orphan risk:', 'igp-pro' ); ?></strong> <?php echo esc_html( ucfirst( (string) ( $orphan['risk'] ?? 'unknown' ) ) ); ?> — <?php echo esc_html( (string) ( $orphan['summary'] ?? '' ) ); ?></p>
+		<?php if ( ! empty( $anchor_report['has_duplicates'] ) ) : ?>
+			<p class="igp-seo-warning"><?php esc_html_e( 'Repeated anchor text detected. Review suggestions before approval.', 'igp-pro' ); ?></p>
+		<?php endif; ?>
+	</div>
+	<?php if ( empty( $opportunities ) ) : ?>
+		<p><?php esc_html_e( 'No internal link opportunities found for this content.', 'igp-pro' ); ?></p>
+		<?php return; ?>
+	<?php endif; ?>
+
+	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" class="igp-internal-link-form">
+		<input type="hidden" name="post_id" value="<?php echo esc_attr( (string) $post_id ); ?>">
+		<?php wp_nonce_field( 'igp_pro_internal_links_action' ); ?>
+		<table class="widefat striped igp-internal-link-table">
+			<thead>
+				<tr>
+					<th scope="col" class="check-column"><span class="screen-reader-text"><?php esc_html_e( 'Select', 'igp-pro' ); ?></span></th>
+					<th scope="col"><?php esc_html_e( 'Anchor', 'igp-pro' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Target', 'igp-pro' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Source', 'igp-pro' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Status', 'igp-pro' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Context / Warnings', 'igp-pro' ); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $opportunities as $opportunity ) : ?>
+					<?php
+					if ( ! is_array( $opportunity ) ) {
+						continue;
+					}
+					$status = sanitize_key( (string) ( $opportunity['status'] ?? 'suggested' ) );
+					$id     = sanitize_key( (string) ( $opportunity['id'] ?? '' ) );
+					?>
+					<tr class="is-<?php echo esc_attr( $status ); ?>">
+						<th scope="row" class="check-column">
+							<?php if ( 'suggested' === $status && '' !== $id ) : ?>
+								<input type="checkbox" name="opportunity_ids[]" value="<?php echo esc_attr( $id ); ?>">
+							<?php endif; ?>
+						</th>
+						<td><strong><?php echo esc_html( (string) ( $opportunity['anchor'] ?? '' ) ); ?></strong></td>
+						<td><a href="<?php echo esc_url( (string) ( $opportunity['url'] ?? '' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( (string) ( $opportunity['target_title'] ?? '' ) ); ?></a><br><span><?php echo esc_html( (string) ( $opportunity['target_type'] ?? '' ) ); ?></span></td>
+						<td><?php echo esc_html( (string) ( $opportunity['source'] ?? 'native' ) ); ?></td>
+						<td><?php echo esc_html( ucfirst( $status ) ); ?></td>
+						<td>
+							<?php if ( ! empty( $opportunity['context'] ) ) : ?><p><?php echo esc_html( (string) $opportunity['context'] ); ?></p><?php endif; ?>
+							<?php if ( ! empty( $opportunity['warnings'] ) && is_array( $opportunity['warnings'] ) ) : ?>
+								<ul><?php foreach ( $opportunity['warnings'] as $warning ) : ?><li><?php echo esc_html( (string) $warning ); ?></li><?php endforeach; ?></ul>
+							<?php endif; ?>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<p class="submit">
+			<button type="submit" class="button button-primary" name="action" value="igp_pro_approve_internal_links"><?php esc_html_e( 'Approve Selected Links', 'igp-pro' ); ?></button>
+			<button type="submit" class="button" name="action" value="igp_pro_reject_internal_links"><?php esc_html_e( 'Reject Selected Links', 'igp-pro' ); ?></button>
+		</p>
+	</form>
 	<?php
 }
 

@@ -185,8 +185,96 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/seo/seo-audit.php';
 	}
 
+	if ( file_exists( IGP_PRO_PATH . 'includes/seo/internal-linking.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/seo/internal-linking.php';
+	}
+
+	if ( function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_rank_math_bridge' ) ) {
+		foreach ( array(
+			'includes/integrations/rank-math/content-provider.php',
+			'includes/integrations/rank-math/schema-mapper.php',
+			'includes/integrations/rank-math/rank-math-bridge.php',
+		) as $igp_pro_rank_math_file ) {
+			if ( file_exists( IGP_PRO_PATH . $igp_pro_rank_math_file ) ) {
+				require_once IGP_PRO_PATH . $igp_pro_rank_math_file;
+			}
+		}
+	}
+
+	if ( function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_link_whisper_bridge' ) ) {
+		foreach ( array(
+			'includes/integrations/link-whisper/content-provider.php',
+			'includes/integrations/link-whisper/opportunity-mapper.php',
+			'includes/integrations/link-whisper/link-whisper-bridge.php',
+		) as $igp_pro_link_whisper_file ) {
+			if ( file_exists( IGP_PRO_PATH . $igp_pro_link_whisper_file ) ) {
+				require_once IGP_PRO_PATH . $igp_pro_link_whisper_file;
+			}
+		}
+	}
+
+	if ( function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_media_optimizer' ) ) {
+		foreach ( array(
+			'includes/media/media-inventory.php',
+			'includes/media/media-audit.php',
+			'includes/media/webp-adapter.php',
+			'includes/media/image-optimizer.php',
+			'includes/media/lazy-loading-policy.php',
+		) as $igp_pro_media_file ) {
+			if ( file_exists( IGP_PRO_PATH . $igp_pro_media_file ) ) {
+				require_once IGP_PRO_PATH . $igp_pro_media_file;
+			}
+		}
+	}
+
 	if ( file_exists( IGP_PRO_PATH . 'includes/performance/cwv.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/performance/cwv.php';
+	}
+
+
+	// Phase 14.A AI Copilot intake services. Load after registry, renderer,
+	// Content Graph, validator, logging, and snapshot foundations are available.
+	foreach ( array(
+		'includes/ai-copilot/block-aliases.php',
+		'includes/ai-copilot/yaml-contract.php',
+		'includes/ai-copilot/class-ai-copilot-yaml-parser.php',
+		'includes/ai-copilot/class-ai-copilot-normalizer.php',
+		'includes/ai-copilot/class-ai-copilot-block-map.php',
+		'includes/ai-copilot/class-ai-copilot-draft-validator.php',
+		'includes/ai-copilot/class-ai-copilot-content-mapper.php',
+		'includes/ai-copilot/class-ai-copilot-compiler.php',
+		'includes/ai-copilot/class-ai-copilot-preview.php',
+		'includes/ai-copilot/class-ai-copilot-changeset.php',
+		'includes/ai-copilot/class-ai-copilot-service.php',
+	) as $igp_pro_ai_copilot_file ) {
+		if ( file_exists( IGP_PRO_PATH . $igp_pro_ai_copilot_file ) ) {
+			require_once IGP_PRO_PATH . $igp_pro_ai_copilot_file;
+		}
+	}
+
+	// Phase 14 REST alignment. REST must call the AI Copilot service façade
+	// and must not duplicate parser/compiler/save logic.
+	if ( file_exists( IGP_PRO_PATH . 'includes/api/class-rest-ai-copilot-controller.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/api/class-rest-ai-copilot-controller.php';
+	}
+
+	// Phase 16 MCP bridge descriptors. The runtime bridge remains disabled
+	// unless the enable_mcp_bridge feature flag is explicitly enabled.
+	foreach ( array(
+		'includes/mcp/class-mcp-tool-registry.php',
+		'includes/mcp/class-mcp-ai-copilot-tools.php',
+	) as $igp_pro_mcp_file ) {
+		if ( file_exists( IGP_PRO_PATH . $igp_pro_mcp_file ) ) {
+			require_once IGP_PRO_PATH . $igp_pro_mcp_file;
+		}
+	}
+
+	if ( is_admin() && file_exists( IGP_PRO_PATH . 'includes/admin/ai-copilot-panel.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/ai-copilot-panel.php';
+	}
+
+	if ( is_admin() && file_exists( IGP_PRO_PATH . 'includes/admin/ai-copilot-changesets-panel.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/ai-copilot-changesets-panel.php';
 	}
 
 	if ( file_exists( IGP_PRO_PATH . 'includes/admin/content-editor.php' ) ) {
@@ -225,8 +313,16 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/admin/brand-panel.php';
 	}
 
+	if ( is_admin() && function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_media_optimizer' ) && file_exists( IGP_PRO_PATH . 'includes/admin/media-panel.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/media-panel.php';
+	}
+
 	if ( is_admin() && function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_starter_templates' ) && file_exists( IGP_PRO_PATH . 'includes/admin/starter-content-panel.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/admin/starter-content-panel.php';
+	}
+
+	if ( is_admin() && function_exists( 'igp_feature_enabled' ) && ( igp_feature_enabled( 'enable_rank_math_bridge' ) || igp_feature_enabled( 'enable_link_whisper_bridge' ) ) && file_exists( IGP_PRO_PATH . 'includes/admin/integrations-panel.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/admin/integrations-panel.php';
 	}
 
 	add_action( 'init', 'igp_pro_register_taxonomies', 0 );
@@ -243,6 +339,10 @@ function igp_pro_load(): void {
 		add_filter( 'the_content', 'igp_pro_ensure_content_has_page_h1', 12 );
 	}
 
+	if ( function_exists( 'igp_pro_register_lazy_loading_policy' ) ) {
+		igp_pro_register_lazy_loading_policy();
+	}
+
 	if ( function_exists( 'igp_pro_enqueue_editor_styles' ) ) {
 		add_action( 'enqueue_block_editor_assets', 'igp_pro_enqueue_editor_styles', 20 );
 	}
@@ -255,12 +355,37 @@ function igp_pro_load(): void {
 		igp_pro_register_seo_module();
 	}
 
+	if ( function_exists( 'igp_pro_register_rank_math_bridge' ) ) {
+		igp_pro_register_rank_math_bridge();
+	}
+
+	if ( function_exists( 'igp_pro_register_link_whisper_bridge' ) ) {
+		igp_pro_register_link_whisper_bridge();
+	}
+
+
 	if ( function_exists( 'igp_pro_register_booking_module' ) ) {
 		igp_pro_register_booking_module();
 	}
 
 	if ( is_admin() && function_exists( 'igp_pro_register_content_editor_admin' ) ) {
 		igp_pro_register_content_editor_admin();
+	}
+
+	if ( is_admin() && function_exists( 'igp_pro_register_ai_copilot_admin' ) ) {
+		igp_pro_register_ai_copilot_admin();
+	}
+
+	if ( is_admin() && function_exists( 'igp_pro_register_ai_copilot_changesets_admin' ) ) {
+		igp_pro_register_ai_copilot_changesets_admin();
+	}
+
+	if ( class_exists( 'IGP_REST_AI_Copilot_Controller' ) ) {
+		IGP_REST_AI_Copilot_Controller::register();
+	}
+
+	if ( class_exists( 'IGP_MCP_AI_Copilot_Tools' ) ) {
+		IGP_MCP_AI_Copilot_Tools::register();
 	}
 
 	if ( is_admin() && function_exists( 'igp_pro_register_booking_admin' ) ) {
@@ -295,8 +420,16 @@ function igp_pro_load(): void {
 		igp_pro_register_brand_admin();
 	}
 
+	if ( is_admin() && function_exists( 'igp_pro_register_media_admin' ) ) {
+		igp_pro_register_media_admin();
+	}
+
 	if ( is_admin() && function_exists( 'igp_pro_register_starter_content_admin' ) ) {
 		igp_pro_register_starter_content_admin();
+	}
+
+	if ( is_admin() && function_exists( 'igp_pro_register_integrations_admin' ) ) {
+		igp_pro_register_integrations_admin();
 	}
 
 	if ( is_admin() && function_exists( 'igp_pro_register_relationships_panel_admin' ) ) {

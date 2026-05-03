@@ -1,15 +1,25 @@
 <?php
 /**
- * Main template.
+ * Main index template.
  *
  * @package IGP_Travel_Pro
  */
+
+defined( 'ABSPATH' ) || exit;
 get_header();
 ?>
 <section class="igp-theme-archive-hero">
 	<div class="igp-theme-container">
-		<p class="igp-theme-eyebrow"><?php esc_html_e( 'Travel stories', 'igp-travel-pro' ); ?></p>
-		<h1><?php is_home() ? esc_html_e( 'Latest updates', 'igp-travel-pro' ) : the_archive_title(); ?></h1>
+		<p class="igp-theme-eyebrow"><?php esc_html_e( 'Travel intelligence', 'igp-travel-pro' ); ?></p>
+		<h1>
+			<?php
+			if ( is_home() ) {
+				esc_html_e( 'Latest travel updates', 'igp-travel-pro' );
+			} else {
+				the_archive_title();
+			}
+			?>
+		</h1>
 	</div>
 </section>
 <section class="igp-theme-container igp-theme-grid-wrap">
@@ -19,9 +29,9 @@ get_header();
 				<?php igp_travel_pro_post_card( get_post() ); ?>
 			<?php endwhile; ?>
 		</div>
-		<?php the_posts_pagination(); ?>
+		<?php the_posts_pagination( array( 'mid_size' => 2 ) ); ?>
 	<?php else : ?>
-		<p><?php esc_html_e( 'No content found.', 'igp-travel-pro' ); ?></p>
+		<p class="igp-theme-empty"><?php esc_html_e( 'No content found.', 'igp-travel-pro' ); ?></p>
 	<?php endif; ?>
 </section>
 <?php

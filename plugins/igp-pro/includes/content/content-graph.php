@@ -178,6 +178,10 @@ function igp_pro_render_content_graph( array $graph, array $context = array() ) 
 		);
 	}
 
+	if ( function_exists( 'igp_pro_render_approved_internal_links' ) ) {
+		$output .= igp_pro_render_approved_internal_links( $graph, $context );
+	}
+
 	return $output;
 }
 

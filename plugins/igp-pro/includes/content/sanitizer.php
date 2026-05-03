@@ -40,8 +40,48 @@ function igp_pro_sanitize_content_graph_payload( array $graph ): array {
 
 	if ( isset( $graph['seo'] ) && is_array( $graph['seo'] ) ) {
 		$sanitized['seo'] = array();
-		if ( isset( $graph['seo']['h1'] ) ) {
-			$sanitized['seo']['h1'] = sanitize_text_field( (string) $graph['seo']['h1'] );
+		foreach ( array( 'h1', 'title', 'canonical_url', 'robots', 'og_title', 'schema_policy' ) as $seo_text_key ) {
+			if ( isset( $graph['seo'][ $seo_text_key ] ) ) {
+				$sanitized['seo'][ $seo_text_key ] = 'canonical_url' === $seo_text_key ? esc_url_raw( (string) $graph['seo'][ $seo_text_key ] ) : sanitize_text_field( (string) $graph['seo'][ $seo_text_key ] );
+			}
+		}
+		foreach ( array( 'description', 'og_description' ) as $seo_textarea_key ) {
+			if ( isset( $graph['seo'][ $seo_textarea_key ] ) ) {
+				$sanitized['seo'][ $seo_textarea_key ] = sanitize_textarea_field( (string) $graph['seo'][ $seo_textarea_key ] );
+			}
+		}
+		if ( isset( $graph['seo']['og_image_id'] ) ) {
+			$sanitized['seo']['og_image_id'] = absint( $graph['seo']['og_image_id'] );
+		}
+		foreach ( array( 'focus_topics' ) as $seo_array_key ) {
+			if ( isset( $graph['seo'][ $seo_array_key ] ) && is_array( $graph['seo'][ $seo_array_key ] ) ) {
+				$sanitized['seo'][ $seo_array_key ] = array_values( array_filter( array_map( 'sanitize_text_field', $graph['seo'][ $seo_array_key ] ) ) );
+			}
+		}
+		if ( isset( $graph['seo']['internal_link_targets'] ) && is_array( $graph['seo']['internal_link_targets'] ) ) {
+			$sanitized['seo']['internal_link_targets'] = array();
+			foreach ( $graph['seo']['internal_link_targets'] as $link_target ) {
+				if ( function_exists( 'igp_pro_normalize_internal_link_target' ) ) {
+					$normalized_link = igp_pro_normalize_internal_link_target( $link_target );
+					if ( ! empty( $normalized_link ) ) {
+						$sanitized['seo']['internal_link_targets'][] = $normalized_link;
+					}
+				} elseif ( is_array( $link_target ) ) {
+					$anchor = sanitize_text_field( (string) ( $link_target['anchor'] ?? $link_target['label'] ?? '' ) );
+					$url    = esc_url_raw( (string) ( $link_target['url'] ?? '' ) );
+					if ( '' !== $anchor && '' !== $url ) {
+						$sanitized['seo']['internal_link_targets'][] = array(
+							'id'             => sanitize_key( (string) ( $link_target['id'] ?? '' ) ),
+							'target_post_id' => absint( $link_target['target_post_id'] ?? 0 ),
+							'url'            => $url,
+							'anchor'         => $anchor,
+							'label'          => $anchor,
+							'source'         => sanitize_key( (string) ( $link_target['source'] ?? 'approved' ) ),
+							'status'         => 'approved',
+						);
+					}
+				}
+			}
 		}
 	}
 

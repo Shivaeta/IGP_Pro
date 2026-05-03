@@ -132,3 +132,16 @@
 	.igp-seo-audit-groups { grid-template-columns: 1fr; }
 	.igp-seo-audit-summary { align-items: flex-start; flex-direction: column; }
 }
+
+.igp-internal-link-summary {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 10px;
+	margin: 14px 0;
+	padding: 12px 14px;
+}
+.igp-internal-link-form { margin-top: 14px; }
+.igp-internal-link-table td span { color: #646970; font-size: 12px; }
+.igp-internal-link-table tr.is-approved td { background: #f0f6fc; }
+.igp-internal-link-table tr.is-rejected td { color: #646970; opacity: .78; }
+.igp-internal-link-table ul { margin: 4px 0 0 18px; }

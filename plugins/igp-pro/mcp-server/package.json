@@ -1,0 +1,21 @@
+{
+  "name": "igp-mcp-bridge",
+  "version": "1.0.0",
+  "description": "MCP bridge for IGP Pro AI Copilot REST services.",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "igp-mcp-bridge": "./server.js"
+  },
+  "scripts": {
+    "start": "node ./server.js",
+    "check": "node --check ./server.js && node --check ./src/client.js && node --check ./src/tools.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "^1.0.0",
+    "zod": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

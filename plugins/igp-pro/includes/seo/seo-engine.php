@@ -51,6 +51,10 @@ function igp_pro_output_seo_head(): void {
 		return;
 	}
 
+	if ( function_exists( 'igp_pro_rank_math_bridge_owns_frontend_output' ) && igp_pro_rank_math_bridge_owns_frontend_output() ) {
+		return;
+	}
+
 	$settings    = igp_pro_get_seo_settings();
 	$title       = igp_pro_generate_seo_title( $post_id );
 	$description = igp_pro_generate_meta_description( $post_id );

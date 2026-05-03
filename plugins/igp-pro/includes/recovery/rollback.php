@@ -197,6 +197,14 @@ function igp_pro_restore_snapshot_data( string $object_type, int $object_id, $be
 		);
 	}
 
+	if ( 'attachment_media_seo' === $object_type ) {
+		if ( ! is_array( $before_data ) || ! array_key_exists( '_wp_attachment_image_alt', $before_data ) ) {
+			return new WP_Error( 'igp_pro_snapshot_invalid_attachment_media_seo', __( 'Snapshot does not contain restorable attachment media SEO data.', 'igp-pro' ) );
+		}
+		update_post_meta( $object_id, '_wp_attachment_image_alt', sanitize_text_field( (string) $before_data['_wp_attachment_image_alt'] ) );
+		return true;
+	}
+
 	if ( 'settings' === $object_type ) {
 		if ( ! is_array( $before_data ) ) {
 			return new WP_Error( 'igp_pro_snapshot_invalid_settings_data', __( 'Snapshot does not contain restorable settings.', 'igp-pro' ) );

@@ -1,0 +1,137 @@
+{
+    "snapshot_id": "snap_20260502_221605_jdmiysnq",
+    "object_type": "content_graph",
+    "object_id": 2,
+    "before_data": {
+        "version": "v1",
+        "sections": [
+            {
+                "block_id": "hero",
+                "data": {
+                    "heading": "heading",
+                    "subheading": "",
+                    "background_image": {
+                        "url": "http://igptravel.local/wp-content/uploads/2026/05/0619-0941_bali-scaled.jpg",
+                        "alt": "0619-0941_bali"
+                    },
+                    "cta": {
+                        "label": "",
+                        "url": ""
+                    },
+                    "enable_search": false
+                },
+                "id": "section_1777744500649_8216"
+            },
+            {
+                "block_id": "tour_cards",
+                "data": {
+                    "eyebrow": "Vacation Packages",
+                    "title": "Popular Tours",
+                    "description": "",
+                    "source": "query",
+                    "items": [],
+                    "destination": [],
+                    "layout": "grid",
+                    "columns": 3,
+                    "limit": 6,
+                    "show_price": true,
+                    "show_rating": true,
+                    "show_excerpt": true,
+                    "show_meta": true,
+                    "cta_label": "Book a tour",
+                    "image_ratio": "landscape",
+                    "variant": "elevated"
+                },
+                "id": "section_1777744514086_1736"
+            },
+            {
+                "block_id": "faq",
+                "data": {
+                    "title": "Frequently Asked Questions",
+                    "items": [
+                        {
+                            "question": "Question",
+                            "answer": "Answer"
+                        }
+                    ]
+                },
+                "id": "section_1777744520212_5583"
+            },
+            {
+                "block_id": "itinerary",
+                "data": {
+                    "title": "Itinerary",
+                    "days": [
+                        {
+                            "day_title": "Day 1",
+                            "description": "Add itinerary details.",
+                            "meals": "",
+                            "stay": ""
+                        }
+                    ]
+                },
+                "id": "section_1777744526247_4046"
+            },
+            {
+                "block_id": "gallery",
+                "data": {
+                    "title": "heading",
+                    "images": [
+                        {
+                            "url": "",
+                            "alt": "",
+                            "caption": ""
+                        }
+                    ],
+                    "layout": "grid",
+                    "columns": 3
+                },
+                "id": "section_1777744531692_7234"
+            },
+            {
+                "block_id": "cta",
+                "data": {
+                    "eyebrow": "Ready to travel?",
+                    "heading": "Plan your next private tour with confidence",
+                    "subheading": "Talk to a specialist and convert your idea into a structured itinerary.",
+                    "button": {
+                        "label": "Start planning",
+                        "url": "/contact/"
+                    },
+                    "secondary_button": {
+                        "label": "Browse tours",
+                        "url": "/tours/"
+                    },
+                    "alignment": "center",
+                    "variant": "solid",
+                    "show_badges": true,
+                    "badges": [
+                        {
+                            "label": "Best-price guidance"
+                        },
+                        {
+                            "label": "Flexible itinerary"
+                        },
+                        {
+                            "label": "Local support"
+                        }
+                    ]
+                },
+                "id": "section_1777744539986_6741"
+            }
+        ]
+    },
+    "after_data": null,
+    "actor_user_id": 1,
+    "source_module": "internal-linking",
+    "created_at": "2026-05-02T22:16:05+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "e5b77e9d0055f9c63000cfe038168a7119f021e3eca882a04d1832746a528274",
+    "after_hash": "",
+    "current_hash_at_create": "e5b77e9d0055f9c63000cfe038168a7119f021e3eca882a04d1832746a528274",
+    "context": {
+        "actor_type": "human",
+        "source_module": "internal-linking",
+        "reason": "approve_internal_links"
+    }
+}
