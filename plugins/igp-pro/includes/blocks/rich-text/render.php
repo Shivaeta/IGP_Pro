@@ -12,7 +12,7 @@ $title     = isset( $resolved_data['title'] ) ? sanitize_text_field( (string) $r
 $content   = isset( $resolved_data['content'] ) ? wp_kses_post( (string) $resolved_data['content'] ) : '';
 $alignment = igp_pro_enum( $resolved_data['alignment'] ?? 'left', array( 'left', 'center', 'right' ), 'left' );
 $width     = igp_pro_enum( $resolved_data['width'] ?? 'normal', array( 'normal', 'wide', 'narrow' ), 'normal' );
-$variant   = igp_pro_enum( $resolved_data['variant'] ?? 'default', array( 'default', 'lead', 'panel', 'quote' ), 'default' );
+$variant   = igp_pro_enum( function_exists( 'igp_pro_get_legacy_visual_variant' ) ? igp_pro_get_legacy_visual_variant( 'rich_text', $resolved_data, 'default' ) : 'default', array( 'default', 'lead', 'panel', 'quote' ), 'default' );
 
 if ( '' === trim( wp_strip_all_tags( $content ) ) && '' === $title && '' === $eyebrow ) {
 	return '';

@@ -1,0 +1,475 @@
+{
+    "snapshot_id": "snap_20260504_065834_msqgkwsn",
+    "object_type": "content_graph",
+    "object_id": 103,
+    "before_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": []
+        },
+        "post_content": "",
+        "meta_description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+        "sync_status": ""
+    },
+    "after_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": [
+                {
+                    "id": "section_0_hero_ac5b447a",
+                    "block_id": "hero",
+                    "block": "hero",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Private Rajasthan Palace Tour",
+                            "level": "h2",
+                            "eyebrow": "Featured travel template",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "centered-minimal",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "subheading": "Luxury journeys designed around privacy, comfort, and cultural depth.",
+                        "background_image": {
+                            "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+                            "alt": "Private Rajasthan Palace Tour"
+                        },
+                        "cta": {
+                            "label": "Start planning",
+                            "url": "/contact/"
+                        },
+                        "enable_search": false
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_tour_facts_57f3e072",
+                    "block_id": "tour_facts",
+                    "block": "tour_facts",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Quick Tour Facts",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "grid",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "intro": "Use structured facts for scanning and schema-aware summaries.",
+                        "facts": [
+                            {
+                                "label": "Duration",
+                                "value": "6 days",
+                                "icon": "calendar",
+                                "note": ""
+                            },
+                            {
+                                "label": "Primary destination",
+                                "value": "Rajasthan",
+                                "icon": "location",
+                                "note": ""
+                            },
+                            {
+                                "label": "Travel style",
+                                "value": "Private guided tour",
+                                "icon": "star",
+                                "note": ""
+                            },
+                            {
+                                "label": "Best for",
+                                "value": "Couples, families, and small groups",
+                                "icon": "users",
+                                "note": ""
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_package_tiers_65e48a78",
+                    "block_id": "package_tiers",
+                    "block": "package_tiers",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Package Tiers",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "comparison",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "intro": "Compare package options before enquiry.",
+                        "tiers": [
+                            {
+                                "name": "Standard",
+                                "price": "35000",
+                                "currency": "INR",
+                                "duration": "6 days",
+                                "description": "Comfortable stays and essential inclusions.",
+                                "features": [
+                                    {
+                                        "item": "Private transfers"
+                                    },
+                                    {
+                                        "item": "Daily breakfast"
+                                    }
+                                ],
+                                "highlight": false,
+                                "cta_label": "Enquire now",
+                                "cta_url": "/contact/"
+                            },
+                            {
+                                "name": "Premium",
+                                "price": "62000",
+                                "currency": "INR",
+                                "duration": "6 days",
+                                "description": "Upgraded hotels and curated experiences.",
+                                "features": [
+                                    {
+                                        "item": "Boutique hotels"
+                                    },
+                                    {
+                                        "item": "Expert guide"
+                                    }
+                                ],
+                                "highlight": true,
+                                "cta_label": "Enquire now",
+                                "cta_url": "/contact/"
+                            }
+                        ],
+                        "note": "Prices are placeholders and should be updated before publishing."
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_route_timeline_4a364652",
+                    "block_id": "route_timeline",
+                    "block": "route_timeline",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Route Timeline",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "timeline",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "intro": "Replace this route with the final itinerary before publishing.",
+                        "stops": [
+                            {
+                                "day": "Day 1",
+                                "title": "Arrival",
+                                "location": "Rajasthan",
+                                "duration": "Half day",
+                                "description": "Arrival support and orientation.",
+                                "highlights": [
+                                    {
+                                        "item": "Airport transfer"
+                                    },
+                                    {
+                                        "item": "Welcome briefing"
+                                    }
+                                ]
+                            },
+                            {
+                                "day": "Day 2",
+                                "title": "Local exploration",
+                                "location": "Rajasthan",
+                                "duration": "Full day",
+                                "description": "Guided sightseeing and cultural experiences.",
+                                "highlights": [
+                                    {
+                                        "item": "City tour"
+                                    },
+                                    {
+                                        "item": "Local experience"
+                                    }
+                                ]
+                            },
+                            {
+                                "day": "Day 3",
+                                "title": "Flexible extension",
+                                "location": "Rajasthan",
+                                "duration": "Full day",
+                                "description": "Add nearby places based on traveler interests.",
+                                "highlights": [
+                                    {
+                                        "item": "Optional extension"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_visa_requirements_d3d438b1",
+                    "block_id": "visa_requirements",
+                    "block": "visa_requirements",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Travel Requirements",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "checklist",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "intro": "Confirm current entry and travel rules before publishing or operating the package.",
+                        "requirements": [
+                            {
+                                "title": "ID / Passport",
+                                "description": "Carry valid identity documents for hotel check-in and local access.",
+                                "required": true,
+                                "applies_to": "All travelers",
+                                "link_label": "",
+                                "link_url": ""
+                            },
+                            {
+                                "title": "Permits",
+                                "description": "Regional permits may be required for selected routes.",
+                                "required": false,
+                                "applies_to": "Selected routes",
+                                "link_label": "",
+                                "link_url": ""
+                            }
+                        ],
+                        "documents": [
+                            {
+                                "item": "Government ID",
+                                "note": "Required for hotel check-in."
+                            },
+                            {
+                                "item": "Travel insurance",
+                                "note": "Recommended."
+                            }
+                        ],
+                        "disclaimer": "Requirements are placeholders and must be verified before publication.",
+                        "last_updated": "2026-05-02"
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_reviews_summary_93ad361b",
+                    "block_id": "reviews_summary",
+                    "block": "reviews_summary",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Traveler Trust",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "summary",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "average_rating": 4.7999999999999998,
+                        "review_count": 128,
+                        "rating_source": "Verified travelers",
+                        "summary": "Guests value the structured planning, responsive support, and local expertise.",
+                        "breakdown": [
+                            {
+                                "label": "Planning",
+                                "rating": 4.9000000000000004
+                            },
+                            {
+                                "label": "Support",
+                                "rating": 4.7999999999999998
+                            }
+                        ],
+                        "testimonials": [
+                            {
+                                "quote": "Well planned, clear communication, and smooth execution.",
+                                "name": "A verified traveler",
+                                "location": "India",
+                                "rating": 5
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_expert_box_2dd1454a",
+                    "block_id": "expert_box",
+                    "block": "expert_box",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Talk to a Travel Consultant",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "profile",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "name": "IGP Travel Expert",
+                        "role": "Destination specialist",
+                        "bio": "Use expert assistance to refine routing, timing, and inclusions before publishing the final package.",
+                        "image": {
+                            "url": "",
+                            "alt": ""
+                        },
+                        "phone": "",
+                        "email": "hello@example.com",
+                        "cta_label": "Ask an expert",
+                        "cta_url": "/contact/",
+                        "specialties": [
+                            {
+                                "item": "Routing"
+                            },
+                            {
+                                "item": "Hotel selection"
+                            },
+                            {
+                                "item": "Local experiences"
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_brochure_cta_5ab0f288",
+                    "block_id": "brochure_cta",
+                    "block": "brochure_cta",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Download a Brochure",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "banner",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "description": "Offer a PDF itinerary or capture enquiries through a brochure request workflow.",
+                        "file_url": "/brochure.pdf",
+                        "button_label": "Download brochure",
+                        "secondary_label": "Request custom plan",
+                        "secondary_url": "/contact/",
+                        "form_note": "Replace with your real brochure and enquiry workflow."
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_faq_775c24a8",
+                    "block_id": "faq",
+                    "block": "faq",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Common Questions",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "accordion",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "items": [
+                            {
+                                "question": "Can this package be customized?",
+                                "answer": "Yes. The itinerary, hotel category, pacing, and inclusions can be adjusted for the traveler profile."
+                            },
+                            {
+                                "question": "Is this content editable?",
+                                "answer": "Yes. All sections are stored as structured IGP Content Graph data."
+                            }
+                        ]
+                    },
+                    "children": []
+                }
+            ],
+            "seo": {
+                "h1": "Private Rajasthan Palace Tour",
+                "title": "Private Rajasthan Palace Tour",
+                "canonical_url": "",
+                "robots": "index,follow",
+                "schema_policy": "tourism_default",
+                "description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+                "focus_topics": [
+                    "Luxury private travel",
+                    "travel packages",
+                    "Rajasthan"
+                ]
+            }
+        },
+        "post_content": "<!-- wp:igp-pro/hero {\"heading\":{\"text\":\"Private Rajasthan Palace Tour\",\"level\":\"h2\",\"eyebrow\":\"Featured travel template\",\"visible\":true},\"style\":{\"variant\":\"centered-minimal\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"subheading\":\"Luxury journeys designed around privacy, comfort, and cultural depth.\",\"background_image\":{\"url\":\"/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg\",\"alt\":\"Private Rajasthan Palace Tour\"},\"cta\":{\"label\":\"Start planning\",\"url\":\"/contact/\"},\"enable_search\":false} /--><!-- wp:igp-pro/tour-facts {\"heading\":{\"text\":\"Quick Tour Facts\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"grid\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"intro\":\"Use structured facts for scanning and schema-aware summaries.\",\"facts\":[{\"label\":\"Duration\",\"value\":\"6 days\",\"icon\":\"calendar\",\"note\":\"\"},{\"label\":\"Primary destination\",\"value\":\"Rajasthan\",\"icon\":\"location\",\"note\":\"\"},{\"label\":\"Travel style\",\"value\":\"Private guided tour\",\"icon\":\"star\",\"note\":\"\"},{\"label\":\"Best for\",\"value\":\"Couples, families, and small groups\",\"icon\":\"users\",\"note\":\"\"}]} /--><!-- wp:igp-pro/package-tiers {\"heading\":{\"text\":\"Package Tiers\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"comparison\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"intro\":\"Compare package options before enquiry.\",\"tiers\":[{\"name\":\"Standard\",\"price\":\"35000\",\"currency\":\"INR\",\"duration\":\"6 days\",\"description\":\"Comfortable stays and essential inclusions.\",\"features\":[{\"item\":\"Private transfers\"},{\"item\":\"Daily breakfast\"}],\"highlight\":false,\"cta_label\":\"Enquire now\",\"cta_url\":\"/contact/\"},{\"name\":\"Premium\",\"price\":\"62000\",\"currency\":\"INR\",\"duration\":\"6 days\",\"description\":\"Upgraded hotels and curated experiences.\",\"features\":[{\"item\":\"Boutique hotels\"},{\"item\":\"Expert guide\"}],\"highlight\":true,\"cta_label\":\"Enquire now\",\"cta_url\":\"/contact/\"}],\"note\":\"Prices are placeholders and should be updated before publishing.\"} /--><!-- wp:igp-pro/route-timeline {\"heading\":{\"text\":\"Route Timeline\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"timeline\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"intro\":\"Replace this route with the final itinerary before publishing.\",\"stops\":[{\"day\":\"Day 1\",\"title\":\"Arrival\",\"location\":\"Rajasthan\",\"duration\":\"Half day\",\"description\":\"Arrival support and orientation.\",\"highlights\":[{\"item\":\"Airport transfer\"},{\"item\":\"Welcome briefing\"}]},{\"day\":\"Day 2\",\"title\":\"Local exploration\",\"location\":\"Rajasthan\",\"duration\":\"Full day\",\"description\":\"Guided sightseeing and cultural experiences.\",\"highlights\":[{\"item\":\"City tour\"},{\"item\":\"Local experience\"}]},{\"day\":\"Day 3\",\"title\":\"Flexible extension\",\"location\":\"Rajasthan\",\"duration\":\"Full day\",\"description\":\"Add nearby places based on traveler interests.\",\"highlights\":[{\"item\":\"Optional extension\"}]}]} /--><!-- wp:igp-pro/visa-requirements {\"heading\":{\"text\":\"Travel Requirements\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"checklist\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"intro\":\"Confirm current entry and travel rules before publishing or operating the package.\",\"requirements\":[{\"title\":\"ID / Passport\",\"description\":\"Carry valid identity documents for hotel check-in and local access.\",\"required\":true,\"applies_to\":\"All travelers\",\"link_label\":\"\",\"link_url\":\"\"},{\"title\":\"Permits\",\"description\":\"Regional permits may be required for selected routes.\",\"required\":false,\"applies_to\":\"Selected routes\",\"link_label\":\"\",\"link_url\":\"\"}],\"documents\":[{\"item\":\"Government ID\",\"note\":\"Required for hotel check-in.\"},{\"item\":\"Travel insurance\",\"note\":\"Recommended.\"}],\"disclaimer\":\"Requirements are placeholders and must be verified before publication.\",\"last_updated\":\"2026-05-02\"} /--><!-- wp:igp-pro/reviews-summary {\"heading\":{\"text\":\"Traveler Trust\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"summary\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"average_rating\":4.7999999999999998,\"review_count\":128,\"rating_source\":\"Verified travelers\",\"summary\":\"Guests value the structured planning, responsive support, and local expertise.\",\"breakdown\":[{\"label\":\"Planning\",\"rating\":4.9000000000000004},{\"label\":\"Support\",\"rating\":4.7999999999999998}],\"testimonials\":[{\"quote\":\"Well planned, clear communication, and smooth execution.\",\"name\":\"A verified traveler\",\"location\":\"India\",\"rating\":5}]} /--><!-- wp:igp-pro/expert-box {\"heading\":{\"text\":\"Talk to a Travel Consultant\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"profile\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"name\":\"IGP Travel Expert\",\"role\":\"Destination specialist\",\"bio\":\"Use expert assistance to refine routing, timing, and inclusions before publishing the final package.\",\"image\":{\"url\":\"\",\"alt\":\"\"},\"phone\":\"\",\"email\":\"hello@example.com\",\"cta_label\":\"Ask an expert\",\"cta_url\":\"/contact/\",\"specialties\":[{\"item\":\"Routing\"},{\"item\":\"Hotel selection\"},{\"item\":\"Local experiences\"}]} /--><!-- wp:igp-pro/brochure-cta {\"heading\":{\"text\":\"Download a Brochure\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"banner\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"description\":\"Offer a PDF itinerary or capture enquiries through a brochure request workflow.\",\"file_url\":\"/brochure.pdf\",\"button_label\":\"Download brochure\",\"secondary_label\":\"Request custom plan\",\"secondary_url\":\"/contact/\",\"form_note\":\"Replace with your real brochure and enquiry workflow.\"} /--><!-- wp:igp-pro/faq {\"heading\":{\"text\":\"Common Questions\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"accordion\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"items\":[{\"question\":\"Can this package be customized?\",\"answer\":\"Yes. The itinerary, hotel category, pacing, and inclusions can be adjusted for the traveler profile.\"},{\"question\":\"Is this content editable?\",\"answer\":\"Yes. All sections are stored as structured IGP Content Graph data.\"}]} /-->",
+        "meta_description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+        "sync_status": "synced"
+    },
+    "actor_user_id": 1,
+    "source_module": "starter-template-importer",
+    "created_at": "2026-05-04T06:58:34+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "69f6445110d1670fbfc253ef713dcb8430858308654fb9d5861f753bb463a1bf",
+    "after_hash": "e898ec92aa8b2572d692801049a05cf4531aee0b4105e25068aebf790da6c00e",
+    "current_hash_at_create": "2831cfaf21c1819f4a9572516c549c6108c2b9a117cebb082adc1ee0b585d8a8",
+    "context": {
+        "source_module": "starter-template-importer",
+        "actor_type": "import",
+        "reason": "starter_template_import"
+    }
+}

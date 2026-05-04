@@ -178,8 +178,9 @@ class IGP_AI_Copilot_Changeset {
 			if ( ! $post instanceof WP_Post ) {
 				return new WP_Error( 'igp_ai_changeset_target_missing', __( 'Target post for this changeset no longer exists.', 'igp-pro' ) );
 			}
-			if ( ! current_user_can( 'edit_post', $approved_id ) ) {
-				return new WP_Error( 'igp_ai_changeset_forbidden', __( 'You do not have permission to approve this changeset.', 'igp-pro' ) );
+			$approval_capability = 'igp_publish_ai_changes';
+			if ( ! current_user_can( $approval_capability ) || ! current_user_can( 'edit_post', $approved_id ) ) {
+				return new WP_Error( 'igp_ai_changeset_forbidden', __( 'You do not have permission to approve this AI changeset.', 'igp-pro' ) );
 			}
 
 			$before = function_exists( 'igp_pro_load_content_graph' ) ? igp_pro_load_content_graph( $approved_id ) : array();
@@ -205,8 +206,9 @@ class IGP_AI_Copilot_Changeset {
 				$snapshot_id = is_string( $snapshot ) ? $snapshot : '';
 			}
 		} else {
-			if ( ! current_user_can( 'edit_posts' ) ) {
-				return new WP_Error( 'igp_ai_changeset_forbidden', __( 'You do not have permission to approve this changeset.', 'igp-pro' ) );
+			$approval_capability = 'igp_publish_ai_changes';
+			if ( ! current_user_can( $approval_capability ) ) {
+				return new WP_Error( 'igp_ai_changeset_forbidden', __( 'You do not have permission to approve this AI changeset.', 'igp-pro' ) );
 			}
 			if ( ! post_type_exists( $post_type ) ) {
 				return new WP_Error( 'igp_ai_post_type_unavailable', __( 'Target post type is unavailable.', 'igp-pro' ) );
@@ -244,25 +246,27 @@ class IGP_AI_Copilot_Changeset {
 			}
 		}
 
-		if ( ! function_exists( 'igp_pro_save_content_graph' ) ) {
-			return new WP_Error( 'igp_ai_save_service_missing', __( 'Content Graph save service is unavailable.', 'igp-pro' ) );
+		$seo = isset( $record['seo'] ) && is_array( $record['seo'] ) ? $record['seo'] : array();
+		if ( ! class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+			return new WP_Error( 'igp_ai_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
 		}
 
-		$save = igp_pro_save_content_graph( $approved_id, $graph );
+		$save = IGP_Content_Graph_Save_Service::save(
+			$approved_id,
+			$graph,
+			array(
+				'check_capability' => false,
+				'meta_description' => isset( $seo['meta_description'] ) ? (string) $seo['meta_description'] : '',
+				'source_module'    => 'ai_copilot_changeset',
+				'actor_type'       => 'human',
+				'reason'           => 'approve_ai_changeset',
+			)
+		);
 		if ( is_wp_error( $save ) ) {
 			return $save;
 		}
-
-		if ( function_exists( 'igp_pro_sync_content_graph_to_post_content' ) ) {
-			$sync = igp_pro_sync_content_graph_to_post_content( $approved_id, $graph );
-			if ( is_wp_error( $sync ) ) {
-				return $sync;
-			}
-		}
-
-		$seo = isset( $record['seo'] ) && is_array( $record['seo'] ) ? $record['seo'] : array();
-		if ( function_exists( 'igp_pro_save_meta_description' ) && ! empty( $seo['meta_description'] ) ) {
-			igp_pro_save_meta_description( $approved_id, (string) $seo['meta_description'] );
+		if ( isset( $save['snapshot_id'] ) && '' !== (string) $save['snapshot_id'] ) {
+			$snapshot_id = (string) $save['snapshot_id'];
 		}
 
 		$record['status']               = 'approved';

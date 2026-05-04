@@ -46,3 +46,26 @@
   background: #f6f7f7;
 }
 .column-igp_post_id { width: 72px; }
+
+/* UI-R2 schema editor parity controls */
+.igp-pro-section-depth-1 { margin-left: 18px; border-left: 3px solid #dcdcde; }
+.igp-pro-section-depth-2 { margin-left: 32px; border-left: 3px solid #c3c4c7; }
+.igp-pro-child-section-control { margin-top: 18px; padding: 12px; background: #f6f7f7; border: 1px solid #dcdcde; border-radius: 6px; }
+.igp-pro-child-section-control select { max-width: 100%; margin-right: 8px; }
+.igp-pro-child-section-list { margin-top: 12px; }
+.igp-pro-repeater-header,
+.igp-pro-repeater-actions,
+.igp-pro-repeater-scalar,
+.igp-pro-relationship-search,
+.igp-pro-button-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.igp-pro-repeater-item { border: 1px solid #dcdcde; background: #fff; padding: 12px; margin: 12px 0; border-radius: 6px; }
+.igp-pro-repeater-header { justify-content: space-between; margin-bottom: 8px; }
+.igp-pro-repeater-scalar { margin: 8px 0; }
+.igp-pro-repeater-scalar input { min-width: 220px; flex: 1; }
+.igp-pro-relationship-list { max-height: 260px; overflow: auto; border: 1px solid #dcdcde; background: #fff; padding: 8px; margin-top: 8px; }
+.igp-pro-relationship-option { display: block; padding: 4px 2px; }
+.igp-pro-selected-relationships { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.igp-pro-relation-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border: 1px solid #8c8f94; border-radius: 999px; background: #fff; }
+.igp-pro-relation-chip.is-invalid { border-color: #d63638; color: #8a2424; background: #fcf0f1; }
+.igp-pro-block-editor-repeater-row,
+.igp-pro-block-editor-repeater-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }

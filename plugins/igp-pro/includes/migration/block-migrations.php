@@ -108,7 +108,9 @@ function igp_migrate_block_1_0_to_2_0( string $block_id, array $section, array $
 		$data = igp_pro_migrate_block_heading_data_for_render( $block_id, $data );
 	}
 
-	if ( function_exists( 'igp_pro_apply_block_style_defaults_for_render' ) ) {
+	if ( function_exists( 'igp_pro_canonicalize_block_data' ) ) {
+		$data = igp_pro_canonicalize_block_data( $block_id, $data );
+	} elseif ( function_exists( 'igp_pro_apply_block_style_defaults_for_render' ) ) {
 		$data = igp_pro_apply_block_style_defaults_for_render( $block_id, $data );
 	}
 
@@ -241,6 +243,10 @@ function igp_pro_migrate_block_heading_data_for_render( string $block_id, array 
  * @return array<string,mixed>
  */
 function igp_pro_migrate_block_style_data_for_render( string $block_id, array $data ): array {
+	if ( function_exists( 'igp_pro_canonicalize_block_data' ) ) {
+		return igp_pro_canonicalize_block_data( $block_id, $data );
+	}
+
 	if ( function_exists( 'igp_pro_apply_block_style_defaults_for_render' ) ) {
 		return igp_pro_apply_block_style_defaults_for_render( $block_id, $data );
 	}

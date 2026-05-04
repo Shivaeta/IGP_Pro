@@ -170,15 +170,6 @@
         "square"
       ],
       "default": "landscape"
-    },
-    "variant": {
-      "type": "enum",
-      "values": [
-        "elevated",
-        "bordered",
-        "compact"
-      ],
-      "default": "elevated"
     }
   },
   "defaults": {
@@ -198,7 +189,6 @@
     "show_price": true,
     "show_rating": true,
     "image_ratio": "landscape",
-    "variant": "elevated",
     "style": {
       "variant": "default",
       "density": "comfortable",
@@ -220,5 +210,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "featured_listings"
 }

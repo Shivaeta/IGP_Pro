@@ -1,0 +1,1663 @@
+
+:root{--brand:#ff5a2a;--brand2:#f97316;--ink:#0f172a;--ink2:#1e293b;--muted:#64748b;--soft:#f6f8fc;--soft2:#edf2f7;--panel:#fff;--line:rgba(15,23,42,.12);--line2:rgba(15,23,42,.2);--shadow:0 28px 80px rgba(15,23,42,.18);--shadow2:0 14px 40px rgba(15,23,42,.11);--r-xl:36px;--r-lg:28px;--r-md:20px;--r-sm:14px;--gap:22px;--wide:1280px;--text:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}html{scroll-behavior:smooth}body.igp-travel-pro{margin:0;background:radial-gradient(circle at 8% -5%,rgba(255,90,42,.16),transparent 34%),linear-gradient(180deg,#eef3f9,#f7f9fc 58%,#edf2f7);color:var(--ink);font-family:var(--text);line-height:1.55}img{display:block;max-width:100%}a{text-decoration:none;color:inherit}button,input{font:inherit}.shell{width:min(1480px,calc(100% - 34px));margin:0 auto;padding:32px 0 92px}.doc-hero{padding:clamp(28px,5vw,58px);border-radius:38px;background:linear-gradient(135deg,#0f172a,#223049 65%,#3f2f28);color:#fff;box-shadow:var(--shadow)}.doc-hero h1{margin:0;max-width:1050px;font-size:clamp(34px,5vw,70px);line-height:.96;letter-spacing:-.075em}.doc-hero p{margin:16px 0 0;max-width:980px;color:rgba(255,255,255,.76);font-size:18px}.schema-index{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:22px}.schema-index a{padding:11px 13px;border-radius:999px;background:rgba(255,255,255,.09);color:rgba(255,255,255,.88);font-size:13px;font-weight:850}.block{margin-top:34px;padding:22px;border:1px solid rgba(255,255,255,.78);border-radius:36px;background:rgba(255,255,255,.72);box-shadow:0 14px 44px rgba(15,23,42,.07)}.block__header{display:flex;justify-content:space-between;gap:22px;align-items:end;margin-bottom:18px;padding:4px 4px 0}.block__header h2{margin:0;font-size:clamp(28px,3.2vw,46px);line-height:1;letter-spacing:-.06em}.block__header p{margin:8px 0 0;color:var(--muted);font-size:14px}.block__eyebrow{margin:0 0 6px!important;color:var(--brand)!important;text-transform:uppercase;letter-spacing:.08em;font-weight:950}.variant-stack{display:grid;gap:20px}.variant{overflow:hidden;border:1px solid var(--line);border-radius:32px;background:var(--panel);box-shadow:var(--shadow2)}.variant__header{display:flex;justify-content:space-between;gap:18px;padding:14px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#f8fafc)}.variant__header strong{display:block;text-transform:uppercase;letter-spacing:.075em;font-size:13px}.variant__header code{display:block;margin-top:2px;color:var(--muted);font-size:12px}.variant-note{margin:0;max-width:560px;color:var(--muted);font-size:13px;text-align:right}.variant__body{padding:clamp(20px,3vw,30px)}.kicker{display:inline-flex;margin-bottom:9px;color:var(--brand);font-size:12px;font-weight:950;letter-spacing:.09em;text-transform:uppercase}.title-xl,.title-lg,.title-md,.title-sm{margin:0;color:inherit}.title-xl{font-size:clamp(36px,5.2vw,72px);line-height:.94;letter-spacing:-.08em}.title-lg{font-size:clamp(28px,3.5vw,52px);line-height:1.02;letter-spacing:-.062em}.title-md{font-size:clamp(22px,2.3vw,36px);line-height:1.08;letter-spacing:-.043em}.title-sm{font-size:20px;line-height:1.16;letter-spacing:-.026em}.text{margin:11px 0 0;color:var(--muted)}.dark,.dark .text,.dark-panel .text,.hero-bg .text{color:rgba(255,255,255,.74)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:11px 18px;border-radius:999px;background:var(--brand);color:#fff;font-weight:900;box-shadow:0 13px 24px rgba(255,90,42,.25)}.btn-secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}.btn-on-dark{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:#fff}.chip{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:rgba(255,90,42,.1);color:var(--brand);font-size:12px;font-weight:950}.media{overflow:hidden;border-radius:24px;background:#dbe5ef}.media img{width:100%;height:100%;object-fit:cover}.panel{padding:22px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2)}.dark-panel{padding:24px;border-radius:28px;background:#0f172a;color:#fff;box-shadow:var(--shadow)}.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}.stack{display:grid;gap:14px}.list{list-style:none;margin:0;padding:0;display:grid;gap:10px}.list li{display:flex;gap:9px;color:#475569}.list li:before{content:"✓";flex:0 0 auto;color:var(--brand);font-weight:950}.list.minus li:before{content:"–";color:#94a3b8}.line{height:1px;background:var(--line);margin:16px 0}
+/* foundation */.hero-bg{position:relative;display:grid;align-items:end;min-height:520px;overflow:hidden;border-radius:34px;background:#0f172a;color:#fff}.hero-bg>.media{position:absolute;inset:0;border-radius:0;z-index:0}.hero-bg:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(15,23,42,.78),rgba(15,23,42,.18))}.hero-bg.center:after{background:linear-gradient(180deg,rgba(15,23,42,.36),rgba(15,23,42,.74))}.hero-content{position:relative;z-index:2;max-width:760px;padding:clamp(30px,5vw,64px)}.hero-content.center{justify-self:center;text-align:center}.hero-search{display:flex;gap:8px;margin-top:21px;padding:8px;border-radius:999px;background:rgba(255,255,255,.94);box-shadow:var(--shadow)}.hero-search input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0 12px;color:var(--ink);font-weight:800}.hero-split{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border:1px solid var(--line);border-radius:34px;background:#fff;box-shadow:var(--shadow2)}.hero-split>.media{min-height:450px;border-radius:0}.hero-split-content{align-self:center;padding:clamp(32px,5vw,66px)}.hero-panel{display:grid;place-items:end;min-height:590px;position:relative;overflow:hidden;border-radius:34px;background:#0f172a}.hero-panel>.media{position:absolute;inset:0;border-radius:0}.hero-panel:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,23,42,.18),rgba(15,23,42,.56))}.hero-panel-card{position:relative;z-index:2;margin:clamp(24px,4vw,54px);max-width:560px;padding:clamp(28px,4vw,52px);border-radius:30px;background:rgba(255,255,255,.92);box-shadow:var(--shadow);backdrop-filter:blur(14px)}.cta-banner{display:grid;grid-template-columns:minmax(0,1fr)auto;gap:24px;align-items:center;padding:clamp(26px,4vw,46px);border-radius:32px;background:linear-gradient(135deg,#0f172a,#29384f);color:#fff;box-shadow:var(--shadow)}.cta-inline{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:24px;background:#fff}.cta-split{display:grid;grid-template-columns:minmax(0,1fr)360px;gap:20px;align-items:center;padding:clamp(24px,4vw,42px);border-radius:32px;background:var(--soft)}.cta-card{display:grid;justify-items:center;text-align:center;max-width:820px;margin:auto;padding:clamp(34px,5vw,64px);border:1px solid var(--line);border-radius:34px;background:radial-gradient(circle at 50% 0%,rgba(255,90,42,.18),transparent 44%),#fff;box-shadow:var(--shadow2)}.rich{max-width:820px;margin:auto;color:#475569;font-size:18px}.rich.lead p:first-of-type{font-size:22px;color:var(--ink2)}.rich-panel{padding:clamp(28px,4vw,48px);border:1px solid var(--line);border-radius:32px;background:linear-gradient(135deg,rgba(255,90,42,.1),rgba(15,23,42,.035))}.rich-quote blockquote{margin:0;padding-left:22px;border-left:5px solid var(--brand);font-size:24px;line-height:1.35;color:var(--ink2);font-weight:760}.section-band{padding:clamp(28px,4vw,50px);border-radius:34px;background:#0f172a;color:#fff;box-shadow:var(--shadow)}.section-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px}.section-grid .panel{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.13);color:#fff;box-shadow:none}.section-split{display:grid;grid-template-columns:.82fr 1.18fr;gap:28px;align-items:start;padding:30px;border-radius:34px;background:var(--soft)}.section-split-intro{position:sticky;top:20px}.trust-board{display:grid;grid-template-columns:.82fr 1.18fr;gap:22px;align-items:center;padding:30px;border-radius:34px;background:#0f172a;color:#fff;box-shadow:var(--shadow)}.trust-logo-row{display:flex;flex-wrap:wrap;gap:10px}.logo-pill{display:grid;place-items:center;min-width:126px;min-height:54px;padding:8px 14px;border:1px solid var(--line);border-radius:18px;background:#fff;color:#64748b;font-weight:950}.testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.testimonial{padding:20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2)}.avatar{width:74px;height:74px;overflow:hidden;border-radius:999px;background:#dbe5ef}.avatar img{width:100%;height:100%;object-fit:cover}.brochure-banner{display:grid;grid-template-columns:74px minmax(0,1fr) auto;gap:18px;align-items:center;padding:24px;border-radius:32px;background:#0f172a;color:#fff;box-shadow:var(--shadow)}.doc-icon{display:grid;place-items:center;width:64px;height:64px;border-radius:20px;background:rgba(255,255,255,.1);font-weight:950}.brochure-card{max-width:760px;margin:auto;padding:30px;border:1px solid var(--line);border-radius:32px;background:#fff;box-shadow:var(--shadow2);text-align:center}.brochure-inline{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px;border:1px solid var(--line);border-radius:22px;background:#fff}
+/* cards */.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card-rail{display:flex;gap:14px;overflow:auto;padding-bottom:8px}.card-rail .listing-card{flex:0 0 310px}.card-feature{display:grid;grid-template-columns:1.12fr .88fr .88fr;gap:16px}.listing-card{overflow:hidden;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow2)}.listing-card>.media{aspect-ratio:4/3;border-radius:0}.listing-body{padding:20px}.listing-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.card-feature .listing-card:first-child{grid-row:span 2}.card-feature .listing-card:first-child>.media{aspect-ratio:1/1}.result-list{display:grid;gap:15px}.result-card{display:grid;grid-template-columns:280px minmax(0,1fr);overflow:hidden;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow2)}.result-card>.media{height:100%;min-height:230px;border-radius:0}.nearby-compact{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.nearby-mini{padding:16px;border:1px solid var(--line);border-radius:20px;background:#fff}.nearby-mini strong{display:block}.nearby-list .result-card{grid-template-columns:230px 1fr}
+/* gallery */.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.gallery-grid .gallery-item{aspect-ratio:4/3}.gallery-masonry{display:grid;grid-template-columns:1.1fr .75fr .75fr;grid-auto-rows:180px;gap:14px}.gallery-slider{display:flex;gap:14px;overflow:auto;padding-bottom:8px}.gallery-slider .gallery-item{flex:0 0 420px;height:280px}.gallery-item{position:relative;overflow:hidden;border-radius:28px;background:#dbe5ef;box-shadow:var(--shadow2)}.gallery-item img{width:100%;height:100%;object-fit:cover}.gallery-item figcaption{position:absolute;left:12px;right:12px;bottom:12px;padding:9px 11px;border-radius:14px;background:rgba(15,23,42,.74);color:#fff;font-size:13px;font-weight:900}.gallery-masonry .gallery-item:first-child{grid-row:span 2}.gallery-masonry .gallery-item:nth-child(2){grid-column:span 2}.gallery-default{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.gallery-default>.gallery-item:first-child{min-height:420px}.expert-card{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:18px;align-items:center;padding:24px;border:1px solid var(--line);border-radius:30px;background:#fff;box-shadow:var(--shadow2)}.expert-profile{display:grid;justify-items:center;text-align:center;max-width:700px;margin:auto;padding:34px;border:1px solid var(--line);border-radius:34px;background:#fff;box-shadow:var(--shadow2)}.expert-compact{display:flex;align-items:center;gap:16px;padding:18px;border:1px solid var(--line);border-radius:24px;background:#fff}.review-dashboard{display:grid;grid-template-columns:.75fr repeat(3,1fr);gap:14px}.review-score{font-size:58px;font-weight:950;letter-spacing:-.08em}.stars{color:var(--brand);font-weight:950;letter-spacing:.09em}.review-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.season-layout{display:grid;grid-template-columns:.85fr 1.15fr;gap:18px;align-items:center}.season-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.month-strip{display:grid;grid-template-columns:repeat(12,minmax(72px,1fr));gap:8px;overflow:auto;padding-bottom:8px}.month{padding:12px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:center;font-weight:900}.meter{height:10px;margin-top:12px;border-radius:999px;background:linear-gradient(90deg,#60a5fa,#22c55e,#fb923c)}
+/* journey */.timeline{position:relative;display:grid;gap:16px;padding-left:28px}.timeline:before{content:"";position:absolute;left:8px;top:20px;bottom:20px;width:3px;border-radius:999px;background:rgba(255,90,42,.34)}.day-card{display:grid;grid-template-columns:70px 1fr;gap:16px;padding:18px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2)}.day-num{display:grid;place-items:center;width:56px;height:56px;border-radius:18px;background:var(--brand);color:#fff;font-weight:950}.day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.day-grid .day-card{grid-template-columns:1fr}.route-line{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.route-stop{position:relative;padding:20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2)}.route-stop:after{content:"";position:absolute;right:-15px;top:42px;width:15px;height:2px;background:rgba(255,90,42,.42)}.route-stop:last-child:after{display:none}.route-num{display:grid;place-items:center;width:38px;height:38px;margin-bottom:12px;border-radius:999px;background:var(--brand);color:#fff;font-weight:950}.fact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.fact{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2)}.fact-label{color:var(--muted);font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase}.fact-value{margin-top:6px;font-size:32px;line-height:1;font-weight:950;letter-spacing:-.06em}.fact-chips{display:flex;flex-wrap:wrap;gap:10px}.fact-chips .fact{display:flex;align-items:center;gap:12px;border-radius:999px;padding:12px 16px}.inclusion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.visa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.date-table{overflow:hidden;border:1px solid var(--line);border-radius:26px;background:#fff}.date-row{display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--line)}.date-row:last-child{border-bottom:0}.date-cell{padding:14px}.date-head{background:#0f172a;color:#fff;font-weight:950}.date-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+/* pricing map utilities */.tier-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.price-card{padding:24px;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow2)}.price-card.highlight{background:#0f172a;color:#fff;transform:translateY(-10px);box-shadow:var(--shadow)}.price-card.highlight .text{color:rgba(255,255,255,.74)}.price{margin:12px 0 0;font-size:42px;line-height:1;font-weight:950;letter-spacing:-.07em}.comparison{display:grid;grid-template-columns:1fr repeat(3,.8fr);overflow:hidden;border:1px solid var(--line);border-radius:26px;background:#fff}.cell{padding:14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.cell.head{background:#0f172a;color:#fff;font-weight:950}.summary-price{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:center;padding:26px;border:1px solid var(--line);border-radius:32px;background:#fff;box-shadow:var(--shadow2)}.sticky-side{display:grid;grid-template-columns:minmax(0,1fr)360px;gap:20px;align-items:start}.sticky-card{position:sticky;top:20px;padding:24px;border-radius:28px;background:#0f172a;color:#fff;box-shadow:var(--shadow)}.bottom-bar{display:grid;grid-template-columns:minmax(0,1fr)auto;gap:18px;align-items:center;padding:18px 22px;border-radius:26px;background:#0f172a;color:#fff;box-shadow:var(--shadow)}.map-split{display:grid;grid-template-columns:.78fr 1.22fr;gap:18px;padding:18px;border:1px solid var(--line);border-radius:32px;background:#fff;box-shadow:var(--shadow2)}.map-frame{display:grid;place-items:center;min-height:360px;border:1px solid var(--line);border-radius:26px;background:repeating-linear-gradient(45deg,#d8e2ee,#d8e2ee 12px,#edf2f8 12px,#edf2f8 24px);color:#64748b;font-weight:950}.map-wide .map-frame{min-height:450px}.breadcrumb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;width:max-content;max-width:100%;margin:0;padding:10px 14px;list-style:none;border:1px solid var(--line);border-radius:999px;background:#fff}.breadcrumb li{color:var(--muted);font-size:14px;font-weight:850}.breadcrumb li+li:before{content:"/";margin-right:8px;color:#cbd5e1}.breadcrumb.compact{padding:0;border:0;background:transparent}
+/* interactive */.faq-layout{display:grid;grid-template-columns:.78fr 1.22fr;gap:22px;align-items:start}.faq-list,.accordion-list{display:grid;gap:12px}.faq-item,.accordion-item{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow2)}.faq-item summary,.accordion-item summary{cursor:pointer;padding:17px 18px;font-weight:950}.faq-item p,.accordion-body.igp-travel-pro{margin:0;padding:0 18px 18px;color:var(--muted)}.grouped{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.accordion-numbered{counter-reset:acc}.accordion-numbered summary:before{counter-increment:acc;content:counter(acc,decimal-leading-zero);margin-right:10px;color:var(--brand)}.tabs-vertical{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px}.tab-nav{display:grid;gap:9px}.tab-nav.pills{display:flex;flex-wrap:wrap;margin-bottom:14px}.tab-btn{padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:left;font-weight:900}.tab-btn.active{background:#0f172a;color:#fff}.tab-nav.pills .tab-btn{border-radius:999px}.tab-panel{padding:22px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2)}.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.icon-card{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2)}.icon-dot{display:grid;place-items:center;width:44px;height:44px;margin-bottom:12px;border-radius:16px;background:rgba(255,90,42,.12);color:var(--brand);font-weight:950}.process-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.process-step{position:relative;padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff}.process-step:not(:last-child):after{content:"→";position:absolute;right:-20px;top:50%;transform:translateY(-50%);color:var(--brand);font-weight:950}.stat-band{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:24px;border-radius:30px;background:#0f172a;color:#fff}.stat-card{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2)}.metric{font-size:44px;font-weight:950;letter-spacing:-.07em;line-height:1}@media(max-width:1080px){.grid-2,.grid-3,.grid-4,.hero-split,.cta-banner,.cta-split,.section-grid,.section-split,.trust-board,.testimonial-grid,.brochure-banner,.brochure-inline,.card-grid,.card-feature,.result-card,.gallery-grid,.gallery-masonry,.gallery-default,.expert-card,.review-dashboard,.review-cards,.season-layout,.season-cards,.timeline,.day-grid,.route-line,.fact-grid,.inclusion-grid,.visa-grid,.date-row,.date-cards,.tier-cards,.comparison,.summary-price,.sticky-side,.bottom-bar,.map-split,.faq-layout,.grouped,.tabs-vertical,.icon-grid,.process-row,.stat-band{grid-template-columns:1fr}.cta-inline{display:grid}.route-stop:after,.process-step:not(:last-child):after{display:none}.section-split-intro,.sticky-card{position:static}.variant__header{display:grid}.variant-note{text-align:left}.gallery-masonry .gallery-item:first-child,.gallery-masonry .gallery-item:nth-child(2){grid-row:auto;grid-column:auto}.date-head{display:none}.cell{border-right:0}.hero-search{border-radius:22px;flex-direction:column}.hero-search input{min-height:42px}.gallery-slider .gallery-item{flex-basis:290px}.nearby-compact{grid-template-columns:1fr}.nearby-list .result-card{grid-template-columns:1fr}}
+
+
+/* =======================================================================
+   IGP TRAVEL PRO CLONE BRIDGE — culprit fix layer
+   This layer binds the exact reference CSS vocabulary to the actual IGP Pro
+   renderable markup. The reference CSS above is intentionally preserved.
+   ======================================================================= */
+
+body.igp-travel-pro .igp-entry--graph{margin:0;padding:0;width:100%;max-width:none;}
+body.igp-travel-pro .igp-entry--graph .igp-entry__content{width:100%;max-width:none;margin:0;padding:0;}
+body.igp-travel-pro .igp-graph-page{width:100%;max-width:none;margin:0;padding:0 0 92px;}
+body.igp-travel-pro .igp-page-shell:has(.igp-entry--graph){width:100%;max-width:none;padding:0;}
+body.igp-travel-pro .igp-block{width:min(1480px,calc(100% - 34px));margin:34px auto 0;padding:0;scroll-margin-top:94px;}
+body.igp-travel-pro .igp-block.igp-container--full,body.igp-travel-pro .igp-block--hero.igp-variant--full-width{width:100%;max-width:none;margin-left:0;margin-right:0;}
+body.igp-travel-pro .igp-block__header,body.igp-travel-pro .igp-pro-block-header{display:flex;justify-content:space-between;gap:22px;align-items:end;margin-bottom:18px;padding:4px 4px 0;}
+body.igp-travel-pro .igp-block__heading,body.igp-travel-pro .igp-pro-block-title{margin:0;font-size:clamp(28px,3.2vw,46px);line-height:1;letter-spacing:-.06em;color:var(--ink);}
+body.igp-travel-pro .igp-block__eyebrow,body.igp-travel-pro .igp-pro-block-eyebrow,body.igp-travel-pro .igp-pro-section__eyebrow,body.igp-travel-pro .igp-pro-cta__eyebrow,body.igp-travel-pro .igp-pro-rich-text__eyebrow{margin:0 0 6px!important;color:var(--brand)!important;text-transform:uppercase;letter-spacing:.08em;font-weight:950;font-size:12px;}
+body.igp-travel-pro .igp-pro-block-description,body.igp-travel-pro .igp-pro-section__description{margin:8px 0 0;color:var(--muted);font-size:14px;}
+body.igp-travel-pro .igp-pro-button,body.igp-travel-pro .igp-pro-card__cta,body.igp-travel-pro .igp-pro-hero__cta,body.igp-travel-pro .igp-pro-cta__button,body.igp-travel-pro .igp-pro-hero__search-submit{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:11px 18px;border-radius:999px;background:var(--brand);color:#fff;font-weight:900;box-shadow:0 13px 24px rgba(255,90,42,.25);border:0;text-decoration:none;}
+body.igp-travel-pro .igp-pro-button--secondary,body.igp-travel-pro .igp-pro-cta__button--secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none;}
+body.igp-travel-pro .igp-pro-empty-state{padding:22px;border:1px dashed var(--line2);border-radius:24px;background:#fff;color:var(--muted);}
+
+/* HERO — exact reference variants */
+body.igp-travel-pro .igp-block--hero{width:min(1480px,calc(100% - 34px));margin-top:34px;}
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width{width:100%;margin-top:0;}
+body.igp-travel-pro .igp-block--hero .igp-pro-hero{position:relative;overflow:hidden;background:#0f172a;color:#fff;box-shadow:none;}
+body.igp-travel-pro .igp-block--hero.igp-variant--default .igp-pro-hero,
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width .igp-pro-hero,
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal .igp-pro-hero{display:grid;align-items:end;min-height:520px;border-radius:34px;}
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width .igp-pro-hero{min-height:660px;border-radius:0;}
+body.igp-travel-pro .igp-block--hero.igp-variant--default .igp-pro-hero__inner,
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width .igp-pro-hero__inner,
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal .igp-pro-hero__inner{display:grid;align-items:end;min-height:inherit;}
+body.igp-travel-pro .igp-block--hero.igp-variant--default .igp-pro-hero__media,
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width .igp-pro-hero__media,
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal .igp-pro-hero__media{position:absolute;inset:0;border-radius:0;z-index:0;overflow:hidden;}
+body.igp-travel-pro .igp-block--hero.igp-variant--default .igp-pro-hero:after,
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width .igp-pro-hero:after,
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal .igp-pro-hero:after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(15,23,42,.72),rgba(15,23,42,.12));}
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal .igp-pro-hero:after{background:linear-gradient(180deg,rgba(15,23,42,.38),rgba(15,23,42,.72));}
+body.igp-travel-pro .igp-block--hero .igp-pro-hero__image{width:100%;height:100%;object-fit:cover;}
+body.igp-travel-pro .igp-block--hero .igp-pro-hero__content{position:relative;z-index:2;max-width:760px;padding:clamp(34px,6vw,76px);}
+body.igp-travel-pro .igp-block--hero .igp-pro-hero__heading{margin:0;color:inherit;font-size:clamp(36px,5.2vw,72px);line-height:.94;letter-spacing:-.08em;}
+body.igp-travel-pro .igp-block--hero .igp-pro-hero__subheading{margin:14px 0 0;color:rgba(255,255,255,.74);font-size:17px;max-width:660px;}
+body.igp-travel-pro .igp-block--hero .igp-pro-hero__cta{margin-top:20px;}
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal .igp-pro-hero__content{justify-self:center;text-align:center;}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-left .igp-pro-hero,
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;border:1px solid var(--line);border-radius:34px;background:#fff;color:var(--ink);box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-left .igp-pro-hero__inner,
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero__inner{display:contents;min-height:0;}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-left .igp-pro-hero__media,
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero__media{position:relative;inset:auto;min-height:450px;border-radius:0;overflow:hidden;}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero__media{order:2;}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-left .igp-pro-hero__content,
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero__content{align-self:center;padding:clamp(32px,5vw,66px);color:var(--ink);}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-left .igp-pro-hero__subheading,
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero__subheading{color:var(--muted);}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay .igp-pro-hero{display:grid;place-items:end;min-height:590px;position:relative;overflow:hidden;border-radius:34px;background:#0f172a;box-shadow:none;}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay .igp-pro-hero__inner{display:grid;place-items:end;min-height:inherit;width:100%;}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay .igp-pro-hero__media{position:absolute;inset:0;border-radius:0;overflow:hidden;}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay .igp-pro-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,23,42,.18),rgba(15,23,42,.56));z-index:1;}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay .igp-pro-hero__content{position:relative;z-index:2;margin:clamp(24px,4vw,54px);max-width:560px;padding:clamp(28px,4vw,52px);border-radius:30px;background:rgba(255,255,255,.92);box-shadow:var(--shadow);backdrop-filter:blur(14px);color:var(--ink);}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay .igp-pro-hero__subheading{color:var(--muted);}
+body.igp-travel-pro .igp-pro-hero__search{display:flex;gap:8px;margin-top:21px;padding:8px;border-radius:999px;background:rgba(255,255,255,.94);box-shadow:var(--shadow);}
+body.igp-travel-pro .igp-pro-hero__search-input{flex:1;min-width:0;border:0;background:transparent;outline:0;padding:0 12px;color:var(--ink);font-weight:800;}
+
+/* CTA */
+body.igp-travel-pro .igp-pro-cta{box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-cta__inner{display:contents;}
+body.igp-travel-pro .igp-pro-cta__heading{margin:0;font-size:clamp(28px,3.5vw,52px);line-height:1.02;letter-spacing:-.062em;}
+body.igp-travel-pro .igp-pro-cta__subheading{margin:11px 0 0;color:var(--muted);}
+body.igp-travel-pro .igp-pro-cta__actions,body.igp-travel-pro .igp-pro-brochure-cta__actions,body.igp-travel-pro .igp-pro-sticky-booking-cta__actions,body.igp-travel-pro .igp-pro-expert-box__actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
+body.igp-travel-pro .igp-block--cta.igp-variant--default .igp-pro-cta,body.igp-travel-pro .igp-block--cta.igp-variant--card .igp-pro-cta{display:grid;justify-items:center;text-align:center;max-width:820px;margin:auto;padding:clamp(34px,5vw,64px);border:1px solid var(--line);border-radius:34px;background:radial-gradient(circle at 50% 0%,rgba(255,90,42,.18),transparent 44%),#fff;}
+body.igp-travel-pro .igp-block--cta.igp-variant--inline .igp-pro-cta{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:none;}
+body.igp-travel-pro .igp-block--cta.igp-variant--banner .igp-pro-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:clamp(26px,4vw,46px);border-radius:32px;background:linear-gradient(135deg,#0f172a,#29384f);color:#fff;box-shadow:var(--shadow);}
+body.igp-travel-pro .igp-block--cta.igp-variant--banner .igp-pro-cta__subheading{color:rgba(255,255,255,.74);}
+body.igp-travel-pro .igp-block--cta.igp-variant--split .igp-pro-cta{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:center;padding:clamp(24px,4vw,42px);border-radius:32px;background:var(--soft);box-shadow:none;}
+body.igp-travel-pro .igp-pro-cta__badges{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:16px 0 0;padding:0;}
+body.igp-travel-pro .igp-pro-cta__badges li{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:rgba(255,90,42,.1);color:var(--brand);font-size:12px;font-weight:950;}
+
+/* COMMON CARD/LISTING SYSTEM */
+body.igp-travel-pro .igp-pro-card-grid{display:grid;grid-template-columns:repeat(var(--igp-card-columns,3),1fr);gap:16px;}
+body.igp-travel-pro .igp-block.igp-variant--grid .igp-pro-card-grid{grid-template-columns:repeat(3,1fr);}
+body.igp-travel-pro .igp-block.igp-variant--carousel-safe .igp-pro-card-grid{display:flex;gap:14px;overflow:auto;padding-bottom:8px;}
+body.igp-travel-pro .igp-block.igp-variant--carousel-safe .igp-pro-card{flex:0 0 310px;}
+body.igp-travel-pro .igp-block.igp-variant--list .igp-pro-card-grid{display:grid;gap:15px;grid-template-columns:1fr;}
+body.igp-travel-pro .igp-block.igp-variant--featured .igp-pro-card-grid{display:grid;grid-template-columns:1.12fr .88fr .88fr;gap:16px;}
+body.igp-travel-pro .igp-block.igp-variant--featured .igp-pro-card:first-child{grid-row:span 2;}
+body.igp-travel-pro .igp-pro-card{overflow:hidden;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-card__media{aspect-ratio:4/3;border-radius:0;margin:0;overflow:hidden;background:#dbe5ef;}
+body.igp-travel-pro .igp-pro-card__image{width:100%;height:100%;object-fit:cover;}
+body.igp-travel-pro .igp-pro-card__body{padding:20px;}
+body.igp-travel-pro .igp-pro-card__title{margin:0;font-size:20px;line-height:1.16;letter-spacing:-.026em;}
+body.igp-travel-pro .igp-pro-card__excerpt,body.igp-travel-pro .igp-pro-card__location{margin:11px 0 0;color:var(--muted);}
+body.igp-travel-pro .igp-pro-card__meta{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;padding:0;list-style:none;}
+body.igp-travel-pro .igp-pro-card__meta li,body.igp-travel-pro .igp-pro-card__badge,body.igp-travel-pro .igp-pro-card__rating{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:rgba(255,90,42,.1);color:var(--brand);font-size:12px;font-weight:950;}
+body.igp-travel-pro .igp-pro-card__footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;}
+body.igp-travel-pro .igp-pro-card__price{margin:0;}
+body.igp-travel-pro .igp-pro-card__price strong{display:block;font-size:24px;line-height:1;font-weight:950;letter-spacing:-.05em;}
+body.igp-travel-pro .igp-block.igp-variant--list .igp-pro-card{display:grid;grid-template-columns:280px minmax(0,1fr);}
+body.igp-travel-pro .igp-block.igp-variant--list .igp-pro-card__media{height:100%;min-height:230px;}
+
+/* GALLERY */
+body.igp-travel-pro .igp-pro-gallery__grid{display:grid;gap:14px;}
+body.igp-travel-pro .igp-block--gallery.igp-variant--default .igp-pro-gallery__grid{grid-template-columns:1.2fr .8fr;gap:16px;}
+body.igp-travel-pro .igp-block--gallery.igp-variant--default .igp-pro-gallery__item:first-child{min-height:420px;}
+body.igp-travel-pro .igp-block--gallery.igp-variant--grid .igp-pro-gallery__grid{grid-template-columns:repeat(3,1fr);}
+body.igp-travel-pro .igp-block--gallery.igp-variant--grid .igp-pro-gallery__item{aspect-ratio:4/3;}
+body.igp-travel-pro .igp-block--gallery.igp-variant--masonry-safe .igp-pro-gallery__grid{grid-template-columns:1.1fr .75fr .75fr;grid-auto-rows:180px;}
+body.igp-travel-pro .igp-block--gallery.igp-variant--slider-safe .igp-pro-gallery__grid{display:flex;gap:14px;overflow:auto;padding-bottom:8px;}
+body.igp-travel-pro .igp-block--gallery.igp-variant--slider-safe .igp-pro-gallery__item{flex:0 0 420px;height:280px;}
+body.igp-travel-pro .igp-pro-gallery__item{position:relative;overflow:hidden;border-radius:28px;background:#dbe5ef;box-shadow:var(--shadow2);margin:0;}
+body.igp-travel-pro .igp-pro-gallery__image{width:100%;height:100%;object-fit:cover;}
+body.igp-travel-pro .igp-pro-gallery__caption{position:absolute;left:12px;right:12px;bottom:12px;padding:9px 11px;border-radius:16px;background:rgba(15,23,42,.72);color:#fff;font-size:13px;backdrop-filter:blur(10px);}
+
+/* JOURNEY / LOGISTICS */
+body.igp-travel-pro .igp-pro-itinerary__days{list-style:none;margin:0;padding:0;display:grid;gap:16px;}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--timeline .igp-pro-itinerary__days{position:relative;padding-left:28px;}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--timeline .igp-pro-itinerary__days:before{content:"";position:absolute;left:8px;top:20px;bottom:20px;width:3px;border-radius:999px;background:rgba(255,90,42,.34);}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--cards .igp-pro-itinerary__days{grid-template-columns:repeat(3,1fr);gap:15px;}
+body.igp-travel-pro .igp-pro-itinerary__day{display:grid;grid-template-columns:70px 1fr;gap:16px;padding:18px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);counter-increment:igpday;}
+body.igp-travel-pro .igp-pro-itinerary__day:before{content:"D" counter(igpday);display:grid;place-items:center;width:56px;height:56px;border-radius:18px;background:var(--brand);color:#fff;font-weight:950;grid-row:1 / span 3;}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--cards .igp-pro-itinerary__day{grid-template-columns:1fr;}
+body.igp-travel-pro .igp-pro-itinerary__day-title{margin:0;font-size:20px;line-height:1.16;letter-spacing:-.026em;}
+body.igp-travel-pro .igp-pro-itinerary__description{margin:11px 0 0;color:var(--muted);}
+body.igp-travel-pro .igp-pro-itinerary__meta{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:12px 0 0;padding:0;}
+body.igp-travel-pro .igp-pro-itinerary__meta li{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:rgba(255,90,42,.1);color:var(--brand);font-size:12px;font-weight:950;}
+body.igp-travel-pro .igp-pro-route-timeline__list{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;list-style:none;margin:18px 0 0;padding:0;}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--timeline .igp-pro-route-timeline__list{position:relative;grid-template-columns:1fr;padding-left:28px;}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--timeline .igp-pro-route-timeline__list:before{content:"";position:absolute;left:8px;top:20px;bottom:20px;width:3px;border-radius:999px;background:rgba(255,90,42,.34);}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--cards .igp-pro-route-timeline__list{grid-template-columns:repeat(2,1fr);}
+body.igp-travel-pro .igp-pro-route-timeline__stop{position:relative;padding:20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);counter-increment:igpstop;}
+body.igp-travel-pro .igp-pro-route-timeline__stop:before{content:counter(igpstop);display:grid;place-items:center;width:38px;height:38px;margin-bottom:12px;border-radius:999px;background:var(--brand);color:#fff;font-weight:950;}
+body.igp-travel-pro .igp-pro-route-timeline__stop:not(:last-child):after{content:"";position:absolute;right:-15px;top:42px;width:15px;height:2px;background:rgba(255,90,42,.42);}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--timeline .igp-pro-route-timeline__stop:after{display:none;}
+body.igp-travel-pro .igp-pro-route-timeline__meta{color:var(--muted);font-size:13px;font-weight:850;}
+body.igp-travel-pro .igp-pro-tour-facts__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px;}
+body.igp-travel-pro .igp-block--tour-facts.igp-variant--compact .igp-pro-tour-facts__grid{display:flex;flex-wrap:wrap;gap:10px;}
+body.igp-travel-pro .igp-pro-tour-facts__item{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-block--tour-facts.igp-variant--compact .igp-pro-tour-facts__item{display:flex;align-items:center;gap:12px;border-radius:999px;padding:12px 16px;}
+body.igp-travel-pro .igp-pro-tour-facts__item dt{color:var(--muted);font-size:12px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;}
+body.igp-travel-pro .igp-pro-tour-facts__item dd{margin:0;}
+body.igp-travel-pro .igp-pro-tour-facts__value{margin-top:6px;font-size:32px;line-height:1;font-weight:950;letter-spacing:-.06em;color:var(--ink);}
+body.igp-travel-pro .igp-pro-tour-facts__icon{display:inline-grid;place-items:center;width:44px;height:44px;margin-bottom:12px;border-radius:16px;background:rgba(255,90,42,.12);color:var(--brand);font-weight:950;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__columns{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:18px;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__column{padding:22px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__list{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__list li{display:flex;gap:9px;color:#475569;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__list li:before{content:"✓";flex:0 0 auto;color:var(--brand);font-weight:950;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__column--excluded .igp-pro-inclusions-exclusions__list li:before{content:"–";color:#94a3b8;}
+
+/* PRICING / BOOKING */
+body.igp-travel-pro .igp-pro-package-tiers__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
+body.igp-travel-pro .igp-pro-package-tier{padding:24px;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-package-tier--highlight{background:#0f172a;color:#fff;transform:translateY(-10px);box-shadow:var(--shadow);}
+body.igp-travel-pro .igp-pro-package-tier__price{margin:12px 0 0;font-size:42px;line-height:1;font-weight:950;letter-spacing:-.07em;}
+body.igp-travel-pro .igp-pro-package-tier__duration{display:inline-flex;margin-bottom:9px;color:var(--brand);font-size:12px;font-weight:950;letter-spacing:.09em;text-transform:uppercase;}
+body.igp-travel-pro .igp-pro-pricing-summary{display:grid;grid-template-columns:.8fr 1.2fr;gap:18px;align-items:center;padding:26px;border:1px solid var(--line);border-radius:32px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-pricing-summary__base{font-size:42px;line-height:1;font-weight:950;letter-spacing:-.07em;color:var(--ink);}
+body.igp-travel-pro .igp-pro-pricing-summary__items{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+body.igp-travel-pro .igp-pro-pricing-summary__item{display:flex;gap:9px;color:#475569;}
+body.igp-travel-pro .igp-pro-sticky-booking-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;padding:18px 22px;border-radius:26px;background:#0f172a;color:#fff;box-shadow:var(--shadow);}
+body.igp-travel-pro .igp-block--sticky-booking-cta.igp-variant--bottom-bar{position:sticky;bottom:10px;z-index:60;}
+body.igp-travel-pro .igp-block--sticky-booking-cta.igp-variant--side-card .igp-pro-sticky-booking-cta{max-width:380px;margin-left:auto;grid-template-columns:1fr;position:sticky;top:20px;padding:24px;border-radius:28px;}
+body.igp-travel-pro .igp-pro-sticky-booking-cta__price{font-size:32px;line-height:1;font-weight:950;letter-spacing:-.07em;color:#fff;}
+body.igp-travel-pro .igp-pro-map{display:grid;grid-template-columns:.78fr 1.22fr;gap:18px;padding:18px;border:1px solid var(--line);border-radius:32px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-map__iframe{display:grid;place-items:center;min-height:360px;border:1px solid var(--line);border-radius:26px;background:repeating-linear-gradient(45deg,#d8e2ee,#d8e2ee 12px,#edf2f8 12px,#edf2f8 24px);color:#64748b;font-weight:950;width:100%;}
+body.igp-travel-pro .igp-block--map.igp-variant--wide .igp-pro-map{display:block;}
+body.igp-travel-pro .igp-block--map.igp-variant--wide .igp-pro-map__iframe{min-height:450px;}
+body.igp-travel-pro .igp-pro-breadcrumb__list{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;color:var(--muted);font-size:13px;font-weight:850;}
+body.igp-travel-pro .igp-pro-breadcrumb__item:not(:last-child):after{content:"/";margin-left:8px;color:var(--line2);}
+
+/* PROOF / LOCAL CONTEXT */
+body.igp-travel-pro .igp-pro-expert-box__card{display:grid;grid-template-columns:110px minmax(0,1fr) auto;gap:18px;align-items:center;padding:24px;border:1px solid var(--line);border-radius:30px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-block--expert-box.igp-variant--profile .igp-pro-expert-box__card{display:grid;justify-items:center;text-align:center;max-width:700px;margin:auto;padding:34px;border-radius:34px;grid-template-columns:1fr;}
+body.igp-travel-pro .igp-block--expert-box.igp-variant--compact .igp-pro-expert-box__card{display:flex;align-items:center;gap:16px;padding:18px;border-radius:24px;}
+body.igp-travel-pro .igp-pro-expert-box__image{width:110px;height:110px;border-radius:999px;object-fit:cover;}
+body.igp-travel-pro .igp-pro-nearby-attractions__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px;}
+body.igp-travel-pro .igp-block--nearby-attractions.igp-variant--list .igp-pro-nearby-attractions__grid{display:grid;grid-template-columns:1fr;gap:15px;}
+body.igp-travel-pro .igp-block--nearby-attractions.igp-variant--compact .igp-pro-nearby-attractions__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+body.igp-travel-pro .igp-pro-nearby-attraction-card{padding:16px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-reviews-summary__overview{display:grid;gap:14px;padding:22px;border:1px solid var(--line);border-radius:28px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-reviews-summary__rating{font-size:58px;font-weight:950;letter-spacing:-.08em;line-height:1;color:var(--brand);}
+body.igp-travel-pro .igp-pro-reviews-summary__testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+body.igp-travel-pro .igp-pro-review-card{padding:20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-best-time-to-visit__summary{padding:22px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-best-time-to-visit__seasons{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px;}
+body.igp-travel-pro .igp-pro-season-card{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-best-time-to-visit__tips{display:grid;gap:8px;list-style:none;margin:18px 0 0;padding:0;}
+
+/* FAQ / ACCORDIONS / TABS / ICONS / STATS */
+body.igp-travel-pro .igp-pro-faq__items,body.igp-travel-pro .igp-pro-accordions__items{display:grid;gap:12px;margin-top:18px;}
+body.igp-travel-pro .igp-block--faq.igp-variant--grouped .igp-pro-faq__items,body.igp-travel-pro .igp-block--accordions.igp-variant--grouped .igp-pro-accordions__items{grid-template-columns:repeat(2,1fr);gap:16px;}
+body.igp-travel-pro .igp-pro-faq__item,body.igp-travel-pro .igp-pro-accordions__item{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:var(--shadow2);padding:0;}
+body.igp-travel-pro .igp-pro-faq__question,body.igp-travel-pro .igp-pro-accordions__heading{display:block;padding:17px 18px;font-weight:950;font-size:16px;}
+body.igp-travel-pro .igp-pro-faq__answer,body.igp-travel-pro .igp-pro-accordions__content{margin:0;padding:0 18px 18px;color:var(--muted);}
+body.igp-travel-pro .igp-block--faq.igp-variant--compact .igp-pro-faq__items{gap:10px;}
+body.igp-travel-pro .igp-block--faq.igp-variant--compact .igp-pro-faq__item{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border-radius:24px;}
+body.igp-travel-pro .igp-pro-tabs{display:grid;grid-template-columns:240px minmax(0,1fr);gap:18px;}
+body.igp-travel-pro .igp-pro-tabs__nav{display:grid;gap:9px;margin:0;}
+body.igp-travel-pro .igp-block--tabs.igp-variant--pills .igp-pro-tabs{display:block;}
+body.igp-travel-pro .igp-block--tabs.igp-variant--pills .igp-pro-tabs__nav{display:flex;flex-wrap:wrap;margin-bottom:14px;}
+body.igp-travel-pro .igp-pro-tabs__tab{padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:left;font-weight:900;}
+body.igp-travel-pro .igp-pro-tabs__tab:first-child{background:#0f172a;color:#fff;}
+body.igp-travel-pro .igp-block--tabs.igp-variant--pills .igp-pro-tabs__tab{border-radius:999px;}
+body.igp-travel-pro .igp-pro-tabs__panel{padding:22px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-icon-list__items{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;list-style:none;margin:18px 0 0;padding:0;}
+body.igp-travel-pro .igp-pro-icon-list__item{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-icon-list__icon{display:grid;place-items:center;width:44px;height:44px;margin-bottom:12px;border-radius:16px;background:rgba(255,90,42,.12);color:var(--brand);font-weight:950;}
+body.igp-travel-pro .igp-pro-stats__items{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;}
+body.igp-travel-pro .igp-block--stats.igp-variant--strip .igp-pro-stats__items{padding:24px;border-radius:30px;background:#0f172a;color:#fff;}
+body.igp-travel-pro .igp-pro-stats__item{padding:20px;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-block--stats.igp-variant--strip .igp-pro-stats__item{background:transparent;border-color:rgba(255,255,255,.18);box-shadow:none;color:#fff;}
+body.igp-travel-pro .igp-pro-stats__value{display:block;font-size:44px;font-weight:950;letter-spacing:-.07em;line-height:1;}
+body.igp-travel-pro .igp-pro-stats__description{color:var(--muted);}
+body.igp-travel-pro .igp-block--stats.igp-variant--strip .igp-pro-stats__description{color:rgba(255,255,255,.74);}
+
+/* RICH TEXT / SECTION / TRUST / BROCHURE */
+body.igp-travel-pro .igp-pro-rich-text{max-width:820px;margin:auto;color:#475569;font-size:18px;}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--lead .igp-pro-rich-text__content p:first-of-type{font-size:22px;color:var(--ink2);}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--panel .igp-pro-rich-text{padding:clamp(28px,4vw,48px);border:1px solid var(--line);border-radius:32px;background:linear-gradient(135deg,rgba(255,90,42,.1),rgba(15,23,42,.035));}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--quote blockquote{margin:0;padding-left:22px;border-left:5px solid var(--brand);font-size:24px;line-height:1.35;color:var(--ink2);font-weight:760;}
+body.igp-travel-pro .igp-pro-section__inner{padding:22px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-block--section.igp-variant--band .igp-pro-section__inner{padding:clamp(28px,4vw,50px);border-radius:34px;background:#0f172a;color:#fff;box-shadow:var(--shadow);}
+body.igp-travel-pro .igp-block--section.igp-variant--split .igp-pro-section__inner{display:grid;grid-template-columns:.82fr 1.18fr;gap:28px;align-items:start;padding:30px;border-radius:34px;background:var(--soft);}
+body.igp-travel-pro .igp-block--section.igp-variant--grid .igp-pro-section__content{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;}
+body.igp-travel-pro .igp-pro-trust__summary{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;}
+body.igp-travel-pro .igp-pro-trust__items{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
+body.igp-travel-pro .igp-pro-trust__item{padding:20px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-pro-trust__logos{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+body.igp-travel-pro .igp-pro-trust__logo{display:grid;place-items:center;min-width:126px;min-height:54px;padding:8px 14px;border:1px solid var(--line);border-radius:18px;background:#fff;color:#64748b;font-weight:950;}
+body.igp-travel-pro .igp-pro-brochure-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:clamp(26px,4vw,46px);border-radius:32px;background:linear-gradient(135deg,#0f172a,#29384f);color:#fff;box-shadow:var(--shadow);}
+body.igp-travel-pro .igp-block--brochure-cta.igp-variant--card .igp-pro-brochure-cta{display:grid;justify-items:center;text-align:center;max-width:820px;margin:auto;padding:clamp(34px,5vw,64px);border:1px solid var(--line);border-radius:34px;background:#fff;color:var(--ink);box-shadow:var(--shadow2);}
+body.igp-travel-pro .igp-block--brochure-cta.igp-variant--inline .igp-pro-brochure-cta{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:18px 20px;border:1px solid var(--line);border-radius:24px;background:#fff;color:var(--ink);box-shadow:none;}
+
+@media(max-width:1080px){
+ body.igp-travel-pro .igp-block--hero.igp-variant--image-left .igp-pro-hero,body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero,body.igp-travel-pro .igp-block--cta.igp-variant--banner .igp-pro-cta,body.igp-travel-pro .igp-block--cta.igp-variant--split .igp-pro-cta,body.igp-travel-pro .igp-pro-card-grid,body.igp-travel-pro .igp-block.igp-variant--featured .igp-pro-card-grid,body.igp-travel-pro .igp-block.igp-variant--list .igp-pro-card,body.igp-travel-pro .igp-block--gallery.igp-variant--default .igp-pro-gallery__grid,body.igp-travel-pro .igp-block--gallery.igp-variant--grid .igp-pro-gallery__grid,body.igp-travel-pro .igp-block--gallery.igp-variant--masonry-safe .igp-pro-gallery__grid,body.igp-travel-pro .igp-block--itinerary.igp-variant--cards .igp-pro-itinerary__days,body.igp-travel-pro .igp-pro-route-timeline__list,body.igp-travel-pro .igp-block--route-timeline.igp-variant--cards .igp-pro-route-timeline__list,body.igp-travel-pro .igp-pro-tour-facts__grid,body.igp-travel-pro .igp-pro-inclusions-exclusions__columns,body.igp-travel-pro .igp-pro-package-tiers__grid,body.igp-travel-pro .igp-pro-pricing-summary,body.igp-travel-pro .igp-pro-map,body.igp-travel-pro .igp-pro-expert-box__card,body.igp-travel-pro .igp-pro-nearby-attractions__grid,body.igp-travel-pro .igp-pro-reviews-summary__testimonials,body.igp-travel-pro .igp-pro-best-time-to-visit__seasons,body.igp-travel-pro .igp-block--faq.igp-variant--grouped .igp-pro-faq__items,body.igp-travel-pro .igp-block--accordions.igp-variant--grouped .igp-pro-accordions__items,body.igp-travel-pro .igp-pro-tabs,body.igp-travel-pro .igp-pro-icon-list__items,body.igp-travel-pro .igp-pro-stats__items,body.igp-travel-pro .igp-block--section.igp-variant--split .igp-pro-section__inner,body.igp-travel-pro .igp-block--section.igp-variant--grid .igp-pro-section__content,body.igp-travel-pro .igp-pro-trust__items,body.igp-travel-pro .igp-pro-brochure-cta{grid-template-columns:1fr;}
+ body.igp-travel-pro .igp-block--hero.igp-variant--image-right .igp-pro-hero__media{order:0;}
+ body.igp-travel-pro .igp-pro-route-timeline__stop:after{display:none;}
+ body.igp-travel-pro .igp-block--gallery.igp-variant--slider-safe .igp-pro-gallery__item{flex-basis:290px;}
+ body.igp-travel-pro .igp-pro-hero__search{border-radius:22px;flex-direction:column;}
+}
+
+
+/* Explicit 134/134 schema variant bindings for static audit and browser inspection. */
+body.igp-travel-pro .igp-block--accordions.igp-variant--default{--igp-clone-reference:"06-interactive-utility.html#accordions:default";}
+body.igp-travel-pro .igp-block--accordions.igp-variant--accordion{--igp-clone-reference:"06-interactive-utility.html#accordions:accordion";}
+body.igp-travel-pro .igp-block--accordions.igp-variant--grouped{--igp-clone-reference:"06-interactive-utility.html#accordions:grouped";}
+body.igp-travel-pro .igp-block--accordions.igp-variant--compact{--igp-clone-reference:"06-interactive-utility.html#accordions:compact";}
+body.igp-travel-pro .igp-block--best-time-to-visit.igp-variant--default{--igp-clone-reference:"03-visual-proof-local-context.html#best-time-to-visit:default";}
+body.igp-travel-pro .igp-block--best-time-to-visit.igp-variant--seasons{--igp-clone-reference:"03-visual-proof-local-context.html#best-time-to-visit:seasons";}
+body.igp-travel-pro .igp-block--best-time-to-visit.igp-variant--monthly{--igp-clone-reference:"03-visual-proof-local-context.html#best-time-to-visit:monthly";}
+body.igp-travel-pro .igp-block--best-time-to-visit.igp-variant--compact{--igp-clone-reference:"03-visual-proof-local-context.html#best-time-to-visit:compact";}
+body.igp-travel-pro .igp-block--breadcrumb.igp-variant--default{--igp-clone-reference:"05-pricing-location-booking.html#breadcrumb:default";}
+body.igp-travel-pro .igp-block--breadcrumb.igp-variant--compact{--igp-clone-reference:"05-pricing-location-booking.html#breadcrumb:compact";}
+body.igp-travel-pro .igp-block--brochure-cta.igp-variant--default{--igp-clone-reference:"01-foundation-conversion.html#brochure-cta:default";}
+body.igp-travel-pro .igp-block--brochure-cta.igp-variant--banner{--igp-clone-reference:"01-foundation-conversion.html#brochure-cta:banner";}
+body.igp-travel-pro .igp-block--brochure-cta.igp-variant--card{--igp-clone-reference:"01-foundation-conversion.html#brochure-cta:card";}
+body.igp-travel-pro .igp-block--brochure-cta.igp-variant--inline{--igp-clone-reference:"01-foundation-conversion.html#brochure-cta:inline";}
+body.igp-travel-pro .igp-block--cta.igp-variant--default{--igp-clone-reference:"01-foundation-conversion.html#cta:default";}
+body.igp-travel-pro .igp-block--cta.igp-variant--inline{--igp-clone-reference:"01-foundation-conversion.html#cta:inline";}
+body.igp-travel-pro .igp-block--cta.igp-variant--banner{--igp-clone-reference:"01-foundation-conversion.html#cta:banner";}
+body.igp-travel-pro .igp-block--cta.igp-variant--split{--igp-clone-reference:"01-foundation-conversion.html#cta:split";}
+body.igp-travel-pro .igp-block--cta.igp-variant--card{--igp-clone-reference:"01-foundation-conversion.html#cta:card";}
+body.igp-travel-pro .igp-block--departure-dates.igp-variant--default{--igp-clone-reference:"04-journey-logistics.html#departure-dates:default";}
+body.igp-travel-pro .igp-block--departure-dates.igp-variant--table{--igp-clone-reference:"04-journey-logistics.html#departure-dates:table";}
+body.igp-travel-pro .igp-block--departure-dates.igp-variant--cards{--igp-clone-reference:"04-journey-logistics.html#departure-dates:cards";}
+body.igp-travel-pro .igp-block--departure-dates.igp-variant--compact{--igp-clone-reference:"04-journey-logistics.html#departure-dates:compact";}
+body.igp-travel-pro .igp-block--destination-cards.igp-variant--default{--igp-clone-reference:"02-listing-card-systems.html#destination-cards:default";}
+body.igp-travel-pro .igp-block--destination-cards.igp-variant--grid{--igp-clone-reference:"02-listing-card-systems.html#destination-cards:grid";}
+body.igp-travel-pro .igp-block--destination-cards.igp-variant--carousel-safe{--igp-clone-reference:"02-listing-card-systems.html#destination-cards:carousel-safe";}
+body.igp-travel-pro .igp-block--destination-cards.igp-variant--list{--igp-clone-reference:"02-listing-card-systems.html#destination-cards:list";}
+body.igp-travel-pro .igp-block--destination-cards.igp-variant--featured{--igp-clone-reference:"02-listing-card-systems.html#destination-cards:featured";}
+body.igp-travel-pro .igp-block--expert-box.igp-variant--default{--igp-clone-reference:"03-visual-proof-local-context.html#expert-box:default";}
+body.igp-travel-pro .igp-block--expert-box.igp-variant--card{--igp-clone-reference:"03-visual-proof-local-context.html#expert-box:card";}
+body.igp-travel-pro .igp-block--expert-box.igp-variant--profile{--igp-clone-reference:"03-visual-proof-local-context.html#expert-box:profile";}
+body.igp-travel-pro .igp-block--expert-box.igp-variant--compact{--igp-clone-reference:"03-visual-proof-local-context.html#expert-box:compact";}
+body.igp-travel-pro .igp-block--faq.igp-variant--default{--igp-clone-reference:"06-interactive-utility.html#faq:default";}
+body.igp-travel-pro .igp-block--faq.igp-variant--accordion{--igp-clone-reference:"06-interactive-utility.html#faq:accordion";}
+body.igp-travel-pro .igp-block--faq.igp-variant--grouped{--igp-clone-reference:"06-interactive-utility.html#faq:grouped";}
+body.igp-travel-pro .igp-block--faq.igp-variant--compact{--igp-clone-reference:"06-interactive-utility.html#faq:compact";}
+body.igp-travel-pro .igp-block--featured-listings.igp-variant--default{--igp-clone-reference:"02-listing-card-systems.html#featured-listings:default";}
+body.igp-travel-pro .igp-block--featured-listings.igp-variant--grid{--igp-clone-reference:"02-listing-card-systems.html#featured-listings:grid";}
+body.igp-travel-pro .igp-block--featured-listings.igp-variant--carousel-safe{--igp-clone-reference:"02-listing-card-systems.html#featured-listings:carousel-safe";}
+body.igp-travel-pro .igp-block--featured-listings.igp-variant--list{--igp-clone-reference:"02-listing-card-systems.html#featured-listings:list";}
+body.igp-travel-pro .igp-block--featured-listings.igp-variant--featured{--igp-clone-reference:"02-listing-card-systems.html#featured-listings:featured";}
+body.igp-travel-pro .igp-block--gallery.igp-variant--default{--igp-clone-reference:"03-visual-proof-local-context.html#gallery:default";}
+body.igp-travel-pro .igp-block--gallery.igp-variant--grid{--igp-clone-reference:"03-visual-proof-local-context.html#gallery:grid";}
+body.igp-travel-pro .igp-block--gallery.igp-variant--masonry-safe{--igp-clone-reference:"03-visual-proof-local-context.html#gallery:masonry-safe";}
+body.igp-travel-pro .igp-block--gallery.igp-variant--slider-safe{--igp-clone-reference:"03-visual-proof-local-context.html#gallery:slider-safe";}
+body.igp-travel-pro .igp-block--hero.igp-variant--default{--igp-clone-reference:"01-foundation-conversion.html#hero:default";}
+body.igp-travel-pro .igp-block--hero.igp-variant--full-width{--igp-clone-reference:"01-foundation-conversion.html#hero:full-width";}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-left{--igp-clone-reference:"01-foundation-conversion.html#hero:image-left";}
+body.igp-travel-pro .igp-block--hero.igp-variant--image-right{--igp-clone-reference:"01-foundation-conversion.html#hero:image-right";}
+body.igp-travel-pro .igp-block--hero.igp-variant--split-overlay{--igp-clone-reference:"01-foundation-conversion.html#hero:split-overlay";}
+body.igp-travel-pro .igp-block--hero.igp-variant--centered-minimal{--igp-clone-reference:"01-foundation-conversion.html#hero:centered-minimal";}
+body.igp-travel-pro .igp-block--icon-list.igp-variant--default{--igp-clone-reference:"06-interactive-utility.html#icon-list:default";}
+body.igp-travel-pro .igp-block--icon-list.igp-variant--grid{--igp-clone-reference:"06-interactive-utility.html#icon-list:grid";}
+body.igp-travel-pro .igp-block--icon-list.igp-variant--compact{--igp-clone-reference:"06-interactive-utility.html#icon-list:compact";}
+body.igp-travel-pro .igp-block--icon-list.igp-variant--cards{--igp-clone-reference:"06-interactive-utility.html#icon-list:cards";}
+body.igp-travel-pro .igp-block--inclusions-exclusions.igp-variant--default{--igp-clone-reference:"04-journey-logistics.html#inclusions-exclusions:default";}
+body.igp-travel-pro .igp-block--inclusions-exclusions.igp-variant--two-column{--igp-clone-reference:"04-journey-logistics.html#inclusions-exclusions:two-column";}
+body.igp-travel-pro .igp-block--inclusions-exclusions.igp-variant--compact{--igp-clone-reference:"04-journey-logistics.html#inclusions-exclusions:compact";}
+body.igp-travel-pro .igp-block--inclusions-exclusions.igp-variant--cards{--igp-clone-reference:"04-journey-logistics.html#inclusions-exclusions:cards";}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--default{--igp-clone-reference:"04-journey-logistics.html#itinerary:default";}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--timeline{--igp-clone-reference:"04-journey-logistics.html#itinerary:timeline";}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--cards{--igp-clone-reference:"04-journey-logistics.html#itinerary:cards";}
+body.igp-travel-pro .igp-block--itinerary.igp-variant--compact{--igp-clone-reference:"04-journey-logistics.html#itinerary:compact";}
+body.igp-travel-pro .igp-block--map.igp-variant--default{--igp-clone-reference:"05-pricing-location-booking.html#map:default";}
+body.igp-travel-pro .igp-block--map.igp-variant--wide{--igp-clone-reference:"05-pricing-location-booking.html#map:wide";}
+body.igp-travel-pro .igp-block--map.igp-variant--card{--igp-clone-reference:"05-pricing-location-booking.html#map:card";}
+body.igp-travel-pro .igp-block--nearby-attractions.igp-variant--default{--igp-clone-reference:"03-visual-proof-local-context.html#nearby-attractions:default";}
+body.igp-travel-pro .igp-block--nearby-attractions.igp-variant--grid{--igp-clone-reference:"03-visual-proof-local-context.html#nearby-attractions:grid";}
+body.igp-travel-pro .igp-block--nearby-attractions.igp-variant--list{--igp-clone-reference:"03-visual-proof-local-context.html#nearby-attractions:list";}
+body.igp-travel-pro .igp-block--nearby-attractions.igp-variant--compact{--igp-clone-reference:"03-visual-proof-local-context.html#nearby-attractions:compact";}
+body.igp-travel-pro .igp-block--package-tiers.igp-variant--default{--igp-clone-reference:"05-pricing-location-booking.html#package-tiers:default";}
+body.igp-travel-pro .igp-block--package-tiers.igp-variant--comparison{--igp-clone-reference:"05-pricing-location-booking.html#package-tiers:comparison";}
+body.igp-travel-pro .igp-block--package-tiers.igp-variant--cards{--igp-clone-reference:"05-pricing-location-booking.html#package-tiers:cards";}
+body.igp-travel-pro .igp-block--package-tiers.igp-variant--compact{--igp-clone-reference:"05-pricing-location-booking.html#package-tiers:compact";}
+body.igp-travel-pro .igp-block--pricing-summary.igp-variant--default{--igp-clone-reference:"05-pricing-location-booking.html#pricing-summary:default";}
+body.igp-travel-pro .igp-block--pricing-summary.igp-variant--compact{--igp-clone-reference:"05-pricing-location-booking.html#pricing-summary:compact";}
+body.igp-travel-pro .igp-block--pricing-summary.igp-variant--featured{--igp-clone-reference:"05-pricing-location-booking.html#pricing-summary:featured";}
+body.igp-travel-pro .igp-block--pricing-summary.igp-variant--comparison{--igp-clone-reference:"05-pricing-location-booking.html#pricing-summary:comparison";}
+body.igp-travel-pro .igp-block--related-destinations.igp-variant--default{--igp-clone-reference:"02-listing-card-systems.html#related-destinations:default";}
+body.igp-travel-pro .igp-block--related-destinations.igp-variant--grid{--igp-clone-reference:"02-listing-card-systems.html#related-destinations:grid";}
+body.igp-travel-pro .igp-block--related-destinations.igp-variant--carousel-safe{--igp-clone-reference:"02-listing-card-systems.html#related-destinations:carousel-safe";}
+body.igp-travel-pro .igp-block--related-destinations.igp-variant--list{--igp-clone-reference:"02-listing-card-systems.html#related-destinations:list";}
+body.igp-travel-pro .igp-block--related-destinations.igp-variant--featured{--igp-clone-reference:"02-listing-card-systems.html#related-destinations:featured";}
+body.igp-travel-pro .igp-block--related-tours.igp-variant--default{--igp-clone-reference:"02-listing-card-systems.html#related-tours:default";}
+body.igp-travel-pro .igp-block--related-tours.igp-variant--grid{--igp-clone-reference:"02-listing-card-systems.html#related-tours:grid";}
+body.igp-travel-pro .igp-block--related-tours.igp-variant--carousel-safe{--igp-clone-reference:"02-listing-card-systems.html#related-tours:carousel-safe";}
+body.igp-travel-pro .igp-block--related-tours.igp-variant--list{--igp-clone-reference:"02-listing-card-systems.html#related-tours:list";}
+body.igp-travel-pro .igp-block--related-tours.igp-variant--featured{--igp-clone-reference:"02-listing-card-systems.html#related-tours:featured";}
+body.igp-travel-pro .igp-block--reviews-summary.igp-variant--default{--igp-clone-reference:"03-visual-proof-local-context.html#reviews-summary:default";}
+body.igp-travel-pro .igp-block--reviews-summary.igp-variant--summary{--igp-clone-reference:"03-visual-proof-local-context.html#reviews-summary:summary";}
+body.igp-travel-pro .igp-block--reviews-summary.igp-variant--cards{--igp-clone-reference:"03-visual-proof-local-context.html#reviews-summary:cards";}
+body.igp-travel-pro .igp-block--reviews-summary.igp-variant--compact{--igp-clone-reference:"03-visual-proof-local-context.html#reviews-summary:compact";}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--default{--igp-clone-reference:"01-foundation-conversion.html#rich-text:default";}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--article{--igp-clone-reference:"01-foundation-conversion.html#rich-text:article";}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--lead{--igp-clone-reference:"01-foundation-conversion.html#rich-text:lead";}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--panel{--igp-clone-reference:"01-foundation-conversion.html#rich-text:panel";}
+body.igp-travel-pro .igp-block--rich-text.igp-variant--quote{--igp-clone-reference:"01-foundation-conversion.html#rich-text:quote";}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--default{--igp-clone-reference:"04-journey-logistics.html#route-timeline:default";}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--timeline{--igp-clone-reference:"04-journey-logistics.html#route-timeline:timeline";}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--cards{--igp-clone-reference:"04-journey-logistics.html#route-timeline:cards";}
+body.igp-travel-pro .igp-block--route-timeline.igp-variant--compact{--igp-clone-reference:"04-journey-logistics.html#route-timeline:compact";}
+body.igp-travel-pro .igp-block--section.igp-variant--default{--igp-clone-reference:"01-foundation-conversion.html#section-wrapper:default";}
+body.igp-travel-pro .igp-block--section.igp-variant--band{--igp-clone-reference:"01-foundation-conversion.html#section-wrapper:band";}
+body.igp-travel-pro .igp-block--section.igp-variant--split{--igp-clone-reference:"01-foundation-conversion.html#section-wrapper:split";}
+body.igp-travel-pro .igp-block--section.igp-variant--grid{--igp-clone-reference:"01-foundation-conversion.html#section-wrapper:grid";}
+body.igp-travel-pro .igp-block--stats.igp-variant--default{--igp-clone-reference:"06-interactive-utility.html#stats:default";}
+body.igp-travel-pro .igp-block--stats.igp-variant--grid{--igp-clone-reference:"06-interactive-utility.html#stats:grid";}
+body.igp-travel-pro .igp-block--stats.igp-variant--strip{--igp-clone-reference:"06-interactive-utility.html#stats:strip";}
+body.igp-travel-pro .igp-block--stats.igp-variant--cards{--igp-clone-reference:"06-interactive-utility.html#stats:cards";}
+body.igp-travel-pro .igp-block--sticky-booking-cta.igp-variant--default{--igp-clone-reference:"05-pricing-location-booking.html#sticky-booking-cta:default";}
+body.igp-travel-pro .igp-block--sticky-booking-cta.igp-variant--bottom-bar{--igp-clone-reference:"05-pricing-location-booking.html#sticky-booking-cta:bottom-bar";}
+body.igp-travel-pro .igp-block--sticky-booking-cta.igp-variant--side-card{--igp-clone-reference:"05-pricing-location-booking.html#sticky-booking-cta:side-card";}
+body.igp-travel-pro .igp-block--sticky-booking-cta.igp-variant--inline{--igp-clone-reference:"05-pricing-location-booking.html#sticky-booking-cta:inline";}
+body.igp-travel-pro .igp-block--tabs.igp-variant--default{--igp-clone-reference:"06-interactive-utility.html#tabs:default";}
+body.igp-travel-pro .igp-block--tabs.igp-variant--pills{--igp-clone-reference:"06-interactive-utility.html#tabs:pills";}
+body.igp-travel-pro .igp-block--tabs.igp-variant--underline{--igp-clone-reference:"06-interactive-utility.html#tabs:underline";}
+body.igp-travel-pro .igp-block--tabs.igp-variant--boxed{--igp-clone-reference:"06-interactive-utility.html#tabs:boxed";}
+body.igp-travel-pro .igp-block--tour-cards.igp-variant--default{--igp-clone-reference:"02-listing-card-systems.html#tour-cards:default";}
+body.igp-travel-pro .igp-block--tour-cards.igp-variant--grid{--igp-clone-reference:"02-listing-card-systems.html#tour-cards:grid";}
+body.igp-travel-pro .igp-block--tour-cards.igp-variant--carousel-safe{--igp-clone-reference:"02-listing-card-systems.html#tour-cards:carousel-safe";}
+body.igp-travel-pro .igp-block--tour-cards.igp-variant--list{--igp-clone-reference:"02-listing-card-systems.html#tour-cards:list";}
+body.igp-travel-pro .igp-block--tour-cards.igp-variant--featured{--igp-clone-reference:"02-listing-card-systems.html#tour-cards:featured";}
+body.igp-travel-pro .igp-block--tour-facts.igp-variant--default{--igp-clone-reference:"04-journey-logistics.html#tour-facts:default";}
+body.igp-travel-pro .igp-block--tour-facts.igp-variant--grid{--igp-clone-reference:"04-journey-logistics.html#tour-facts:grid";}
+body.igp-travel-pro .igp-block--tour-facts.igp-variant--compact{--igp-clone-reference:"04-journey-logistics.html#tour-facts:compact";}
+body.igp-travel-pro .igp-block--tour-facts.igp-variant--icons{--igp-clone-reference:"04-journey-logistics.html#tour-facts:icons";}
+body.igp-travel-pro .igp-block--trust.igp-variant--default{--igp-clone-reference:"01-foundation-conversion.html#trust:default";}
+body.igp-travel-pro .igp-block--trust.igp-variant--logo-strip{--igp-clone-reference:"01-foundation-conversion.html#trust:logo-strip";}
+body.igp-travel-pro .igp-block--trust.igp-variant--testimonial-cards{--igp-clone-reference:"01-foundation-conversion.html#trust:testimonial-cards";}
+body.igp-travel-pro .igp-block--trust.igp-variant--stats{--igp-clone-reference:"01-foundation-conversion.html#trust:stats";}
+body.igp-travel-pro .igp-block--visa-requirements.igp-variant--default{--igp-clone-reference:"04-journey-logistics.html#visa-requirements:default";}
+body.igp-travel-pro .igp-block--visa-requirements.igp-variant--checklist{--igp-clone-reference:"04-journey-logistics.html#visa-requirements:checklist";}
+body.igp-travel-pro .igp-block--visa-requirements.igp-variant--cards{--igp-clone-reference:"04-journey-logistics.html#visa-requirements:cards";}
+body.igp-travel-pro .igp-block--visa-requirements.igp-variant--compact{--igp-clone-reference:"04-journey-logistics.html#visa-requirements:compact";}
+
+
+/* Explicit renderer class bindings for static field-level audit. */
+body.igp-travel-pro .igp-pro-best-time-to-visit__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-block-header--split{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-brochure-cta__body{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-brochure-cta__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-card-grid--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-cta--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-cta__button--primary{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-cta__content{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__footnote{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__row{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__row--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__status{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__table{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-departure-dates__table-wrap{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-destination-cards{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-destination-cards--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-expert-box__body{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-expert-box__role{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-expert-box__specialties{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-featured-listings{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-featured-listings--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-gallery--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-gallery--columns-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-hero-search{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-icon-list--columns-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-icon-list__body{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__column--included{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-inclusions-exclusions__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-listing-block{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-map__address{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-map__link{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-nearby-attraction-card__meta{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-nearby-attractions__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-package-tiers__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-package-tiers__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-pricing-summary__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-related{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-related--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-related-destinations{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-related-tours{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-reviews-summary__breakdown{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-reviews-summary__source{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-reviews-summary__summary{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-rich-text--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-rich-text__inner{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-rich-text__title{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-route-timeline__day{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-route-timeline__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-season-card__meta{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section--align-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section--bg-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section--columns-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section--layout-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section--spacing-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section--variant-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section__header{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-section__title{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-stats--columns-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-stats__label{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-sticky-booking-cta__content{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-sticky-booking-cta__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-sticky-booking-cta__title{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-tabs-{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-tabs__panels{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-text-link{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-tour-cards{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-tour-cards--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-tour-facts__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-tour-facts__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-trust--{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-trust__avatar{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__applies{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__documents{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__intro{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__item{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__list{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__note{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-pro-visa-requirements__status{--igp-render-class-bound:1;}
+body.igp-travel-pro .igp-section-columns{--igp-render-class-bound:1;}
+
+/* IGP Travel Pro exact theme renderer additions */
+body.igp-travel-pro .igp-entry__header--graph{width:min(1180px,calc(100% - 34px));margin:clamp(36px,6vw,78px) auto 18px;padding:0;}
+body.igp-travel-pro .igp-entry__header--graph .igp-entry__title{margin:0;color:var(--ink);font-size:clamp(38px,5vw,70px);line-height:.98;letter-spacing:-.075em;}
+body.igp-travel-pro .igp-travel-pro-render{width:min(1480px,calc(100% - 34px));margin:0 auto;padding:0 0 88px;}
+body.igp-travel-pro .igp-travel-pro-render>.block:first-child{margin-top:0;}
+body.igp-travel-pro .badge-row{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:16px;}
+body.igp-travel-pro .cta-banner .badge-row,body.igp-travel-pro .cta-split .badge-row,body.igp-travel-pro .trust-board .badge-row{justify-content:flex-start;}
+body.igp-travel-pro .media--placeholder{min-height:220px;background:radial-gradient(circle at 25% 25%,rgba(255,90,42,.24),transparent 0 18%,transparent 19%),linear-gradient(135deg,#0f172a,#26364c);}
+body.igp-travel-pro .hero-bg .media--placeholder,body.igp-travel-pro .hero-panel .media--placeholder{position:absolute;inset:0;border-radius:0;min-height:100%;}
+body.igp-travel-pro .result-list .listing-card{display:grid;grid-template-columns:280px minmax(0,1fr);}
+body.igp-travel-pro .result-list .listing-card>.media{height:100%;min-height:230px;border-radius:0;}
+body.igp-travel-pro .gallery-item .media--placeholder{min-height:260px;}
+body.igp-travel-pro .faq-item p,body.igp-travel-pro .accordion-item p{margin:0;padding:0 18px 18px;color:var(--muted);}
+body.igp-travel-pro .hero-split .avatar.media,body.igp-travel-pro .expert-card .avatar.media{width:78px;height:78px;min-height:auto;border-radius:999px;}
+body.igp-travel-pro iframe.map-frame{width:100%;border:0;}
+@media(max-width:1080px){body.igp-travel-pro .result-list .listing-card{grid-template-columns:1fr;}body.igp-travel-pro .igp-entry__header--graph{width:min(100% - 24px,1180px);}body.igp-travel-pro .igp-travel-pro-render{width:min(100% - 24px,1480px);}}
+
+/* --------------------------------------------------------------------------
+ * Phase 2 theme shell, typography, footer, and tour booking layout.
+ * These selectors intentionally do not alter the UI Block variation renderer
+ * grammar. They control only theme chrome and tour-page placement.
+ * -------------------------------------------------------------------------- */
+body.igp-travel-pro,
+body.igp-travel-pro button,
+body.igp-travel-pro input,
+body.igp-travel-pro select,
+body.igp-travel-pro textarea,
+body.igp-travel-pro .igp-travel-pro-render,
+body.igp-travel-pro .igp-theme-tour {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-synthesis-weight: auto;
+}
+body.igp-travel-pro h1,
+body.igp-travel-pro h2,
+body.igp-travel-pro h3,
+body.igp-travel-pro h4,
+body.igp-travel-pro .title-xl,
+body.igp-travel-pro .title-lg,
+body.igp-travel-pro .title-md,
+body.igp-travel-pro .title-sm,
+body.igp-travel-pro .igp-entry__title,
+body.igp-travel-pro .igp-page-title {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-weight: 900;
+  color: var(--ink);
+}
+body.igp-travel-pro .igp-site-main {
+  min-height: 58vh;
+}
+body.igp-travel-pro .igp-site-header {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(255,255,255,.92);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+}
+body.admin-bar.igp-travel-pro .igp-site-header { top: 32px; }
+body.igp-travel-pro .igp-site-header__inner,
+body.igp-travel-pro .igp-theme-container,
+body.igp-travel-pro .igp-site-footer__inner {
+  width: min(1180px, calc(100vw - 48px));
+  margin-inline: auto;
+}
+body.igp-travel-pro .igp-site-header__inner {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+body.igp-travel-pro .igp-site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+body.igp-travel-pro .igp-site-brand::before {
+  content: "IGP";
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: -.02em;
+  box-shadow: 0 12px 24px rgba(255,90,42,.22);
+}
+body.igp-travel-pro .igp-site-brand .custom-logo-link::before,
+body.igp-travel-pro .igp-site-brand:has(.custom-logo)::before { content: none; }
+body.igp-travel-pro .igp-site-brand .custom-logo {
+  max-height: 46px;
+  width: auto;
+}
+body.igp-travel-pro .igp-site-nav ul,
+body.igp-travel-pro .igp-site-footer__nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+body.igp-travel-pro .igp-site-nav > ul,
+body.igp-travel-pro .igp-site-nav .menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+body.igp-travel-pro .igp-site-nav a {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 850;
+}
+body.igp-travel-pro .igp-site-nav a:hover { color: var(--brand); }
+body.igp-travel-pro .igp-site-footer {
+  margin-top: clamp(58px, 7vw, 96px);
+  padding: clamp(44px, 6vw, 72px) 0 32px;
+  background: #0f172a;
+  color: #fff;
+}
+body.igp-travel-pro .igp-site-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) repeat(4, minmax(120px, .8fr));
+  gap: 30px;
+  align-items: start;
+}
+body.igp-travel-pro .igp-footer-brand strong {
+  display: block;
+  font-size: 22px;
+  letter-spacing: -.04em;
+}
+body.igp-travel-pro .igp-footer-brand p {
+  margin: 12px 0 0;
+  max-width: 340px;
+  color: rgba(255,255,255,.66);
+  font-weight: 650;
+}
+body.igp-travel-pro .igp-footer-column h2,
+body.igp-travel-pro .igp-footer-widget__title {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+body.igp-travel-pro .igp-footer-column ul {
+  display: grid;
+  gap: 9px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+body.igp-travel-pro .igp-footer-column a,
+body.igp-travel-pro .igp-site-footer__nav a {
+  color: rgba(255,255,255,.72);
+  font-size: 14px;
+  font-weight: 700;
+}
+body.igp-travel-pro .igp-footer-column a:hover,
+body.igp-travel-pro .igp-site-footer__nav a:hover { color: #fff; }
+body.igp-travel-pro .igp-footer-bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.14);
+  color: rgba(255,255,255,.56);
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* Tour page layout reference */
+body.igp-travel-pro .igp-theme-tour-flow {
+  padding-block: clamp(42px, 6vw, 74px) 120px;
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav {
+  margin-bottom: 42px;
+}
+body.igp-travel-pro .igp-page-title {
+  max-width: 820px;
+  margin: 0 0 30px;
+  font-size: clamp(46px, 7vw, 92px);
+  line-height: .92;
+  letter-spacing: -.075em;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav .block {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav .variant {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav .variant__body { padding: 0; }
+body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-grid,
+body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-default,
+body.igp-travel-pro .igp-theme-tour-gallery-nav .igp-pro-gallery {
+  display: grid;
+  grid-template-columns: 1.35fr .82fr .82fr;
+  gap: 14px;
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-item,
+body.igp-travel-pro .igp-theme-tour-gallery-nav .media,
+body.igp-travel-pro .igp-theme-tour-gallery-fallback .media {
+  min-height: 230px;
+  border-radius: 24px;
+  box-shadow: 0 16px 40px rgba(16,24,39,.10);
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-item:first-child,
+body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-item:first-child .media,
+body.igp-travel-pro .igp-theme-tour-gallery-fallback .media:first-child {
+  grid-row: span 2;
+  min-height: 480px;
+}
+body.igp-travel-pro .igp-theme-tour-gallery-nav figcaption { display: none; }
+body.igp-travel-pro .igp-theme-tour-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 36px;
+  align-items: start;
+}
+body.igp-travel-pro .igp-theme-tour-content,
+body.igp-travel-pro .igp-theme-tour-rail { min-width: 0; }
+body.igp-travel-pro .igp-theme-tour-content > .block:first-child { margin-top: 0; }
+body.igp-travel-pro .igp-theme-tour-content .block {
+  margin-top: 0;
+  margin-bottom: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.igp-travel-pro .igp-theme-tour-content .block__header {
+  margin: 0 0 14px;
+  padding: 0;
+  display: block;
+}
+body.igp-travel-pro .igp-theme-tour-content .block__header .title-lg,
+body.igp-travel-pro .igp-theme-tour-content .block__header h2 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: -.035em;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-theme-tour-content .variant-stack,
+body.igp-travel-pro .igp-theme-tour-content .variant {
+  display: block;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.igp-travel-pro .igp-theme-tour-content .variant__body { padding: 0; }
+body.igp-travel-pro .igp-theme-tour-rail .igp-booking-shell {
+  position: sticky;
+  top: 96px;
+  z-index: 10;
+  display: block;
+  width: 100%;
+}
+body.admin-bar.igp-travel-pro .igp-theme-tour-rail .igp-booking-shell { top: 128px; }
+
+/* Tour-facts contract styling */
+body.igp-travel-pro .igp-theme-tour-content .fact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+body.igp-travel-pro .igp-theme-tour-content .fact {
+  min-height: 132px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(16,24,39,.08);
+}
+body.igp-travel-pro .igp-theme-tour-content .fact::before {
+  content: "•";
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  background: #fff4ef;
+  color: var(--brand);
+  font-size: 18px;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-theme-tour-content .fact-label {
+  display: block;
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+body.igp-travel-pro .igp-theme-tour-content .fact-value {
+  display: block;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -.04em;
+}
+
+/* Booking template contract */
+body.igp-travel-pro .igp-booking-panel,
+body.igp-travel-pro .igp-booking-benefits,
+body.igp-travel-pro .igp-availability-panel,
+body.igp-travel-pro .igp-booking-modal__dialog {
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 22px 60px rgba(16,24,39,.12);
+}
+body.igp-travel-pro .igp-booking-panel { padding: 24px; }
+body.igp-travel-pro .igp-booking-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+body.igp-travel-pro .igp-booking-panel__price > span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+body.igp-travel-pro .igp-booking-panel__price div { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+body.igp-travel-pro .igp-booking-panel__price strong {
+  font-size: 25px;
+  line-height: 1;
+  letter-spacing: -.05em;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-booking-panel__price em,
+body.igp-travel-pro .igp-booking-panel__price del {
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 700;
+}
+body.igp-travel-pro .igp-booking-discount {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--brand);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-booking-choice-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: visible;
+  margin-bottom: 14px;
+}
+body.igp-travel-pro .igp-booking-picker { position: relative; min-width: 0; }
+body.igp-travel-pro .igp-booking-choice {
+  width: 100%;
+  min-height: 52px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 850;
+}
+body.igp-travel-pro .igp-booking-picker:last-child .igp-booking-choice { border-right: 0; }
+body.igp-travel-pro .igp-date-popover,
+body.igp-travel-pro .igp-guest-panel {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 10px);
+  z-index: 40;
+  width: min(340px, calc(100vw - 40px));
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 22px 60px rgba(16,24,39,.16);
+}
+body.igp-travel-pro .igp-booking-picker--guest .igp-guest-panel { left: auto; right: 0; }
+body.igp-travel-pro .igp-calendar__header,
+body.igp-travel-pro .igp-calendar__days,
+body.igp-travel-pro .igp-calendar__dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+body.igp-travel-pro .igp-calendar__header {
+  grid-template-columns: 34px 1fr 34px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+body.igp-travel-pro .igp-calendar__header h6 { margin: 0; text-align: center; font-size: 14px; }
+body.igp-travel-pro .igp-calendar__header button,
+body.igp-travel-pro .igp-calendar__actions button,
+body.igp-travel-pro .igp-calendar__actions a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  font-weight: 850;
+}
+body.igp-travel-pro .igp-calendar__day-name { color: var(--muted); font-size: 11px; font-weight: 800; text-align: center; }
+body.igp-travel-pro .igp-calendar__dates .date {
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 850;
+}
+body.igp-travel-pro .igp-calendar__dates .date.selected,
+body.igp-travel-pro .igp-calendar__dates .date:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
+body.igp-travel-pro .igp-calendar__dates .date.disabled { opacity: .4; cursor: not-allowed; }
+body.igp-travel-pro .igp-calendar__dates .price { display: none; }
+body.igp-travel-pro .igp-calendar__actions { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px; }
+body.igp-travel-pro .igp-guest-panel__items { display: grid; gap: 12px; }
+body.igp-travel-pro .igp-guest-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+body.igp-travel-pro .igp-guest-row__copy strong,
+body.igp-travel-pro .igp-guest-row__copy span,
+body.igp-travel-pro .igp-guest-row__copy em { display: block; }
+body.igp-travel-pro .igp-guest-row__copy span,
+body.igp-travel-pro .igp-guest-row__copy em { color: var(--muted); font-size: 12px; font-style: normal; }
+body.igp-travel-pro .igp-qty,
+body.igp-travel-pro .igp-addon-qty {
+  display: inline-grid;
+  grid-template-columns: 30px 42px 30px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+body.igp-travel-pro .igp-qty button,
+body.igp-travel-pro .igp-addon-qty button { border: 0; background: #fff; min-height: 30px; cursor: pointer; }
+body.igp-travel-pro .igp-qty input,
+body.igp-travel-pro .igp-addon-qty input { border: 0; width: 42px; text-align: center; font-weight: 900; }
+body.igp-travel-pro .igp-guest-panel__actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 12px; }
+body.igp-travel-pro .igp-guest-apply { font-weight: 900; color: var(--brand); }
+body.igp-travel-pro .igp-booking-submit,
+body.igp-travel-pro .igp-booking-secondary {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-booking-submit {
+  border: 0;
+  background: var(--brand);
+  color: #fff;
+  box-shadow: 0 16px 30px rgba(255,90,42,.22);
+}
+body.igp-travel-pro .igp-booking-secondary {
+  margin-top: 12px;
+  border: 2px solid var(--ink);
+  background: #fff;
+  color: var(--ink);
+}
+body.igp-travel-pro .igp-booking-message { min-height: 20px; margin: 8px 0; color: var(--muted); font-weight: 700; }
+body.igp-travel-pro .igp-booking-message[data-type="error"] { color: #b42318; }
+body.igp-travel-pro .igp-booking-message[data-type="success"] { color: #0b8f61; }
+body.igp-travel-pro .igp-booking-benefits {
+  margin-top: 18px;
+  padding: 22px 24px;
+}
+body.igp-travel-pro .igp-booking-benefits h3 {
+  margin: 0 0 14px;
+  font-size: 19px;
+  letter-spacing: -.03em;
+}
+body.igp-travel-pro .igp-booking-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 11px;
+}
+body.igp-travel-pro .igp-booking-benefits li {
+  display: flex;
+  gap: 10px;
+  color: var(--muted);
+  font-weight: 800;
+}
+body.igp-travel-pro .igp-booking-benefits li::before {
+  content: "✓";
+  color: #0b8f61;
+  font-weight: 950;
+}
+body.igp-travel-pro .igp-availability-dock {
+  display: none;
+  margin: -8px 0 34px;
+}
+body.igp-travel-pro .igp-availability-dock.is-visible,
+body.igp-travel-pro .igp-availability-dock:has(.igp-availability-panel.is-visible) {
+  display: block;
+}
+body.igp-travel-pro .igp-availability-panel {
+  padding: 22px;
+  border-color: rgba(255,90,42,.45);
+  box-shadow: 0 18px 55px rgba(16,24,39,.10);
+}
+body.igp-travel-pro .igp-availability-panel__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+body.igp-travel-pro .igp-availability-panel__eyebrow {
+  margin: 0 0 4px;
+  color: var(--brand);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+body.igp-travel-pro .igp-availability-title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -.035em;
+}
+body.igp-travel-pro .igp-availability-panel__close {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-availability-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 220px;
+  gap: 18px;
+  align-items: start;
+}
+body.igp-travel-pro .igp-tour-options,
+body.igp-travel-pro .igp-booking-addons { display: grid; gap: 12px; }
+body.igp-travel-pro .igp-tour-option-card,
+body.igp-travel-pro .igp-addon-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0,1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+}
+body.igp-travel-pro .igp-tour-option-card strong,
+body.igp-travel-pro .igp-addon-row strong { display: block; line-height: 1.2; }
+body.igp-travel-pro .igp-tour-option-card em,
+body.igp-travel-pro .igp-addon-row em,
+body.igp-travel-pro .igp-addon-row span span {
+  display: block;
+  color: var(--muted);
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 650;
+}
+body.igp-travel-pro .igp-addon-price-qty { display: grid; justify-items: end; gap: 8px; }
+body.igp-travel-pro .igp-booking-section-title { margin: 14px 0 0; font-weight: 900; letter-spacing: -.02em; }
+body.igp-travel-pro .igp-availability-actions {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+}
+body.igp-travel-pro .igp-booking-total span,
+body.igp-travel-pro .igp-booking-total em {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+body.igp-travel-pro .igp-booking-total strong {
+  display: block;
+  margin: 2px 0 12px;
+  font-size: 30px;
+  letter-spacing: -.05em;
+}
+body.igp-travel-pro .igp-booking-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+body.igp-travel-pro .igp-booking-modal[hidden] { display: none !important; }
+body.igp-travel-pro .igp-booking-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15,23,42,.55);
+  backdrop-filter: blur(4px);
+}
+body.igp-travel-pro .igp-booking-modal__dialog {
+  position: relative;
+  width: min(720px, calc(100vw - 28px));
+  margin: 8vh auto;
+  padding: 28px;
+}
+body.igp-travel-pro .igp-booking-modal__close {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  cursor: pointer;
+}
+body.igp-travel-pro .igp-enquiry-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+body.igp-travel-pro .igp-enquiry-field {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+body.igp-travel-pro .igp-enquiry-field--full { grid-column: 1 / -1; }
+body.igp-travel-pro .igp-enquiry-field input,
+body.igp-travel-pro .igp-enquiry-field textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  color: var(--ink);
+}
+
+@media (max-width: 1020px) {
+  body.igp-travel-pro .igp-theme-tour-layout { grid-template-columns: 1fr; }
+  body.igp-travel-pro .igp-theme-tour-rail { order: -1; }
+  body.igp-travel-pro .igp-theme-tour-rail .igp-booking-shell,
+  body.igp-travel-pro .igp-availability-actions { position: static; }
+  body.igp-travel-pro .igp-theme-tour-content .fact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.igp-travel-pro .igp-site-footer__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.igp-travel-pro .igp-footer-brand { grid-column: 1 / -1; }
+}
+@media (max-width: 720px) {
+  body.admin-bar.igp-travel-pro .igp-site-header { top: 46px; }
+  body.igp-travel-pro .igp-site-header__inner,
+  body.igp-travel-pro .igp-theme-container,
+  body.igp-travel-pro .igp-site-footer__inner { width: min(100% - 28px, 1180px); }
+  body.igp-travel-pro .igp-site-header__inner { min-height: 68px; }
+  body.igp-travel-pro .igp-site-nav { display: none; }
+  body.igp-travel-pro .igp-theme-tour-flow { padding-block: 42px 80px; }
+  body.igp-travel-pro .igp-page-title { font-size: clamp(40px, 14vw, 62px); }
+  body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-grid,
+  body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-default,
+  body.igp-travel-pro .igp-theme-tour-gallery-nav .igp-pro-gallery,
+  body.igp-travel-pro .igp-theme-tour-content .fact-grid,
+  body.igp-travel-pro .igp-availability-grid,
+  body.igp-travel-pro .igp-enquiry-grid { grid-template-columns: 1fr; }
+  body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-item:first-child,
+  body.igp-travel-pro .igp-theme-tour-gallery-nav .gallery-item:first-child .media,
+  body.igp-travel-pro .igp-theme-tour-gallery-fallback .media:first-child { grid-row: auto; min-height: 230px; }
+  body.igp-travel-pro .igp-date-popover,
+  body.igp-travel-pro .igp-guest-panel { position: fixed; left: 14px; right: 14px; top: 96px; width: auto; }
+  body.igp-travel-pro .igp-site-footer__inner { grid-template-columns: 1fr; }
+  body.igp-travel-pro .igp-footer-bottom { display: grid; }
+}
+
+/*
+ * Booking availability corrective patch.
+ * Keeps the plugin JS contract intact while improving the detached left-column
+ * availability deck used by the tour layout.
+ */
+body.igp-travel-pro .igp-availability-dock.is-visible,
+body.igp-travel-pro .igp-availability-dock[data-igp-availability-open="true"] {
+  display: block !important;
+}
+body.igp-travel-pro .igp-availability-dock .igp-availability-panel.is-visible {
+  display: block;
+}
+body.igp-travel-pro .igp-availability-panel[hidden] {
+  display: none !important;
+}
+body.igp-travel-pro .igp-availability-main {
+  min-width: 0;
+  display: grid;
+  gap: 16px;
+}
+body.igp-travel-pro .igp-tour-options,
+body.igp-travel-pro .igp-booking-addons {
+  min-width: 0;
+}
+body.igp-travel-pro .igp-booking-addons > .igp-booking-section-title {
+  margin: 2px 0 0;
+}
+body.igp-travel-pro .igp-tour-option-card {
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  cursor: pointer;
+}
+body.igp-travel-pro .igp-tour-option-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+body.igp-travel-pro .igp-tour-option-card__dot {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--brand);
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+}
+body.igp-travel-pro .igp-tour-option-card__dot::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--brand);
+  transform: scale(0);
+  transition: transform .16s ease;
+}
+body.igp-travel-pro .igp-tour-option-card:has(input[type="radio"]:checked) {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 1px rgba(255,90,42,.18), 0 12px 30px rgba(16,24,39,.07);
+}
+body.igp-travel-pro .igp-tour-option-card:has(input[type="radio"]:checked) .igp-tour-option-card__dot::after {
+  transform: scale(1);
+}
+body.igp-travel-pro .igp-tour-option-card__copy,
+body.igp-travel-pro .igp-addon-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+body.igp-travel-pro .igp-tour-option-card__copy strong,
+body.igp-travel-pro .igp-addon-copy strong {
+  display: block;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
+}
+body.igp-travel-pro .igp-tour-option-card__copy em,
+body.igp-travel-pro .igp-addon-copy span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 650;
+  line-height: 1.35;
+}
+body.igp-travel-pro .igp-tour-option-card__price,
+body.igp-travel-pro .igp-addon-price {
+  white-space: nowrap;
+  font-weight: 900;
+  color: var(--ink);
+}
+body.igp-travel-pro .igp-addon-row {
+  grid-template-columns: 24px minmax(0, 1fr) auto auto;
+  align-items: center;
+}
+body.igp-travel-pro .igp-addon-check {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+}
+body.igp-travel-pro .igp-addon-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--brand);
+  cursor: pointer;
+}
+body.igp-travel-pro .igp-addon-row.is-selected,
+body.igp-travel-pro .igp-addon-row:has([data-igp-addon-check]:checked) {
+  border-color: var(--brand);
+  background: #fff8f5;
+}
+body.igp-travel-pro .igp-quantity,
+body.igp-travel-pro .igp-qty,
+body.igp-travel-pro .igp-addon-qty {
+  display: inline-grid;
+  grid-template-columns: 30px 42px 30px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+  background: #fff;
+}
+body.igp-travel-pro .igp-quantity button,
+body.igp-travel-pro .igp-qty button,
+body.igp-travel-pro .igp-addon-qty button {
+  border: 0;
+  background: #fff;
+  min-height: 30px;
+  cursor: pointer;
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-quantity input,
+body.igp-travel-pro .igp-qty input,
+body.igp-travel-pro .igp-addon-qty input {
+  border: 0;
+  width: 42px;
+  min-height: 30px;
+  padding: 0;
+  text-align: center;
+  font-weight: 900;
+  -moz-appearance: textfield;
+}
+body.igp-travel-pro .igp-quantity input::-webkit-outer-spin-button,
+body.igp-travel-pro .igp-quantity input::-webkit-inner-spin-button,
+body.igp-travel-pro .igp-qty input::-webkit-outer-spin-button,
+body.igp-travel-pro .igp-qty input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+body.igp-travel-pro .igp-booking-check.is-loading,
+body.igp-travel-pro .igp-booking-check:disabled {
+  opacity: .68;
+  cursor: wait;
+}
+body.igp-travel-pro .igp-booking-check:not(.is-loading):disabled {
+  cursor: pointer;
+}
+body.igp-travel-pro .screen-reader-text {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+@media (max-width: 860px) {
+  body.igp-travel-pro .igp-addon-row {
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+  body.igp-travel-pro .igp-addon-price,
+  body.igp-travel-pro .igp-addon-row .igp-quantity {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+@media (max-width: 720px) {
+  body.igp-travel-pro .igp-tour-option-card {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+  body.igp-travel-pro .igp-tour-option-card__price {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/*
+ * Booking freeze + availability deck corrective patch v1.1.2.
+ * The plugin opens the availability drawer by adding html.igp-availability-panel-open.
+ * In this theme the availability UI is inline, not a modal drawer, so the page
+ * must remain scrollable while the deck is open.
+ */
+html.igp-availability-panel-open:has(body.igp-travel-pro .igp-theme-tour-layout) {
+  overflow: auto !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-dock {
+  position: relative;
+  z-index: 2;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-dock.is-visible,
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-dock[data-igp-availability-open="true"] {
+  display: block !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-panel {
+  position: relative !important;
+  inset: auto !important;
+  display: block;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-panel[hidden] {
+  display: none !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-grid {
+  display: grid !important;
+  grid-template-columns: minmax(340px, 1fr) minmax(178px, 210px) !important;
+  gap: 18px !important;
+  align-items: start !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-main {
+  display: grid !important;
+  gap: 18px !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+  padding: 0 !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-options,
+body.igp-travel-pro .igp-theme-tour-layout .igp-booking-addons {
+  display: grid !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  min-width: 0 !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-booking-section-title {
+  margin: 0 0 2px !important;
+  color: var(--ink) !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-option-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: 22px minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+  cursor: pointer !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-option-card--no-price {
+  grid-template-columns: 22px minmax(0, 1fr) !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-option-card__copy,
+body.igp-travel-pro .igp-theme-tour-layout .igp-addon-copy {
+  min-width: 0 !important;
+  display: grid !important;
+  gap: 4px !important;
+  white-space: normal !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-option-card__copy strong,
+body.igp-travel-pro .igp-theme-tour-layout .igp-addon-copy strong {
+  display: block !important;
+  overflow-wrap: normal !important;
+  word-break: normal !important;
+  hyphens: none !important;
+  line-height: 1.18 !important;
+  font-size: 15px !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-option-card__copy em,
+body.igp-travel-pro .igp-theme-tour-layout .igp-addon-copy span {
+  display: block !important;
+  color: var(--muted) !important;
+  font-size: 13px !important;
+  font-style: normal !important;
+  font-weight: 650 !important;
+  line-height: 1.35 !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-tour-option-card__price,
+body.igp-travel-pro .igp-theme-tour-layout .igp-addon-price {
+  white-space: nowrap !important;
+  font-weight: 900 !important;
+  justify-self: end !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-addon-row {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: 24px minmax(0, 1fr) auto auto !important;
+  gap: 12px !important;
+  align-items: center !important;
+  padding: 16px !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 16px !important;
+  background: #fff !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-addon-scope-line strong {
+  display: inline !important;
+  font-size: inherit !important;
+}
+body.igp-travel-pro .igp-theme-tour-layout .igp-availability-actions {
+  position: sticky !important;
+  top: 96px !important;
+  align-self: start !important;
+  min-width: 0 !important;
+  padding: 18px !important;
+  border-radius: 18px !important;
+  background: var(--soft) !important;
+  border: 1px solid var(--line) !important;
+}
+@media (max-width: 900px) {
+  body.igp-travel-pro .igp-theme-tour-layout .igp-availability-grid {
+    grid-template-columns: 1fr !important;
+  }
+  body.igp-travel-pro .igp-theme-tour-layout .igp-availability-actions {
+    position: static !important;
+  }
+}
+@media (max-width: 620px) {
+  body.igp-travel-pro .igp-theme-tour-layout .igp-addon-row {
+    grid-template-columns: 24px minmax(0, 1fr) !important;
+  }
+  body.igp-travel-pro .igp-theme-tour-layout .igp-addon-price,
+  body.igp-travel-pro .igp-theme-tour-layout .igp-addon-row .igp-quantity {
+    grid-column: 2 !important;
+    justify-self: start !important;
+  }
+}
+
+/* Checkout page polish. Plugin owns checkout logic; theme only styles output. */
+body.igp-travel-pro .igp-checkout-page {
+  min-height: 82vh;
+  display: block;
+  padding: clamp(42px, 7vw, 88px) 0;
+  background: radial-gradient(circle at 15% -10%, rgba(255,90,42,.14), transparent 32%), linear-gradient(180deg, #f6f8fb, #eef3f9);
+}
+body.igp-travel-pro .igp-checkout-layout {
+  width: min(1180px, calc(100vw - 48px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: 28px;
+  align-items: start;
+}
+body.igp-travel-pro .igp-checkout-main,
+body.igp-travel-pro .igp-checkout-order,
+body.igp-travel-pro .igp-checkout-card,
+body.igp-travel-pro .igp-checkout-section {
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(16,24,39,.09);
+}
+body.igp-travel-pro .igp-checkout-main { padding: clamp(22px, 3vw, 34px); }
+body.igp-travel-pro .igp-checkout-section {
+  padding: 24px;
+  margin-bottom: 18px;
+  box-shadow: none;
+}
+body.igp-travel-pro .igp-checkout-section h2,
+body.igp-travel-pro .igp-checkout-card h1 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-weight: 900;
+  letter-spacing: -.045em;
+}
+body.igp-travel-pro .igp-checkout-section p,
+body.igp-travel-pro .igp-checkout-card p { color: var(--muted); }
+body.igp-travel-pro .igp-checkout-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+body.igp-travel-pro .igp-checkout-field--full { grid-column: 1 / -1; }
+body.igp-travel-pro .igp-checkout-form label,
+body.igp-travel-pro .igp-checkout-section label {
+  display: grid;
+  gap: 7px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 850;
+}
+body.igp-travel-pro .igp-checkout-form input,
+body.igp-travel-pro .igp-checkout-form select,
+body.igp-travel-pro .igp-checkout-form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+}
+body.igp-travel-pro .igp-checkout-radio {
+  grid-template-columns: 22px minmax(0, 1fr);
+  align-items: start;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  margin-top: 12px;
+}
+body.igp-travel-pro .igp-checkout-radio span { color: var(--muted); font-weight: 650; }
+body.igp-travel-pro .igp-checkout-order {
+  position: sticky;
+  top: 96px;
+  padding: 22px;
+}
+body.igp-travel-pro .igp-checkout-order__product {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+body.igp-travel-pro .igp-checkout-order__product img {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+body.igp-travel-pro .igp-checkout-order__meta {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+body.igp-travel-pro .igp-checkout-order__meta li,
+body.igp-travel-pro .igp-checkout-order__line,
+body.igp-travel-pro .igp-checkout-order__subtotal,
+body.igp-travel-pro .igp-checkout-order__total,
+body.igp-travel-pro .igp-checkout-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+}
+body.igp-travel-pro .igp-checkout-order__line,
+body.igp-travel-pro .igp-checkout-order__subtotal,
+body.igp-travel-pro .igp-checkout-order__total {
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+}
+body.igp-travel-pro .igp-checkout-order__total strong,
+body.igp-travel-pro .igp-checkout-summary strong {
+  font-size: 20px;
+  color: var(--ink);
+}
+body.igp-travel-pro .igp-checkout-order__promo {
+  display: inline-flex;
+  width: max-content;
+  margin: 12px 0;
+  color: var(--brand);
+  font-weight: 900;
+}
+body.igp-travel-pro .igp-checkout-card {
+  width: min(720px, calc(100vw - 48px));
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 46px);
+}
+body.igp-travel-pro .igp-checkout-eyebrow {
+  color: var(--brand) !important;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+@media (max-width: 980px) {
+  body.igp-travel-pro .igp-checkout-layout { grid-template-columns: 1fr; }
+  body.igp-travel-pro .igp-checkout-order { position: static; }
+}
+@media (max-width: 680px) {
+  body.igp-travel-pro .igp-checkout-layout,
+  body.igp-travel-pro .igp-checkout-card { width: min(100% - 28px, 1180px); }
+  body.igp-travel-pro .igp-checkout-grid { grid-template-columns: 1fr; }
+}

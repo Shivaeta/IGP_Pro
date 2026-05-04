@@ -37,22 +37,46 @@ function igp_pro_resolve_page_h1( array $graph, array $context = array() ): arra
 		}
 	}
 
-	foreach ( $graph['sections'] ?? array() as $index => $section ) {
-		if ( ! is_array( $section ) || 'hero' !== sanitize_key( (string) ( $section['block_id'] ?? '' ) ) ) {
-			continue;
-		}
-
-		$data = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
-		$heading = function_exists( 'igp_pro_normalize_block_heading' ) ? igp_pro_normalize_block_heading( $data, 'hero' ) : array( 'text' => '' );
-		if ( '' !== trim( (string) ( $heading['text'] ?? '' ) ) ) {
-			$h1['text']       = trim( (string) $heading['text'] );
-			$h1['source']     = 'hero_fallback';
-			$h1['section_id'] = isset( $section['id'] ) && '' !== (string) $section['id'] ? sanitize_key( (string) $section['id'] ) : 'section_' . ( $index + 1 );
-			return $h1;
-		}
+	$hero_h1 = igp_pro_find_first_hero_heading_for_h1( $graph['sections'] ?? array() );
+	if ( is_array( $hero_h1 ) && '' !== (string) ( $hero_h1['text'] ?? '' ) ) {
+		return array_merge( $h1, $hero_h1 );
 	}
 
 	return $h1;
+}
+
+/**
+ * Find the first Hero heading recursively for page-H1 fallback.
+ *
+ * @param array<int,mixed> $sections Sections.
+ * @return array<string,string>|null
+ */
+function igp_pro_find_first_hero_heading_for_h1( array $sections ) {
+	foreach ( $sections as $index => $section ) {
+		if ( ! is_array( $section ) ) {
+			continue;
+		}
+		$block_id = sanitize_key( (string) ( $section['block_id'] ?? '' ) );
+		if ( 'hero' === $block_id ) {
+			$data    = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+			$heading = function_exists( 'igp_pro_normalize_block_heading' ) ? igp_pro_normalize_block_heading( $data, 'hero' ) : array( 'text' => '' );
+			if ( '' !== trim( (string) ( $heading['text'] ?? '' ) ) ) {
+				return array(
+					'text'       => trim( (string) $heading['text'] ),
+					'source'     => 'hero_fallback',
+					'section_id' => isset( $section['id'] ) && '' !== (string) $section['id'] ? sanitize_key( (string) $section['id'] ) : 'section_' . ( $index + 1 ),
+				);
+			}
+		}
+		if ( ! empty( $section['children'] ) && is_array( $section['children'] ) ) {
+			$child = igp_pro_find_first_hero_heading_for_h1( $section['children'] );
+			if ( is_array( $child ) ) {
+				return $child;
+			}
+		}
+	}
+
+	return null;
 }
 
 /**
@@ -82,24 +106,38 @@ function igp_pro_build_semantic_outline( array $graph, array $context = array() 
  */
 function igp_pro_collect_graph_block_headings( array $graph ): array {
 	$headings = array();
-	foreach ( $graph['sections'] ?? array() as $index => $section ) {
+	igp_pro_collect_graph_block_headings_from_sections( $graph['sections'] ?? array(), $headings );
+	return $headings;
+}
+
+/**
+ * Collect visible block headings recursively.
+ *
+ * @param array<int,mixed>        $sections Sections.
+ * @param array<int,array<string,mixed>> $headings Headings.
+ * @param string                  $prefix Path prefix.
+ * @return void
+ */
+function igp_pro_collect_graph_block_headings_from_sections( array $sections, array &$headings, string $prefix = '' ): void {
+	foreach ( $sections as $index => $section ) {
 		if ( ! is_array( $section ) ) {
 			continue;
 		}
 		$block_id = sanitize_key( (string) ( $section['block_id'] ?? '' ) );
 		$data     = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
 		$heading  = function_exists( 'igp_pro_normalize_block_heading' ) ? igp_pro_normalize_block_heading( $data, $block_id ) : array( 'text' => '', 'level' => 'h2', 'visible' => false );
-		if ( empty( $heading['visible'] ) || '' === trim( (string) $heading['text'] ) ) {
-			continue;
+		if ( ! empty( $heading['visible'] ) && '' !== trim( (string) $heading['text'] ) ) {
+			$headings[] = array(
+				'index'    => '' === $prefix ? $index : $prefix . '.' . $index,
+				'block_id' => $block_id,
+				'level'    => sanitize_key( (string) $heading['level'] ),
+				'text'     => trim( (string) $heading['text'] ),
+			);
 		}
-		$headings[] = array(
-			'index'    => $index,
-			'block_id' => $block_id,
-			'level'    => sanitize_key( (string) $heading['level'] ),
-			'text'     => trim( (string) $heading['text'] ),
-		);
+		if ( ! empty( $section['children'] ) && is_array( $section['children'] ) ) {
+			igp_pro_collect_graph_block_headings_from_sections( $section['children'], $headings, '' === $prefix ? (string) $index : $prefix . '.' . $index );
+		}
 	}
-	return $headings;
 }
 
 /**

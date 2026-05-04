@@ -1,0 +1,903 @@
+{
+  "theme": "igp-travel-pro",
+  "phase": "1",
+  "source": "uploaded-32-ui-block-schemas",
+  "blocks": [
+    {
+      "block_id": "accordions",
+      "css_slug": "accordions",
+      "folder": "accordions",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "accordion",
+        "grouped",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "items"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "best_time_to_visit",
+      "css_slug": "best-time-to-visit",
+      "folder": "best-time-to-visit",
+      "version": "v2.0",
+      "category": "content",
+      "variants": [
+        "default",
+        "seasons",
+        "monthly",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "best_months",
+        "weather_summary",
+        "seasons",
+        "tips"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/best-time-to-visit/render.php"
+    },
+    {
+      "block_id": "breadcrumb",
+      "css_slug": "breadcrumb",
+      "folder": "breadcrumb",
+      "version": "v1",
+      "category": "navigation",
+      "variants": [
+        "default",
+        "compact"
+      ],
+      "fields": [
+        "source",
+        "items",
+        "show_current",
+        "style"
+      ],
+      "supports": {
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "brochure_cta",
+      "css_slug": "brochure-cta",
+      "folder": "brochure-cta",
+      "version": "v2.0",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "banner",
+        "card",
+        "inline"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "description",
+        "file_url",
+        "button_label",
+        "secondary_label",
+        "secondary_url",
+        "form_note"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/brochure-cta/render.php"
+    },
+    {
+      "block_id": "cta",
+      "css_slug": "cta",
+      "folder": "cta",
+      "version": "v1",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "inline",
+        "banner",
+        "split",
+        "card"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "subheading",
+        "button",
+        "secondary_button",
+        "alignment",
+        "show_badges",
+        "badges"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "departure_dates",
+      "css_slug": "departure-dates",
+      "folder": "departure-dates",
+      "version": "v2.0",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "table",
+        "cards",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "dates",
+        "footnote"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/departure-dates/render.php"
+    },
+    {
+      "block_id": "destination_cards",
+      "css_slug": "destination-cards",
+      "folder": "destination-cards",
+      "version": "v1",
+      "category": "discovery",
+      "variants": [
+        "default",
+        "grid",
+        "carousel-safe",
+        "list",
+        "featured"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "description",
+        "source",
+        "items",
+        "layout",
+        "columns",
+        "limit",
+        "show_excerpt",
+        "show_count",
+        "image_ratio"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "expert_box",
+      "css_slug": "expert-box",
+      "folder": "expert-box",
+      "version": "v2.0",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "card",
+        "profile",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "name",
+        "role",
+        "bio",
+        "image",
+        "phone",
+        "email",
+        "cta_label",
+        "cta_url",
+        "specialties"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/expert-box/render.php"
+    },
+    {
+      "block_id": "faq",
+      "css_slug": "faq",
+      "folder": "faq",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "accordion",
+        "grouped",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "items"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "featured_listings",
+      "css_slug": "featured-listings",
+      "folder": "featured-listings",
+      "version": "v1",
+      "category": "discovery",
+      "variants": [
+        "default",
+        "grid",
+        "carousel-safe",
+        "list",
+        "featured"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "description",
+        "post_type",
+        "items",
+        "layout",
+        "columns",
+        "limit",
+        "show_excerpt",
+        "show_price",
+        "show_rating",
+        "image_ratio"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "gallery",
+      "css_slug": "gallery",
+      "folder": "gallery",
+      "version": "v1",
+      "category": "media",
+      "variants": [
+        "default",
+        "grid",
+        "masonry-safe",
+        "slider-safe"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "images",
+        "layout",
+        "columns"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "hero",
+      "css_slug": "hero",
+      "folder": "hero",
+      "version": "v1",
+      "category": "core",
+      "variants": [
+        "default",
+        "full-width",
+        "image-left",
+        "image-right",
+        "split-overlay",
+        "centered-minimal"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "subheading",
+        "background_image",
+        "cta",
+        "enable_search"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "icon_list",
+      "css_slug": "icon-list",
+      "folder": "icon-list",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "grid",
+        "compact",
+        "cards"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "items",
+        "columns"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "inclusions_exclusions",
+      "css_slug": "inclusions-exclusions",
+      "folder": "inclusions-exclusions",
+      "version": "v2.0",
+      "category": "content",
+      "variants": [
+        "default",
+        "two-column",
+        "compact",
+        "cards"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "inclusions",
+        "exclusions",
+        "note"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/inclusions-exclusions/render.php"
+    },
+    {
+      "block_id": "itinerary",
+      "css_slug": "itinerary",
+      "folder": "itinerary",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "timeline",
+        "cards",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "days"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "map",
+      "css_slug": "map",
+      "folder": "map",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "wide",
+        "card"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "address",
+        "embed_url",
+        "height",
+        "link_label"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "nearby_attractions",
+      "css_slug": "nearby-attractions",
+      "folder": "nearby-attractions",
+      "version": "v2.0",
+      "category": "discovery",
+      "variants": [
+        "default",
+        "grid",
+        "list",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "source",
+        "items",
+        "limit"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/nearby-attractions/render.php"
+    },
+    {
+      "block_id": "package_tiers",
+      "css_slug": "package-tiers",
+      "folder": "package-tiers",
+      "version": "v2.0",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "comparison",
+        "cards",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "tiers",
+        "note"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/package-tiers/render.php"
+    },
+    {
+      "block_id": "pricing_summary",
+      "css_slug": "pricing-summary",
+      "folder": "pricing-summary",
+      "version": "v1",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "compact",
+        "featured",
+        "comparison"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "currency",
+        "base_price",
+        "items",
+        "note"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "related_destinations",
+      "css_slug": "related-destinations",
+      "folder": "related-destinations",
+      "version": "v1",
+      "category": "discovery",
+      "variants": [
+        "default",
+        "grid",
+        "carousel-safe",
+        "list",
+        "featured"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "limit",
+        "layout",
+        "show_excerpt"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "related_tours",
+      "css_slug": "related-tours",
+      "folder": "related-tours",
+      "version": "v1",
+      "category": "discovery",
+      "variants": [
+        "default",
+        "grid",
+        "carousel-safe",
+        "list",
+        "featured"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "limit",
+        "layout",
+        "show_excerpt"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "reviews_summary",
+      "css_slug": "reviews-summary",
+      "folder": "reviews-summary",
+      "version": "v2.0",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "summary",
+        "cards",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "average_rating",
+        "review_count",
+        "rating_source",
+        "summary",
+        "breakdown",
+        "testimonials"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/reviews-summary/render.php"
+    },
+    {
+      "block_id": "rich_text",
+      "css_slug": "rich-text",
+      "folder": "rich-text",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "article",
+        "lead",
+        "panel",
+        "quote"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "content",
+        "alignment",
+        "width"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "route_timeline",
+      "css_slug": "route-timeline",
+      "folder": "route-timeline",
+      "version": "v2.0",
+      "category": "content",
+      "variants": [
+        "default",
+        "timeline",
+        "cards",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "stops"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/route-timeline/render.php"
+    },
+    {
+      "block_id": "section",
+      "css_slug": "section",
+      "folder": "section-wrapper",
+      "version": "v1",
+      "category": "layout",
+      "variants": [
+        "default",
+        "band",
+        "split",
+        "grid"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "description",
+        "layout",
+        "columns",
+        "spacing",
+        "align",
+        "background"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "stats",
+      "css_slug": "stats",
+      "folder": "stats",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "grid",
+        "strip",
+        "cards"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "items",
+        "columns"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "sticky_booking_cta",
+      "css_slug": "sticky-booking-cta",
+      "folder": "sticky-booking-cta",
+      "version": "v2.0",
+      "category": "conversion",
+      "variants": [
+        "default",
+        "bottom-bar",
+        "side-card",
+        "inline"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "description",
+        "price_from",
+        "currency",
+        "primary_label",
+        "primary_url",
+        "secondary_label",
+        "secondary_url",
+        "phone_label",
+        "phone_url",
+        "note",
+        "cta_title"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/sticky-booking-cta/render.php"
+    },
+    {
+      "block_id": "tabs",
+      "css_slug": "tabs",
+      "folder": "tabs",
+      "version": "v1",
+      "category": "content",
+      "variants": [
+        "default",
+        "pills",
+        "underline",
+        "boxed"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "items"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "tour_cards",
+      "css_slug": "tour-cards",
+      "folder": "tour-cards",
+      "version": "v1",
+      "category": "discovery",
+      "variants": [
+        "default",
+        "grid",
+        "carousel-safe",
+        "list",
+        "featured"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "description",
+        "source",
+        "items",
+        "destination",
+        "layout",
+        "columns",
+        "limit",
+        "show_price",
+        "show_rating",
+        "show_excerpt",
+        "show_meta",
+        "cta_label",
+        "image_ratio"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "tour_facts",
+      "css_slug": "tour-facts",
+      "folder": "tour-facts",
+      "version": "v2.0",
+      "category": "content",
+      "variants": [
+        "default",
+        "grid",
+        "compact",
+        "icons"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "facts"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/tour-facts/render.php"
+    },
+    {
+      "block_id": "trust",
+      "css_slug": "trust",
+      "folder": "trust",
+      "version": "v1",
+      "category": "trust",
+      "variants": [
+        "default",
+        "logo-strip",
+        "testimonial-cards",
+        "stats"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "rating",
+        "source",
+        "layout",
+        "items",
+        "logos"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": ""
+    },
+    {
+      "block_id": "visa_requirements",
+      "css_slug": "visa-requirements",
+      "folder": "visa-requirements",
+      "version": "v2.0",
+      "category": "content",
+      "variants": [
+        "default",
+        "checklist",
+        "cards",
+        "compact"
+      ],
+      "fields": [
+        "heading",
+        "style",
+        "intro",
+        "requirements",
+        "documents",
+        "disclaimer",
+        "last_updated"
+      ],
+      "supports": {
+        "heading": true,
+        "style": true,
+        "schema": true
+      },
+      "render_callback": "igp_pro_render_block",
+      "render_path": "includes/blocks/visa-requirements/render.php"
+    }
+  ]
+}

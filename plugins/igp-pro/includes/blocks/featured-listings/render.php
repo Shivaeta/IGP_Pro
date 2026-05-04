@@ -20,7 +20,7 @@ if ( ! function_exists( 'igp_pro_render_featured_listings' ) ) {
 		$show_price   = ! empty( $data['show_price'] );
 		$show_rating  = ! empty( $data['show_rating'] );
 		$image_ratio  = igp_pro_enum( $data['image_ratio'] ?? 'landscape', array( 'landscape', 'portrait', 'square' ), 'landscape' );
-		$variant      = igp_pro_enum( $data['variant'] ?? 'elevated', array( 'elevated', 'bordered', 'compact' ), 'elevated' );
+		$variant      = igp_pro_enum( function_exists( 'igp_pro_get_legacy_visual_variant' ) ? igp_pro_get_legacy_visual_variant( 'featured_listings', $data, 'elevated' ) : 'elevated', array( 'elevated', 'bordered', 'compact' ), 'elevated' );
 		$ids          = igp_pro_normalize_post_ids( $data['items'] ?? array() );
 		$query_type   = 'both' === $post_type ? array( 'tour', 'destination' ) : $post_type;
 		$query_limit  = ! empty( $ids ) ? max( $limit, count( $ids ) ) : $limit;

@@ -8,6 +8,30 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Read the declared version from a block schema file without requiring the full
+ * schema resolver. Used by the registry to keep block metadata aligned with the
+ * actual schema contract loaded by the editor/renderer.
+ *
+ * @param string $schema_path Schema file path.
+ * @param string $fallback    Fallback version.
+ * @return string
+ */
+function igp_pro_read_block_schema_version( string $schema_path, string $fallback = 'v1' ): string {
+	if ( '' === $schema_path || ! file_exists( $schema_path ) ) {
+		return sanitize_text_field( $fallback );
+	}
+	$contents = file_get_contents( $schema_path );
+	if ( false === $contents || '' === $contents ) {
+		return sanitize_text_field( $fallback );
+	}
+	$schema = json_decode( $contents, true );
+	if ( ! is_array( $schema ) || empty( $schema['version'] ) || ! is_scalar( $schema['version'] ) ) {
+		return sanitize_text_field( $fallback );
+	}
+	return sanitize_text_field( (string) $schema['version'] );
+}
+
+/**
  * Return canonical block definitions for Phase 1 + Phase 2.
  *
  * @return array[]
@@ -337,7 +361,7 @@ function igp_pro_register_core_blocks(): void {
 			array_merge(
 				$definition,
 				array(
-					'version'         => 'v1',
+					'version'         => igp_pro_read_block_schema_version( igp_pro_path( 'includes/blocks/' . $folder . '/schema.json' ), 'v1' ),
 					'schema_path'     => igp_pro_path( 'includes/blocks/' . $folder . '/schema.json' ),
 					'render_path'     => igp_pro_path( 'includes/blocks/' . $folder . '/render.php' ),
 					'render_callback' => 'igp_pro_render_block',
@@ -388,6 +412,12 @@ function igp_pro_register_block_type( array $definition ) {
 
 	if ( '' === $render_path || ! file_exists( $render_path ) ) {
 		return new WP_Error( 'igp_pro_missing_render_path', __( 'Block render path is missing or invalid.', 'igp-pro' ) );
+	}
+
+
+	$schema_version = igp_pro_read_block_schema_version( $schema_path, isset( $definition['version'] ) ? (string) $definition['version'] : 'v1' );
+	if ( '' !== $schema_version ) {
+		$definition['version'] = $schema_version;
 	}
 
 	$igp_pro_block_registry[ $block_id ] = array_merge(
@@ -530,7 +560,7 @@ function igp_pro_register_wordpress_blocks(): void {
 			array(
 				'api_version'     => 2,
 				'title'           => $definition['title'] ?? igp_pro_block_id_to_title( $block_id ),
-				'category'        => 'widgets',
+				'category'        => isset( $schema['category'] ) ? sanitize_key( (string) $schema['category'] ) : 'widgets',
 				'attributes'      => $attributes,
 				'supports'        => array(
 					'html' => false,
@@ -570,7 +600,7 @@ function igp_pro_get_editor_block_definitions(): array {
 			'title'       => $definition['title'] ?? igp_pro_block_id_to_title( $block_id ),
 			'description' => $definition['description'] ?? '',
 			'icon'        => $definition['icon'] ?? 'screenoptions',
-			'category'    => 'widgets',
+			'category'    => isset( $schema['category'] ) ? sanitize_key( (string) $schema['category'] ) : 'widgets',
 			'keywords'    => array( 'igp', 'travel', str_replace( '_', ' ', $block_id ) ),
 			'attributes'  => igp_pro_schema_to_wp_attributes( $schema ),
 			'schema'      => $schema,
@@ -580,6 +610,41 @@ function igp_pro_get_editor_block_definitions(): array {
 	return $editor_blocks;
 }
 
+
+
+/**
+ * Register IGP Pro block editor categories used by schema metadata.
+ *
+ * @param array<int,array<string,string>> $categories Existing categories.
+ * @return array<int,array<string,string>>
+ */
+function igp_pro_register_block_categories( array $categories ): array {
+	$existing = array();
+	foreach ( $categories as $category ) {
+		if ( is_array( $category ) && isset( $category['slug'] ) ) {
+			$existing[] = (string) $category['slug'];
+		}
+	}
+
+	$igp_categories = array(
+		array( 'slug' => 'core', 'title' => __( 'IGP Core', 'igp-pro' ) ),
+		array( 'slug' => 'layout', 'title' => __( 'IGP Layout', 'igp-pro' ) ),
+		array( 'slug' => 'content', 'title' => __( 'IGP Content', 'igp-pro' ) ),
+		array( 'slug' => 'conversion', 'title' => __( 'IGP Conversion', 'igp-pro' ) ),
+		array( 'slug' => 'discovery', 'title' => __( 'IGP Discovery', 'igp-pro' ) ),
+		array( 'slug' => 'navigation', 'title' => __( 'IGP Navigation', 'igp-pro' ) ),
+		array( 'slug' => 'media', 'title' => __( 'IGP Media', 'igp-pro' ) ),
+		array( 'slug' => 'trust', 'title' => __( 'IGP Trust', 'igp-pro' ) ),
+	);
+
+	foreach ( array_reverse( $igp_categories ) as $category ) {
+		if ( ! in_array( $category['slug'], $existing, true ) ) {
+			array_unshift( $categories, $category );
+		}
+	}
+
+	return $categories;
+}
 /**
  * Enqueue editor-side block registration for IGP Pro blocks.
  */
@@ -608,6 +673,15 @@ function igp_pro_enqueue_block_editor_assets(): void {
 		'before'
 	);
 
+	$editor_posts = function_exists( 'igp_pro_get_content_editor_post_options' ) ? igp_pro_get_content_editor_post_options( '', 100 ) : array();
+	$posts_json   = wp_json_encode( $editor_posts, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+	wp_add_inline_script(
+		$handle,
+		'window.igpProBlockEditorPosts = ' . ( $posts_json ? $posts_json : '[]' ) . ';',
+		'before'
+	);
+
 	wp_add_inline_script(
 		$handle,
 		<<<'JS'
@@ -627,165 +701,182 @@ function igp_pro_enqueue_block_editor_assets(): void {
 	var TextareaControl = components.TextareaControl;
 	var ToggleControl = components.ToggleControl;
 	var SelectControl = components.SelectControl;
+	var Button = components.Button;
 	var Notice = components.Notice;
+	var CheckboxControl = components.CheckboxControl;
 	ServerSideRender = ServerSideRender && (ServerSideRender.default || ServerSideRender);
 	var blocksToRegister = window.igpProBlockDefinitions || [];
+	var availablePosts = window.igpProBlockEditorPosts || [];
 
 	function fieldLabel(name) {
-		return String(name || '').replace(/_/g, ' ').replace(/\b\w/g, function (match) { return match.toUpperCase(); });
+		return String(name || '').replace(/_/g, ' ').replace(/-/g, ' ').replace(/\b\w/g, function (match) { return match.toUpperCase(); });
 	}
 
-	function jsonValue(value, fallback) {
-		try {
-			return JSON.stringify(value === undefined ? fallback : value, null, 2);
-		} catch (error) {
-			return JSON.stringify(fallback, null, 2);
+	function clone(value) {
+		try { return JSON.parse(JSON.stringify(value === undefined ? null : value)); } catch (error) { return value; }
+	}
+
+	function normalizeExpectedPostType(value) {
+		value = String(value || '').trim();
+		if (value === 'tour') { return ['tour', 'igp_tour']; }
+		if (value === 'destination') { return ['destination', 'igp_destination']; }
+		if (value === 'page') { return ['page']; }
+		return [];
+	}
+
+	function postTypeMatches(post, expected) {
+		var allowed = normalizeExpectedPostType(expected);
+		if (!allowed.length || expected === 'any') { return true; }
+		return allowed.indexOf(String(post.post_type || '')) !== -1;
+	}
+
+	function postLabel(post) {
+		return '[' + post.post_type + '] ' + post.title + ' #' + post.id + (post.status ? ' · ' + post.status : '');
+	}
+
+	function setDeep(attributes, path, value, setAttributes) {
+		var rootName = path[0];
+		var nextRoot = clone(attributes[rootName]);
+		if (!nextRoot || typeof nextRoot !== 'object') { nextRoot = typeof path[1] === 'number' ? [] : {}; }
+		var target = nextRoot;
+		for (var i = 1; i < path.length - 1; i += 1) {
+			var key = path[i];
+			if (!target[key] || typeof target[key] !== 'object') { target[key] = typeof path[i + 1] === 'number' ? [] : {}; }
+			target = target[key];
 		}
+		target[path[path.length - 1]] = value;
+		var update = {};
+		update[rootName] = nextRoot;
+		setAttributes(update);
 	}
 
-	function renderField(name, field, value, setValue, path) {
+	function renderField(name, field, value, setValue, path, attributes, setAttributes) {
 		field = field || {};
-		path = path || name;
+		path = path || [name];
 		var type = field.type || 'string';
 		var label = field.label || fieldLabel(name);
 
 		if (type === 'boolean') {
-			return el(ToggleControl, {
-				key: path,
-				label: label,
-				checked: !!value,
-				onChange: function (next) { setValue(!!next); }
-			});
+			return el(ToggleControl, { key: path.join('.'), label: label, checked: !!value, onChange: function (next) { setValue(!!next); } });
 		}
 
 		if (type === 'enum') {
 			var values = field.values || [];
-			return el(SelectControl, {
-				key: path,
-				label: label,
-				value: value || field.default || (values[0] || ''),
-				options: values.map(function (item) { return { label: fieldLabel(item), value: item }; }),
-				onChange: setValue
-			});
+			return el(SelectControl, { key: path.join('.'), label: label, value: value || field.default || (values[0] || ''), options: values.map(function (item) { return { label: fieldLabel(item), value: item }; }), onChange: setValue });
 		}
 
 		if (type === 'number') {
-			return el(TextControl, {
-				key: path,
-				label: label,
-				type: 'number',
-				min: field.min,
-				max: field.max,
-				value: value === undefined || value === null ? '' : value,
-				onChange: function (next) {
-					setValue(next === '' ? '' : Number(next));
-				}
-			});
+			return el(TextControl, { key: path.join('.'), label: label, type: 'number', min: field.min, max: field.max, value: value === undefined || value === null ? '' : value, onChange: function (next) { setValue(next === '' ? '' : Number(next)); } });
 		}
 
 		if (type === 'text') {
-			return el(TextareaControl, {
-				key: path,
-				label: label,
-				value: value || '',
-				onChange: setValue
-			});
+			return el(TextareaControl, { key: path.join('.'), label: label, value: value || '', onChange: setValue });
 		}
 
 		if (type === 'image') {
-			var imageValue = value && typeof value === 'object' ? value : { url: value || '', alt: '' };
-			return el(PanelBody, { key: path, title: label, initialOpen: false },
-				el(TextControl, {
-					label: __('Image URL', 'igp-pro'),
-					value: imageValue.url || '',
-					onChange: function (next) { setValue(Object.assign({}, imageValue, { url: next })); }
-				}),
-				el(TextControl, {
-					label: __('Alt text', 'igp-pro'),
-					value: imageValue.alt || '',
-					onChange: function (next) { setValue(Object.assign({}, imageValue, { alt: next })); }
-				})
+			var imageValue = value && typeof value === 'object' && !Array.isArray(value) ? Object.assign({ url: '', alt: '', caption: '', pending: false, prompt: '' }, value) : { url: value || '', alt: '', caption: '', pending: false, prompt: '' };
+			return el(PanelBody, { key: path.join('.'), title: label, initialOpen: false },
+				el(TextControl, { label: __('Image URL', 'igp-pro'), value: imageValue.url || '', onChange: function (next) { setValue(Object.assign({}, imageValue, { url: next, pending: false })); } }),
+				el(TextControl, { label: __('Alt text', 'igp-pro'), value: imageValue.alt || '', onChange: function (next) { setValue(Object.assign({}, imageValue, { alt: next })); } }),
+				el(TextControl, { label: __('Caption', 'igp-pro'), value: imageValue.caption || '', onChange: function (next) { setValue(Object.assign({}, imageValue, { caption: next })); } }),
+				el(ToggleControl, { label: __('Pending media requirement', 'igp-pro'), checked: !!imageValue.pending, onChange: function (next) { setValue(Object.assign({}, imageValue, { pending: !!next })); } }),
+				imageValue.pending ? el(TextareaControl, { label: __('Media prompt', 'igp-pro'), value: imageValue.prompt || '', onChange: function (next) { setValue(Object.assign({}, imageValue, { prompt: next })); } }) : null
 			);
 		}
 
 		if (type === 'object') {
 			var objectValue = value && typeof value === 'object' && !Array.isArray(value) ? value : {};
 			var fields = field.fields || {};
-			return el(PanelBody, { key: path, title: label, initialOpen: false },
+			return el(PanelBody, { key: path.join('.'), title: label, initialOpen: false },
 				Object.keys(fields).map(function (childName) {
 					return renderField(childName, fields[childName], objectValue[childName], function (next) {
 						var nextObject = Object.assign({}, objectValue);
 						nextObject[childName] = next;
 						setValue(nextObject);
-					}, path + '.' + childName);
+					}, path.concat([childName]), attributes, setAttributes);
 				})
 			);
 		}
 
 		if (type === 'repeater' || type === 'array') {
-			return el(TextareaControl, {
-				key: path,
-				label: label + ' JSON',
-				help: __('Enter an array of objects. Invalid JSON is ignored until corrected.', 'igp-pro'),
-				value: jsonValue(value, []),
-				onChange: function (next) {
-					try {
-						var parsed = next.trim() === '' ? [] : JSON.parse(next);
-						if (Array.isArray(parsed)) {
-							setValue(parsed);
-						}
-					} catch (error) {}
-				}
-			});
+			var items = Array.isArray(value) ? value.slice() : [];
+			var itemFields = field.fields || null;
+			function updateItems(nextItems) { setValue(nextItems); }
+			function makeItem() {
+				var item = {};
+				Object.keys(itemFields || {}).forEach(function (childName) {
+					var child = itemFields[childName] || {};
+					item[childName] = child.default !== undefined ? clone(child.default) : (child.type === 'boolean' ? false : (child.type === 'number' ? 0 : (child.type === 'array' || child.type === 'repeater' || child.type === 'relationship' ? [] : '')));
+				});
+				item.id = item.id || 'item_' + Date.now();
+				return item;
+			}
+			return el(PanelBody, { key: path.join('.'), title: label, initialOpen: false },
+				items.map(function (item, index) {
+					if (!itemFields || !Object.keys(itemFields).length) {
+						return el('div', { key: path.join('.') + '.' + index, className: 'igp-pro-block-editor-repeater-row' },
+							el(TextControl, { label: label + ' #' + (index + 1), value: item || '', onChange: function (next) { items[index] = next; updateItems(items.slice()); } }),
+							el(Button, { isSmall: true, onClick: function () { items.splice(index, 1); updateItems(items.slice()); } }, __('Remove', 'igp-pro'))
+						);
+					}
+					return el(PanelBody, { key: path.join('.') + '.' + index, title: label + ' #' + (index + 1), initialOpen: false },
+						Object.keys(itemFields).map(function (childName) {
+							return renderField(childName, itemFields[childName], item && item[childName], function (next) {
+								var nextItem = Object.assign({}, item || {});
+								nextItem[childName] = next;
+								items[index] = nextItem;
+								updateItems(items.slice());
+							}, path.concat([index, childName]), attributes, setAttributes);
+						}),
+						el('div', { className: 'igp-pro-block-editor-repeater-actions' },
+							el(Button, { isSmall: true, onClick: function () { if (index > 0) { var moved = items.splice(index, 1)[0]; items.splice(index - 1, 0, moved); updateItems(items.slice()); } } }, __('Up', 'igp-pro')),
+							el(Button, { isSmall: true, onClick: function () { if (index < items.length - 1) { var moved = items.splice(index, 1)[0]; items.splice(index + 1, 0, moved); updateItems(items.slice()); } } }, __('Down', 'igp-pro')),
+							el(Button, { isSmall: true, onClick: function () { items.splice(index + 1, 0, clone(item)); updateItems(items.slice()); } }, __('Duplicate', 'igp-pro')),
+							el(Button, { isDestructive: true, isSmall: true, onClick: function () { items.splice(index, 1); updateItems(items.slice()); } }, __('Remove', 'igp-pro'))
+						)
+					);
+				}),
+				el(Button, { isSecondary: true, onClick: function () { items.push(itemFields && Object.keys(itemFields).length ? makeItem() : ''); updateItems(items.slice()); } }, __('Add item', 'igp-pro'))
+			);
 		}
 
 		if (type === 'relationship') {
-			var relValue = Array.isArray(value) ? value.join(', ') : (value || '');
-			return el(TextControl, {
-				key: path,
-				label: label + ' IDs',
-				help: __('Enter one or more post IDs separated by commas, spaces, or new lines.', 'igp-pro'),
-				value: relValue,
-				onChange: function (next) {
-					var ids = String(next || '')
-						.split(/[^0-9]+/)
-						.map(function (part) { return parseInt(part, 10); })
-						.filter(function (id, index, arr) { return id > 0 && arr.indexOf(id) === index; });
-					setValue(ids);
-				}
-			});
+			var ids = Array.isArray(value) ? value.map(function (id) { return parseInt(id, 10); }).filter(Boolean) : [];
+			var expected = field.post_type || 'any';
+			var candidates = availablePosts.filter(function (post) { return postTypeMatches(post, expected); }).slice(0, 80);
+			var selectedMap = {};
+			ids.forEach(function (id) { selectedMap[String(id)] = true; });
+			return el(PanelBody, { key: path.join('.'), title: label, initialOpen: false },
+				el('p', {}, __('Select valid posts. Wrong post types are rejected on save.', 'igp-pro')),
+				candidates.map(function (post) {
+					var id = parseInt(post.id, 10);
+					return el(CheckboxControl, { key: 'rel-' + id, label: postLabel(post), checked: !!selectedMap[String(id)], onChange: function (checked) {
+						var next = ids.slice();
+						if (checked && next.indexOf(id) === -1) { next.push(id); }
+						if (!checked) { next = next.filter(function (selectedId) { return selectedId !== id; }); }
+						setValue(next);
+					} });
+				}),
+				ids.filter(function (id) { return !availablePosts.some(function (post) { return parseInt(post.id, 10) === id; }); }).map(function (id) { return el(Notice, { key: 'missing-' + id, status: 'warning', isDismissible: false }, __('Selected post not loaded or deleted: #', 'igp-pro') + id); })
+			);
 		}
 
-		return el(TextControl, {
-			key: path,
-			label: label,
-			value: value || '',
-			onChange: setValue
-		});
+		return el(TextControl, { key: path.join('.'), label: label, value: value || '', onChange: setValue });
 	}
 
 	function getBlockNotice(def, attrs) {
 		var required = (((def.schema || {}).validation || {}).required) || [];
-		if (!required.length) {
-			return null;
-		}
-
+		if (!required.length) { return null; }
 		var missing = required.filter(function (name) {
 			var value = attrs[name];
-			if (value && typeof value === 'object' && !Array.isArray(value) && value.url !== undefined) {
-				return !value.url;
-			}
+			if (value && typeof value === 'object' && !Array.isArray(value) && value.url !== undefined) { return !value.url; }
 			return value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length);
 		});
-
 		return missing.length ? missing.map(fieldLabel).join(', ') : null;
 	}
 
 	blocksToRegister.forEach(function (def) {
-		if (!def || !def.name || blocks.getBlockType(def.name)) {
-			return;
-		}
-
+		if (!def || !def.name || blocks.getBlockType(def.name)) { return; }
 		blocks.registerBlockType(def.name, {
 			apiVersion: 2,
 			title: def.title,
@@ -798,8 +889,7 @@ function igp_pro_enqueue_block_editor_assets(): void {
 			edit: function (props) {
 				var attrs = props.attributes || {};
 				var setAttributes = props.setAttributes;
-				var schema = def.schema || {};
-				var fields = schema.fields || {};
+				var fields = (def.schema || {}).fields || {};
 				var missing = getBlockNotice(def, attrs);
 				var blockProps = useBlockProps({ className: 'igp-pro-editor-block igp-pro-editor-block--' + def.id });
 				var controls = Object.keys(fields).map(function (fieldName) {
@@ -807,15 +897,10 @@ function igp_pro_enqueue_block_editor_assets(): void {
 						var update = {};
 						update[fieldName] = next;
 						setAttributes(update);
-					}, fieldName);
+					}, [fieldName], attrs, setAttributes);
 				});
-
 				if (def.id === 'section') {
-					var innerBlocksProps = useInnerBlocksProps(
-						{ className: 'igp-pro-editor-innerblocks' },
-						{ templateLock: false }
-					);
-
+					var innerBlocksProps = useInnerBlocksProps({ className: 'igp-pro-editor-innerblocks' }, { templateLock: false });
 					return el('div', blockProps,
 						el(InspectorControls, {}, el(PanelBody, { title: __('Block Settings', 'igp-pro'), initialOpen: true }, controls)),
 						missing ? el(Notice, { status: 'warning', isDismissible: false }, __('Required fields missing: ', 'igp-pro') + missing) : null,
@@ -823,7 +908,6 @@ function igp_pro_enqueue_block_editor_assets(): void {
 						el('div', innerBlocksProps)
 					);
 				}
-
 				return el('div', blockProps,
 					el(InspectorControls, {}, el(PanelBody, { title: __('Block Settings', 'igp-pro'), initialOpen: true }, controls)),
 					missing ? el(Notice, { status: 'warning', isDismissible: false }, __('Required fields missing: ', 'igp-pro') + missing) : null,
@@ -831,9 +915,7 @@ function igp_pro_enqueue_block_editor_assets(): void {
 				);
 			},
 			save: function () {
-				if (def.id === 'section' && InnerBlocks) {
-					return el(InnerBlocks.Content);
-				}
+				if (def.id === 'section' && InnerBlocks) { return el(InnerBlocks.Content); }
 				return null;
 			}
 		});

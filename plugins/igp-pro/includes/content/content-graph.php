@@ -17,10 +17,12 @@ if ( ! defined( 'IGP_PRO_META_DESCRIPTION_META_KEY' ) ) {
  * @return array
  */
 function igp_pro_get_empty_content_graph(): array {
-	return array(
-		'version'  => 'v1',
-		'sections' => array(),
-	);
+	return function_exists( 'igp_pro_get_canonical_empty_content_graph' )
+		? igp_pro_get_canonical_empty_content_graph()
+		: array(
+			'version'  => 'v1',
+			'sections' => array(),
+		);
 }
 
 /**
@@ -50,6 +52,13 @@ function igp_pro_load_content_graph( int $post_id ) {
 
 	if ( is_wp_error( $graph ) ) {
 		return $graph;
+	}
+
+	if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+		$graph = igp_pro_canonicalize_content_graph( $graph );
+		if ( is_wp_error( $graph ) ) {
+			return $graph;
+		}
 	}
 
 	$validation = igp_pro_validate_content_graph( $graph );
@@ -85,6 +94,13 @@ function igp_pro_save_content_graph( int $post_id, $graph ) {
 		return new WP_Error( 'igp_pro_invalid_graph', __( 'Content graph must be an array or valid JSON object.', 'igp-pro' ) );
 	}
 
+	if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+		$graph = igp_pro_canonicalize_content_graph( $graph );
+		if ( is_wp_error( $graph ) ) {
+			return $graph;
+		}
+	}
+
 	// Strictly validate the raw graph before any sanitizer/defaults can
 	// normalize invalid data. This preserves the charter rule that invalid
 	// structured content is rejected before persistence.
@@ -95,6 +111,12 @@ function igp_pro_save_content_graph( int $post_id, $graph ) {
 	}
 
 	$graph = function_exists( 'igp_pro_sanitize_content_graph_payload' ) ? igp_pro_sanitize_content_graph_payload( $graph ) : $graph;
+	if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+		$graph = igp_pro_canonicalize_content_graph( $graph );
+		if ( is_wp_error( $graph ) ) {
+			return $graph;
+		}
+	}
 
 	$encoded = wp_json_encode( $graph, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 
@@ -157,13 +179,56 @@ function igp_pro_render_content_graph( array $graph, array $context = array() ) 
 		}
 	}
 
-	foreach ( $graph['sections'] as $section ) {
+	$output .= igp_pro_render_content_graph_sections(
+		$graph['sections'],
+		array_merge(
+			$context,
+			array(
+				'graph'   => $graph,
+				'outline' => $outline,
+			)
+		),
+		$outline,
+		0
+	);
+
+	if ( function_exists( 'igp_pro_render_approved_internal_links' ) ) {
+		$output .= igp_pro_render_approved_internal_links( $graph, $context );
+	}
+
+	return $output;
+}
+
+/**
+ * Render Content Graph sections recursively.
+ *
+ * @param array<int,array<string,mixed>> $sections Sections.
+ * @param array<string,mixed>            $context Context.
+ * @param array<string,mixed>            $outline Outline.
+ * @param int                            $depth Depth.
+ * @return string
+ */
+function igp_pro_render_content_graph_sections( array $sections, array $context = array(), array $outline = array(), int $depth = 0 ): string {
+	$output = '';
+
+	foreach ( $sections as $section ) {
+		if ( ! is_array( $section ) || empty( $section['block_id'] ) ) {
+			continue;
+		}
+
+		$children_output = '';
+		if ( ! empty( $section['children'] ) && is_array( $section['children'] ) ) {
+			$children_output = igp_pro_render_content_graph_sections( $section['children'], $context, $outline, $depth + 1 );
+		}
+
 		$block_context = array_merge(
 			$context,
 			array(
-				'section' => $section,
-				'graph'   => $graph,
-				'outline' => $outline,
+				'section'         => $section,
+				'outline'         => $outline,
+				'children_html'   => $children_output,
+				'children_output' => $children_output,
+				'depth'           => $depth,
 			)
 		);
 
@@ -176,10 +241,6 @@ function igp_pro_render_content_graph( array $graph, array $context = array() ) 
 			isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array(),
 			$block_context
 		);
-	}
-
-	if ( function_exists( 'igp_pro_render_approved_internal_links' ) ) {
-		$output .= igp_pro_render_approved_internal_links( $graph, $context );
 	}
 
 	return $output;
@@ -228,31 +289,56 @@ function igp_pro_load_content_graph_for_editor( int $post_id ) {
 		return new WP_Error( 'igp_pro_invalid_post_id', __( 'A valid post ID is required.', 'igp-pro' ) );
 	}
 
-	$post_graph = igp_pro_content_graph_from_post_content( $post_id );
-	if ( is_wp_error( $post_graph ) ) {
-		return $post_graph;
-	}
-
-	if ( ! empty( $post_graph['sections'] ) ) {
-		return array(
-			'graph'   => $post_graph,
-			'source'  => 'post_content',
-			'message' => __( 'Existing WordPress/Gutenberg IGP blocks loaded into the Content Graph editor.', 'igp-pro' ),
-		);
-	}
-
 	$stored_graph = igp_pro_load_content_graph( $post_id );
 	if ( is_wp_error( $stored_graph ) ) {
 		return $stored_graph;
 	}
 
+	$graph   = $stored_graph;
+	$source  = empty( $stored_graph['sections'] ) ? 'empty' : 'post_meta';
+	$message = empty( $stored_graph['sections'] )
+		? __( 'No saved Content Graph found. Started with an empty canonical graph. Use recovery import if you need to reconstruct from WordPress block content.', 'igp-pro' )
+		: __( 'Saved Content Graph meta loaded as the canonical source of truth.', 'igp-pro' );
+
+	if ( empty( $stored_graph['sections'] ) && function_exists( 'igp_pro_content_graph_from_post_content' ) ) {
+		$recovered_graph = igp_pro_content_graph_from_post_content( $post_id );
+		if ( is_wp_error( $recovered_graph ) ) {
+			return $recovered_graph;
+		}
+
+		if ( is_array( $recovered_graph ) && ! empty( $recovered_graph['sections'] ) ) {
+			$graph   = $recovered_graph;
+			$source  = 'post_content_recovery';
+			$message = __( 'No canonical Content Graph meta was found, but recoverable IGP Pro blocks exist in WordPress content. Review and save through the Content Editor to re-establish the canonical graph.', 'igp-pro' );
+		}
+	}
+
 	return array(
-		'graph'   => $stored_graph,
-		'source'  => empty( $stored_graph['sections'] ) ? 'empty' : 'post_meta',
-		'message' => empty( $stored_graph['sections'] )
-			? __( 'No existing IGP blocks or saved Content Graph found. Started with an empty graph.', 'igp-pro' )
-			: __( 'Saved Content Graph meta loaded.', 'igp-pro' ),
+		'graph'       => $graph,
+		'source'      => $source,
+		'message'     => $message,
+		'sync_status' => array(
+			'status'                => (string) get_post_meta( $post_id, '_igp_pro_graph_sync_status', true ),
+			'graph_checksum'        => (string) get_post_meta( $post_id, '_igp_pro_content_graph_checksum', true ),
+			'post_content_checksum' => (string) get_post_meta( $post_id, '_igp_pro_post_content_checksum', true ),
+			'synced_at'             => (string) get_post_meta( $post_id, '_igp_pro_graph_synced_at', true ),
+			'last_error'            => (string) get_post_meta( $post_id, '_igp_pro_graph_sync_error', true ),
+		),
 	);
+}
+
+/**
+ * Explicitly recover a graph from Gutenberg post_content.
+ *
+ * This is intentionally separate from normal editor load because Content Graph
+ * post meta is the canonical source of truth. Recovery callers must review and
+ * save the recovered graph through the canonical save service.
+ *
+ * @param int $post_id Post ID.
+ * @return array|WP_Error
+ */
+function igp_pro_recover_graph_from_post_content( int $post_id ) {
+	return igp_pro_content_graph_from_post_content( $post_id );
 }
 
 /**
@@ -278,14 +364,18 @@ function igp_pro_content_graph_from_post_content( int $post_id ) {
 	);
 
 	if ( empty( $sections ) ) {
-		return $graph;
+		return function_exists( 'igp_pro_get_canonical_empty_content_graph' ) ? igp_pro_get_canonical_empty_content_graph() : $graph;
+	}
+
+	if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+		$graph = igp_pro_canonicalize_content_graph( $graph );
+		if ( is_wp_error( $graph ) ) {
+			return $graph;
+		}
 	}
 
 	$graph = function_exists( 'igp_pro_sanitize_content_graph_payload' ) ? igp_pro_sanitize_content_graph_payload( $graph ) : $graph;
 
-	// Existing Gutenberg blocks may be incomplete drafts. Load them into the
-	// editor so the user can finish required fields; strict validation still runs
-	// before Save through igp_pro_save_content_graph().
 	return $graph;
 }
 
@@ -295,7 +385,7 @@ function igp_pro_content_graph_from_post_content( int $post_id ) {
  * @param array $blocks   Parsed blocks.
  * @param array $sections Collected sections passed by reference.
  */
-function igp_pro_collect_igp_sections_from_blocks( array $blocks, array &$sections ): void {
+function igp_pro_collect_igp_sections_from_blocks( array $blocks, array &$sections, int $depth = 0 ): void {
 	foreach ( $blocks as $block ) {
 		if ( ! is_array( $block ) ) {
 			continue;
@@ -306,16 +396,26 @@ function igp_pro_collect_igp_sections_from_blocks( array $blocks, array &$sectio
 		if ( igp_pro_is_igp_wp_block_name( $block_name ) ) {
 			$block_id = igp_pro_wp_block_name_to_block_id( $block_name );
 			if ( '' !== $block_id && igp_pro_get_registered_block( $block_id ) ) {
-				$sections[] = array(
+				$children = array();
+				if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+					igp_pro_collect_igp_sections_from_blocks( $block['innerBlocks'], $children, $depth + 1 );
+				}
+
+				$section = array(
 					'id'       => 'section_wp_' . ( count( $sections ) + 1 ) . '_' . sanitize_key( $block_id ),
 					'block_id' => $block_id,
+					'block'    => $block_id,
 					'data'     => isset( $block['attrs'] ) && is_array( $block['attrs'] ) ? $block['attrs'] : array(),
+					'children' => $children,
 				);
+
+				$sections[] = $section;
 			}
+			continue;
 		}
 
 		if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
-			igp_pro_collect_igp_sections_from_blocks( $block['innerBlocks'], $sections );
+			igp_pro_collect_igp_sections_from_blocks( $block['innerBlocks'], $sections, $depth );
 		}
 	}
 }
@@ -419,6 +519,13 @@ function igp_pro_sync_content_graph_to_post_content( int $post_id, array $graph 
 	$new_content = function_exists( 'serialize_blocks' ) ? serialize_blocks( $next_blocks ) : igp_pro_serialize_blocks_fallback( $next_blocks );
 
 	if ( (string) $post->post_content === $new_content ) {
+		update_post_meta( $post_id, '_igp_pro_graph_sync_status', 'synced' );
+		update_post_meta( $post_id, '_igp_pro_graph_synced_at', gmdate( 'c' ) );
+		if ( function_exists( 'igp_pro_content_graph_checksum' ) ) {
+			update_post_meta( $post_id, '_igp_pro_content_graph_checksum', igp_pro_content_graph_checksum( $graph ) );
+			update_post_meta( $post_id, '_igp_pro_post_content_checksum', igp_pro_content_graph_checksum( $new_content ) );
+		}
+		delete_post_meta( $post_id, '_igp_pro_graph_sync_error' );
 		return true;
 	}
 
@@ -431,8 +538,18 @@ function igp_pro_sync_content_graph_to_post_content( int $post_id, array $graph 
 	);
 
 	if ( is_wp_error( $result ) ) {
+		update_post_meta( $post_id, '_igp_pro_graph_sync_status', 'failed' );
+		update_post_meta( $post_id, '_igp_pro_graph_sync_error', $result->get_error_message() );
 		return $result;
 	}
+
+	update_post_meta( $post_id, '_igp_pro_graph_sync_status', 'synced' );
+	update_post_meta( $post_id, '_igp_pro_graph_synced_at', gmdate( 'c' ) );
+	if ( function_exists( 'igp_pro_content_graph_checksum' ) ) {
+		update_post_meta( $post_id, '_igp_pro_content_graph_checksum', igp_pro_content_graph_checksum( $graph ) );
+		update_post_meta( $post_id, '_igp_pro_post_content_checksum', igp_pro_content_graph_checksum( $new_content ) );
+	}
+	delete_post_meta( $post_id, '_igp_pro_graph_sync_error' );
 
 	return true;
 }
@@ -444,26 +561,44 @@ function igp_pro_sync_content_graph_to_post_content( int $post_id, array $graph 
  * @return array
  */
 function igp_pro_content_graph_to_wp_blocks( array $graph ): array {
+	return isset( $graph['sections'] ) && is_array( $graph['sections'] ) ? igp_pro_graph_sections_to_wp_blocks( $graph['sections'] ) : array();
+}
+
+/**
+ * Convert graph sections recursively into serializable WordPress block arrays.
+ *
+ * @param array<int,array<string,mixed>> $sections Graph sections.
+ * @return array<int,array<string,mixed>>
+ */
+function igp_pro_graph_sections_to_wp_blocks( array $sections ): array {
 	$blocks = array();
 
-	foreach ( $graph['sections'] as $section ) {
+	foreach ( $sections as $section ) {
 		if ( ! is_array( $section ) || empty( $section['block_id'] ) ) {
 			continue;
 		}
 
 		$block_id = sanitize_key( (string) $section['block_id'] );
 		if ( ! igp_pro_get_registered_block( $block_id ) ) {
+			$blocks[] = array(
+				'blockName'    => 'core/html',
+				'attrs'        => array(),
+				'innerBlocks'  => array(),
+				'innerHTML'    => '<!-- IGP Pro skipped unknown block: ' . esc_html( $block_id ) . ' -->',
+				'innerContent' => array( '<!-- IGP Pro skipped unknown block: ' . esc_html( $block_id ) . ' -->' ),
+			);
 			continue;
 		}
 
-		$attrs = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$attrs    = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
+		$children = isset( $section['children'] ) && is_array( $section['children'] ) ? igp_pro_graph_sections_to_wp_blocks( $section['children'] ) : array();
 
 		$blocks[] = array(
 			'blockName'    => 'igp-pro/' . igp_pro_block_id_to_wp_slug( $block_id ),
 			'attrs'        => $attrs,
-			'innerBlocks'  => array(),
+			'innerBlocks'  => $children,
 			'innerHTML'    => '',
-			'innerContent' => array(),
+			'innerContent' => empty( $children ) ? array() : array_fill( 0, count( $children ), null ),
 		);
 	}
 

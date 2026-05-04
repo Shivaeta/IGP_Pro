@@ -92,7 +92,20 @@ function igp_pro_import_content_graph_to_post( int $post_id, $payload ) {
 		return $graph;
 	}
 
-	$save = igp_pro_save_content_graph( $post_id, $graph );
+	if ( class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+		$save = IGP_Content_Graph_Save_Service::save(
+			$post_id,
+			$graph,
+			array(
+				'check_capability' => false,
+				'source_module'    => 'content-importer',
+				'actor_type'       => 'import',
+				'reason'           => 'content_graph_import',
+			)
+		);
+	} else {
+		$save = new WP_Error( 'igp_pro_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
+	}
 	if ( is_wp_error( $save ) ) {
 		return $save;
 	}

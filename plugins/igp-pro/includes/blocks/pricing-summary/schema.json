@@ -163,5 +163,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "pricing_summary"
 }

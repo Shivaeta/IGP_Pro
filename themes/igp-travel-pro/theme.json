@@ -1,49 +1,58 @@
 {
   "$schema": "https://schemas.wp.org/trunk/theme.json",
-  "version": 3,
+  "version": 2,
   "settings": {
     "appearanceTools": true,
     "layout": {
-      "contentSize": "760px",
-      "wideSize": "1240px"
+      "contentSize": "1120px",
+      "wideSize": "1280px"
     },
     "color": {
       "palette": [
-        { "slug": "brand", "color": "#0057ff", "name": "Brand Blue" },
-        { "slug": "accent", "color": "#ff5a1f", "name": "OTA Accent" },
-        { "slug": "ink", "color": "#0b1020", "name": "Ink" },
-        { "slug": "muted", "color": "#4b5870", "name": "Muted" },
-        { "slug": "soft", "color": "#f5f7fb", "name": "Soft" },
-        { "slug": "white", "color": "#ffffff", "name": "White" }
+        {
+          "slug": "electric-orange",
+          "color": "#ff5a2a",
+          "name": "Electric Orange"
+        },
+        {
+          "slug": "midnight-navy",
+          "color": "#0f172a",
+          "name": "Midnight Navy"
+        },
+        {
+          "slug": "slate-muted",
+          "color": "#64748b",
+          "name": "Slate Muted"
+        },
+        {
+          "slug": "panel",
+          "color": "#ffffff",
+          "name": "Panel"
+        }
+      ]
+    },
+    "spacing": {
+      "units": [
+        "px",
+        "rem",
+        "em",
+        "%",
+        "vw",
+        "vh"
       ]
     },
     "typography": {
-      "fluid": true,
-      "fontFamilies": [
-        { "slug": "system", "name": "System", "fontFamily": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }
-      ]
-    },
-    "spacing": { "units": ["px", "rem", "%", "vw", "vh"] },
-    "custom": {
-      "igp": {
-        "radius": "28px",
-        "shadow": "0 24px 70px rgba(11,16,32,.14)"
-      }
+      "fluid": true
     }
   },
   "styles": {
-    "color": { "text": "#0b1020", "background": "#ffffff" },
-    "typography": {
-      "fontFamily": "var(--wp--preset--font-family--system)",
-      "fontSize": "16px",
-      "lineHeight": "1.65"
+    "color": {
+      "background": "var(--igp-colors-page-mid)",
+      "text": "var(--igp-colors-ink)"
     },
-    "elements": {
-      "link": { "color": { "text": "#0057ff" } },
-      "heading": {
-        "typography": { "fontWeight": "800", "lineHeight": "1.08" },
-        "color": { "text": "#0b1020" }
-      }
+    "typography": {
+      "fontFamily": "var(--igp-typography-font-family)",
+      "lineHeight": "var(--igp-typography-line-height)"
     }
   }
 }

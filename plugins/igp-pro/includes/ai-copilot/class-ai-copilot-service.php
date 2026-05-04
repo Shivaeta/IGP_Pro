@@ -49,22 +49,30 @@ class IGP_AI_Copilot_Service {
 		if ( empty( $compiled['content_graph'] ) || ! is_array( $compiled['content_graph'] ) ) { return new WP_Error( 'igp_ai_missing_compiled_graph', __( 'Compiled Content Graph is missing.', 'igp-pro' ) ); }
 		$post_type = self::content_type_to_post_type( (string) ( $compiled['content_type'] ?? '' ) );
 		if ( ! post_type_exists( $post_type ) ) { return new WP_Error( 'igp_ai_post_type_unavailable', __( 'Target post type is unavailable.', 'igp-pro' ) ); }
-		if ( ! current_user_can( 'edit_posts' ) ) { return new WP_Error( 'igp_ai_cannot_create_draft', __( 'You do not have permission to create drafts.', 'igp-pro' ) ); }
+		$capability = function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'ai_copilot' ) : 'edit_posts';
+		if ( ! current_user_can( $capability ) ) { return new WP_Error( 'igp_ai_cannot_create_draft', __( 'You do not have permission to create AI Copilot drafts.', 'igp-pro' ) ); }
+		$post_type_object = get_post_type_object( $post_type );
+		if ( $post_type_object && isset( $post_type_object->cap->create_posts ) && ! current_user_can( $post_type_object->cap->create_posts ) ) { return new WP_Error( 'igp_ai_cannot_create_draft', __( 'You do not have permission to create drafts for this post type.', 'igp-pro' ) ); }
 
 		$post_id = wp_insert_post( array( 'post_type' => $post_type, 'post_status' => 'draft', 'post_title' => sanitize_text_field( (string) ( $compiled['title'] ?? __( 'AI Copilot Draft', 'igp-pro' ) ) ), 'post_name' => ! empty( $compiled['slug'] ) ? sanitize_title( (string) $compiled['slug'] ) : '', 'post_content' => '' ), true );
 		if ( is_wp_error( $post_id ) ) { self::log_error( $post_id, 'ai_copilot_create_draft' ); return $post_id; }
 		$post_id = absint( $post_id );
-		$snapshot_id = '';
-		if ( function_exists( 'igp_create_snapshot' ) ) {
-			$snapshot = igp_create_snapshot( 'content_graph', $post_id, function_exists( 'igp_pro_get_empty_content_graph' ) ? igp_pro_get_empty_content_graph() : array(), array( 'source_module' => 'ai_copilot', 'actor_type' => 'human', 'reason' => 'ai_copilot_create_draft', 'operation' => 'create_draft_from_yaml', 'after_data' => $compiled['content_graph'] ) );
-			if ( is_string( $snapshot ) ) { $snapshot_id = $snapshot; }
-		}
-		$save = function_exists( 'igp_pro_save_content_graph' ) ? igp_pro_save_content_graph( $post_id, $compiled['content_graph'] ) : new WP_Error( 'igp_ai_save_service_missing', __( 'Content Graph save service is unavailable.', 'igp-pro' ) );
-		if ( is_wp_error( $save ) ) { wp_delete_post( $post_id, true ); self::log_error( $save, 'ai_copilot_save_draft_graph', $post_id ); return $save; }
-		if ( function_exists( 'igp_pro_sync_content_graph_to_post_content' ) ) { $sync = igp_pro_sync_content_graph_to_post_content( $post_id, $compiled['content_graph'] ); if ( is_wp_error( $sync ) ) { self::log_error( $sync, 'ai_copilot_sync_draft_graph', $post_id ); return $sync; } }
 		$seo = isset( $compiled['seo'] ) && is_array( $compiled['seo'] ) ? $compiled['seo'] : array();
-		if ( function_exists( 'igp_pro_save_meta_description' ) && ! empty( $seo['meta_description'] ) ) { igp_pro_save_meta_description( $post_id, (string) $seo['meta_description'] ); }
-		if ( function_exists( 'igp_pro_log' ) ) { igp_pro_log( array( 'actor_type' => 'human', 'operation' => 'ai_copilot_create_draft', 'object_type' => 'post', 'object_id' => $post_id, 'source_module' => 'ai_copilot', 'status' => 'success', 'snapshot_id' => $snapshot_id, 'summary' => 'AI Copilot draft created through validated compiler pipeline.' ) ); }
+		if ( ! class_exists( 'IGP_Content_Graph_Save_Service' ) ) { $error = new WP_Error( 'igp_ai_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) ); wp_delete_post( $post_id, true ); return $error; }
+		$save = IGP_Content_Graph_Save_Service::save(
+			$post_id,
+			$compiled['content_graph'],
+			array(
+				'check_capability' => false,
+				'meta_description' => isset( $seo['description'] ) ? (string) $seo['description'] : ( isset( $seo['meta_description'] ) ? (string) $seo['meta_description'] : '' ),
+				'source_module'    => 'ai_copilot',
+				'actor_type'       => 'human',
+				'reason'           => 'ai_copilot_create_draft',
+			)
+		);
+		if ( is_wp_error( $save ) ) { wp_delete_post( $post_id, true ); self::log_error( $save, 'ai_copilot_save_draft_graph', $post_id ); return $save; }
+		$snapshot_id = isset( $save['snapshot_id'] ) ? (string) $save['snapshot_id'] : '';
+		if ( function_exists( 'igp_pro_log' ) ) { igp_pro_log( array( 'actor_type' => 'human', 'operation' => 'ai_copilot_create_draft', 'object_type' => 'post', 'object_id' => $post_id, 'source_module' => 'ai_copilot', 'status' => 'success', 'snapshot_id' => $snapshot_id, 'summary' => 'AI Copilot draft created through validated compiler pipeline and canonical Content Graph save service.' ) ); }
 		return array( 'post_id' => $post_id, 'post_type' => $post_type, 'post_status' => 'draft', 'edit_link' => get_edit_post_link( $post_id, 'raw' ), 'snapshot_id' => $snapshot_id, 'compiled' => $compiled );
 	}
 

@@ -246,35 +246,42 @@ function igp_pro_ajax_save_content_graph(): void {
 		igp_pro_send_json_error( $graph );
 	}
 
-	$result = igp_pro_save_content_graph( $post_id, $graph );
+	$meta_description = isset( $_POST['meta_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['meta_description'] ) ) : '';
+
+	if ( ! class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+		igp_pro_send_json_error( new WP_Error( 'igp_pro_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) ) );
+	}
+
+	$result = IGP_Content_Graph_Save_Service::save(
+		$post_id,
+		$graph,
+		array(
+			'check_capability' => true,
+			'capability'       => function_exists( 'igp_pro_get_surface_capability' ) ? igp_pro_get_surface_capability( 'content_editor' ) : 'edit_posts',
+			'meta_description' => $meta_description,
+			'source_module'    => 'content-editor',
+			'actor_type'       => 'human',
+			'reason'           => 'content_editor_save',
+		)
+	);
+
 	if ( is_wp_error( $result ) ) {
 		igp_pro_send_json_error( $result );
 	}
 
-	$meta_description = isset( $_POST['meta_description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['meta_description'] ) ) : '';
-	$meta_result      = igp_pro_save_meta_description( $post_id, $meta_description );
-	if ( is_wp_error( $meta_result ) ) {
-		igp_pro_send_json_error( $meta_result );
-	}
-
-	$saved_graph = igp_pro_load_content_graph( $post_id );
+	$saved_graph = isset( $result['graph'] ) && is_array( $result['graph'] ) ? $result['graph'] : igp_pro_load_content_graph( $post_id );
 	if ( is_wp_error( $saved_graph ) ) {
 		igp_pro_send_json_error( $saved_graph );
-	}
-
-	if ( function_exists( 'igp_pro_sync_content_graph_to_post_content' ) ) {
-		$sync_result = igp_pro_sync_content_graph_to_post_content( $post_id, $saved_graph );
-		if ( is_wp_error( $sync_result ) ) {
-			igp_pro_send_json_error( $sync_result );
-		}
 	}
 
 	wp_send_json_success(
 		array(
 			'graph'            => $saved_graph,
-			'source'           => 'post_content',
+			'source'           => 'post_meta',
+			'snapshot_id'      => $result['snapshot_id'] ?? '',
+			'sync_status'      => $result['sync_status'] ?? 'synced',
 			'meta_description' => igp_pro_load_meta_description( $post_id ),
-			'message'          => __( 'Content Graph saved and synced to the WordPress editor content.', 'igp-pro' ),
+			'message'          => __( 'Content Graph saved through the canonical save service and synced to WordPress content.', 'igp-pro' ),
 		)
 	);
 }

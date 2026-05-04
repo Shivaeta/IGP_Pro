@@ -114,7 +114,9 @@ function igp_pro_sanitize_content_graph_payload( array $graph ): array {
 
 		$next_section = array(
 			'block_id' => $block_id,
+			'block'    => $block_id,
 			'data'     => $data,
+			'children' => array(),
 		);
 
 		if ( isset( $section['schema_version'] ) ) {
@@ -127,6 +129,15 @@ function igp_pro_sanitize_content_graph_payload( array $graph ): array {
 
 		if ( isset( $section['id'] ) && '' !== (string) $section['id'] ) {
 			$next_section['id'] = sanitize_key( (string) $section['id'] );
+		}
+
+		if ( isset( $section['children'] ) && is_array( $section['children'] ) ) {
+			$child_graph = array(
+				'version'  => $sanitized['version'],
+				'sections' => $section['children'],
+			);
+			$child_sanitized = igp_pro_sanitize_content_graph_payload( $child_graph );
+			$next_section['children'] = $child_sanitized['sections'] ?? array();
 		}
 
 		$sanitized['sections'][] = $next_section;

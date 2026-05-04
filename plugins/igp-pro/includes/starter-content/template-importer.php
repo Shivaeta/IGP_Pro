@@ -418,16 +418,24 @@ function igp_pro_import_starter_template_object( array $template, string $bucket
 	igp_pro_update_template_source_meta( $post_id, $template_id, $template_uuid, $batch_id, $template_version );
 	igp_pro_save_starter_template_seo_fields( $post_id, $graph, $seo );
 
-	$save = function_exists( 'igp_pro_save_content_graph' ) ? igp_pro_save_content_graph( $post_id, $graph ) : new WP_Error( 'igp_pro_content_graph_missing', __( 'Content Graph service is unavailable.', 'igp-pro' ) );
+	if ( class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+		$save = IGP_Content_Graph_Save_Service::save(
+			$post_id,
+			$graph,
+			array(
+				'check_capability' => false,
+				'skip_snapshot'    => '' !== $snapshot_id,
+				'source_module'    => 'starter-template-importer',
+				'actor_type'       => 'import',
+				'reason'           => 'starter_template_import',
+				'meta_description' => isset( $seo['description'] ) ? sanitize_textarea_field( (string) $seo['description'] ) : ( isset( $graph['seo']['description'] ) ? sanitize_textarea_field( (string) $graph['seo']['description'] ) : '' ),
+			)
+		);
+	} else {
+		$save = new WP_Error( 'igp_pro_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
+	}
 	if ( is_wp_error( $save ) ) {
 		return $save;
-	}
-
-	if ( function_exists( 'igp_pro_sync_content_graph_to_post_content' ) ) {
-		$sync = igp_pro_sync_content_graph_to_post_content( $post_id, $graph );
-		if ( is_wp_error( $sync ) ) {
-			return $sync;
-		}
 	}
 
 	if ( '' !== $snapshot_id && function_exists( 'igp_pro_update_snapshot_after_data' ) ) {
@@ -832,8 +840,23 @@ function igp_pro_restore_starter_template_object_state( int $post_id, array $sta
 		return $update;
 	}
 
-	if ( isset( $state['graph'] ) && is_array( $state['graph'] ) && function_exists( 'igp_pro_save_content_graph' ) ) {
-		$save = igp_pro_save_content_graph( $post_id, $state['graph'] );
+	if ( isset( $state['graph'] ) && is_array( $state['graph'] ) ) {
+		if ( ! class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+			return new WP_Error( 'igp_pro_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
+		}
+
+		$save = IGP_Content_Graph_Save_Service::save(
+			$post_id,
+			$state['graph'],
+			array(
+				'check_capability' => false,
+				'skip_snapshot'    => true,
+				'source_module'    => 'starter-template-rollback',
+				'actor_type'       => 'import',
+				'reason'           => 'starter_template_restore',
+				'meta_description' => isset( $state['seo_meta'][ IGP_PRO_META_DESCRIPTION_META_KEY ] ) ? (string) $state['seo_meta'][ IGP_PRO_META_DESCRIPTION_META_KEY ] : '',
+			)
+		);
 		if ( is_wp_error( $save ) ) {
 			return $save;
 		}

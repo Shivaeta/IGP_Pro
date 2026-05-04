@@ -1,0 +1,209 @@
+{
+    "snapshot_id": "snap_20260503_231844_ncaxvxmi",
+    "object_type": "content_graph",
+    "object_id": 45,
+    "before_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": []
+        },
+        "post_content": "<!-- wp:igp-pro/gallery {\"heading\":{\"text\":\"\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":false},\"images\":[{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1\\u0026pid=ImgDetMain\\u0026o=7\\u0026rm=3\",\"alt\":\"\",\"caption\":\"\",\"id\":\"item_1777837459658\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1\\u0026pid=ImgDetMain\\u0026o=7\\u0026rm=3\",\"alt\":\"\",\"caption\":\"\",\"id\":\"item_1777837460494\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1\\u0026pid=ImgDetMain\\u0026o=7\\u0026rm=3\",\"alt\":\"\",\"caption\":\"\",\"id\":\"item_1777837536223\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1\\u0026pid=ImgDetMain\\u0026o=7\\u0026rm=3\",\"alt\":\"\",\"caption\":\"\",\"id\":\"item_1777837539578\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1\\u0026pid=ImgDetMain\\u0026o=7\\u0026rm=3\",\"alt\":\"\",\"caption\":\"\",\"id\":\"item_1777837544415\"}],\"layout\":\"masonry\"} /-->\n\n<!-- wp:igp-pro/rich-text {\"heading\":{\"text\":\"Tour Overview\",\"level\":\"h2\",\"eyebrow\":\"the once in a lifetime tour\",\"visible\":true},\"style\":{\"variant\":\"lead\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"full\",\"surface\":\"elevated\",\"media_position\":\"auto\"},\"content\":\"Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. \",\"width\":\"narrow\"} /-->\n\n<!-- wp:igp-pro/tour-facts {\"style\":{\"variant\":\"grid\",\"density\":\"spacious\",\"theme\":\"brand\",\"container\":\"full\",\"surface\":\"elevated\",\"media_position\":\"auto\"},\"facts\":[{\"label\":\"Duration\",\"value\":\"5 days\",\"icon\":\"📅\",\"note\":\"\"},{\"label\":\"Group size\",\"value\":\"2–12 guests\",\"icon\":\"groups\",\"note\":\"\"},{\"label\":\"Tour style\",\"value\":\"Private / Customizable\",\"icon\":\"route\",\"note\":\"\"}]} /-->\n\n<!-- wp:igp-pro/inclusions-exclusions {\"style\":{\"variant\":\"two-column\",\"density\":\"spacious\",\"theme\":\"accent\",\"container\":\"full\",\"surface\":\"transparent\",\"media_position\":\"top\"}} /-->",
+        "meta_description": "",
+        "sync_status": ""
+    },
+    "after_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "1.0",
+            "last_migrated_at": "2026-05-03T23:18:31+00:00",
+            "sections": [
+                {
+                    "id": "section_wp_1_gallery",
+                    "block_id": "gallery",
+                    "block": "gallery",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": false
+                        },
+                        "style": {
+                            "variant": "default",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "images": [
+                            {
+                                "url": "https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3",
+                                "alt": "",
+                                "caption": ""
+                            },
+                            {
+                                "url": "https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3",
+                                "alt": "",
+                                "caption": ""
+                            },
+                            {
+                                "url": "https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3",
+                                "alt": "",
+                                "caption": ""
+                            },
+                            {
+                                "url": "https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3",
+                                "alt": "",
+                                "caption": ""
+                            },
+                            {
+                                "url": "https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1&pid=ImgDetMain&o=7&rm=3",
+                                "alt": "",
+                                "caption": ""
+                            }
+                        ],
+                        "layout": "masonry",
+                        "columns": 3
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_wp_2_rich_text",
+                    "block_id": "rich_text",
+                    "block": "rich_text",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Tour Overview",
+                            "level": "h2",
+                            "eyebrow": "the once in a lifetime tour",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "lead",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "full",
+                            "surface": "elevated",
+                            "media_position": "auto"
+                        },
+                        "content": "Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. ",
+                        "alignment": "left",
+                        "width": "narrow"
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_wp_3_tour_facts",
+                    "block_id": "tour_facts",
+                    "block": "tour_facts",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Tour Facts",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "grid",
+                            "density": "spacious",
+                            "theme": "brand",
+                            "container": "full",
+                            "surface": "elevated",
+                            "media_position": "auto"
+                        },
+                        "intro": "",
+                        "facts": [
+                            {
+                                "label": "Duration",
+                                "value": "5 days",
+                                "icon": "📅",
+                                "note": ""
+                            },
+                            {
+                                "label": "Group size",
+                                "value": "2–12 guests",
+                                "icon": "groups",
+                                "note": ""
+                            },
+                            {
+                                "label": "Tour style",
+                                "value": "Private / Customizable",
+                                "icon": "route",
+                                "note": ""
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_wp_4_inclusions_exclusions",
+                    "block_id": "inclusions_exclusions",
+                    "block": "inclusions_exclusions",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Inclusions & Exclusions",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "two-column",
+                            "density": "spacious",
+                            "theme": "accent",
+                            "container": "full",
+                            "surface": "transparent",
+                            "media_position": "top"
+                        },
+                        "intro": "",
+                        "inclusions": [
+                            {
+                                "item": "Accommodation as per itinerary",
+                                "note": ""
+                            },
+                            {
+                                "item": "Private transfers",
+                                "note": ""
+                            }
+                        ],
+                        "exclusions": [
+                            {
+                                "item": "Flights unless specified",
+                                "note": ""
+                            },
+                            {
+                                "item": "Personal expenses",
+                                "note": ""
+                            }
+                        ],
+                        "note": ""
+                    },
+                    "children": []
+                }
+            ]
+        },
+        "post_content": "<!-- wp:igp-pro/gallery {\"heading\":{\"text\":\"\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":false},\"style\":{\"variant\":\"default\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"images\":[{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1u0026pid=ImgDetMainu0026o=7u0026rm=3\",\"alt\":\"\",\"caption\":\"\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1u0026pid=ImgDetMainu0026o=7u0026rm=3\",\"alt\":\"\",\"caption\":\"\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1u0026pid=ImgDetMainu0026o=7u0026rm=3\",\"alt\":\"\",\"caption\":\"\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1u0026pid=ImgDetMainu0026o=7u0026rm=3\",\"alt\":\"\",\"caption\":\"\"},{\"url\":\"https://tse1.mm.bing.net/th/id/OIP.9RypqqbPNSBsEMCUZHisNQHaE7?rs=1u0026pid=ImgDetMainu0026o=7u0026rm=3\",\"alt\":\"\",\"caption\":\"\"}],\"layout\":\"masonry\",\"columns\":3} /--><!-- wp:igp-pro/rich-text {\"heading\":{\"text\":\"Tour Overview\",\"level\":\"h2\",\"eyebrow\":\"the once in a lifetime tour\",\"visible\":true},\"style\":{\"variant\":\"lead\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"full\",\"surface\":\"elevated\",\"media_position\":\"auto\"},\"content\":\"Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. Add rich text content. \",\"alignment\":\"left\",\"width\":\"narrow\"} /--><!-- wp:igp-pro/tour-facts {\"heading\":{\"text\":\"Tour Facts\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"grid\",\"density\":\"spacious\",\"theme\":\"brand\",\"container\":\"full\",\"surface\":\"elevated\",\"media_position\":\"auto\"},\"intro\":\"\",\"facts\":[{\"label\":\"Duration\",\"value\":\"5 days\",\"icon\":\"📅\",\"note\":\"\"},{\"label\":\"Group size\",\"value\":\"2–12 guests\",\"icon\":\"groups\",\"note\":\"\"},{\"label\":\"Tour style\",\"value\":\"Private / Customizable\",\"icon\":\"route\",\"note\":\"\"}]} /--><!-- wp:igp-pro/inclusions-exclusions {\"heading\":{\"text\":\"Inclusions u0026 Exclusions\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"two-column\",\"density\":\"spacious\",\"theme\":\"accent\",\"container\":\"full\",\"surface\":\"transparent\",\"media_position\":\"top\"},\"intro\":\"\",\"inclusions\":[{\"item\":\"Accommodation as per itinerary\",\"note\":\"\"},{\"item\":\"Private transfers\",\"note\":\"\"}],\"exclusions\":[{\"item\":\"Flights unless specified\",\"note\":\"\"},{\"item\":\"Personal expenses\",\"note\":\"\"}],\"note\":\"\"} /-->\n\n\n\n\n\n",
+        "meta_description": "",
+        "sync_status": "synced"
+    },
+    "actor_user_id": 1,
+    "source_module": "content-editor",
+    "created_at": "2026-05-03T23:18:44+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "68da422f86258cef8386840a01f941b7af5795825b335cae2cfe156e72906945",
+    "after_hash": "a03cd0bfd6e3fa101c14db88f50b54a26144055e5dfefc4259e41c03e2412f1d",
+    "current_hash_at_create": "2831cfaf21c1819f4a9572516c549c6108c2b9a117cebb082adc1ee0b585d8a8",
+    "context": {
+        "source_module": "content-editor",
+        "actor_type": "human",
+        "reason": "content_editor_save"
+    }
+}

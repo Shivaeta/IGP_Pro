@@ -126,5 +126,6 @@
   "render_callback": "igp_pro_render_block",
   "supports": {
     "style": true
-  }
+  },
+  "block_id": "breadcrumb"
 }

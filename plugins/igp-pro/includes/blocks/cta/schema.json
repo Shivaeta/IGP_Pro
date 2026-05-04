@@ -150,17 +150,6 @@
       ],
       "default": "center"
     },
-    "variant": {
-      "type": "enum",
-      "values": [
-        "solid",
-        "outline",
-        "minimal",
-        "split",
-        "dark"
-      ],
-      "default": "solid"
-    },
     "show_badges": {
       "type": "boolean",
       "default": true
@@ -197,7 +186,6 @@
       "url": "/tours/"
     },
     "alignment": "center",
-    "variant": "solid",
     "show_badges": true,
     "badges": [
       {
@@ -231,5 +219,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "cta"
 }

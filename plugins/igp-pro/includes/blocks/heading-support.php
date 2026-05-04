@@ -65,14 +65,6 @@ function igp_pro_normalize_block_heading( array $data, string $block_id = '', ar
 		$heading['level'] = 'h2';
 	}
 
-	/**
-	 * Hero H1 is not a block-level choice. It is only allowed when page-level
-	 * heading policy explicitly assigns the page H1 to this hero section.
-	 */
-	if ( 'hero' === sanitize_key( $block_id ) && ! empty( $context['igp_page_h1_block'] ) ) {
-		$heading['level'] = 'h1';
-	}
-
 	return $heading;
 }
 

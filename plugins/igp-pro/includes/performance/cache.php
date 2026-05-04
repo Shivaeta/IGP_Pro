@@ -163,12 +163,26 @@ function igp_pro_cache_build_block_key( string $block_id, array $data, array $co
 		$post_id = absint( get_queried_object_id() );
 	}
 
+	$section = isset( $context['section'] ) && is_array( $context['section'] ) ? $context['section'] : array();
+	$outline = isset( $context['outline'] ) && is_array( $context['outline'] ) ? $context['outline'] : array();
+	$h1      = isset( $outline['h1'] ) && is_array( $outline['h1'] ) ? $outline['h1'] : array();
+
 	$payload = array(
-		'v'       => igp_pro_cache_get_version(),
-		'post_id' => $post_id,
-		'block'   => sanitize_key( $block_id ),
-		'data'    => $data,
-		'content' => isset( $context['content'] ) ? (string) $context['content'] : '',
+		'v'                 => igp_pro_cache_get_version(),
+		'post_id'           => $post_id,
+		'block'             => sanitize_key( $block_id ),
+		'data'              => $data,
+		'content'           => isset( $context['content'] ) ? (string) $context['content'] : '',
+		'section_id'        => isset( $section['id'] ) ? sanitize_key( (string) $section['id'] ) : '',
+		'section_schema'    => isset( $section['schema_version'] ) ? sanitize_text_field( (string) $section['schema_version'] ) : '',
+		'depth'             => isset( $context['depth'] ) ? absint( $context['depth'] ) : 0,
+		'children_html'     => isset( $context['children_html'] ) ? md5( (string) $context['children_html'] ) : '',
+		'igp_section_id'    => isset( $context['igp_section_id'] ) ? sanitize_key( (string) $context['igp_section_id'] ) : '',
+		'igp_heading_id'    => isset( $context['igp_heading_id'] ) ? sanitize_key( (string) $context['igp_heading_id'] ) : '',
+		'page_h1_block'     => ! empty( $context['igp_page_h1_block'] ),
+		'outline_h1_text'   => isset( $h1['text'] ) ? trim( wp_strip_all_tags( (string) $h1['text'] ) ) : '',
+		'outline_h1_source' => isset( $h1['source'] ) ? sanitize_key( (string) $h1['source'] ) : '',
+		'outline_h1_section'=> isset( $h1['section_id'] ) ? sanitize_key( (string) $h1['section_id'] ) : '',
 	);
 
 	return 'igp_pro_block_' . md5( wp_json_encode( $payload ) ?: serialize( $payload ) );

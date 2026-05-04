@@ -139,18 +139,6 @@
       ],
       "default": "normal"
     },
-    "variant": {
-      "type": "enum",
-      "values": [
-        "default",
-        "contained",
-        "wide",
-        "panel",
-        "accent",
-        "dark"
-      ],
-      "default": "default"
-    },
     "align": {
       "type": "enum",
       "values": [
@@ -184,7 +172,6 @@
     "layout": "grid",
     "columns": 3,
     "spacing": "normal",
-    "variant": "default",
     "align": "left",
     "background": "none",
     "style": {
@@ -207,5 +194,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "section"
 }

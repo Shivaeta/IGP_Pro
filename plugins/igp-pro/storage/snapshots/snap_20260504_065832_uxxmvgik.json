@@ -1,0 +1,224 @@
+{
+    "snapshot_id": "snap_20260504_065832_uxxmvgik",
+    "object_type": "content_graph",
+    "object_id": 97,
+    "before_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": []
+        },
+        "post_content": "",
+        "meta_description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+        "sync_status": ""
+    },
+    "after_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": [
+                {
+                    "id": "section_0_hero_0d193f91",
+                    "block_id": "hero",
+                    "block": "hero",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Luxury India Tours",
+                            "level": "h2",
+                            "eyebrow": "Featured travel template",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "centered-minimal",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "subheading": "Luxury journeys designed around privacy, comfort, and cultural depth.",
+                        "background_image": {
+                            "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+                            "alt": "Luxury India Tours"
+                        },
+                        "cta": {
+                            "label": "Start planning",
+                            "url": "/contact/"
+                        },
+                        "enable_search": false
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_rich_text_e92a824b",
+                    "block_id": "rich_text",
+                    "block": "rich_text",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Why this template works",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "article",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "content": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+                        "alignment": "left",
+                        "width": "normal"
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_destination_cards_990b33e3",
+                    "block_id": "destination_cards",
+                    "block": "destination_cards",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Featured Destinations",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "grid",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "description": "Template destinations are relationship-aware and can be expanded during import.",
+                        "source": "query",
+                        "items": [],
+                        "layout": "grid",
+                        "columns": 3,
+                        "limit": 3,
+                        "show_excerpt": true,
+                        "show_count": true,
+                        "image_ratio": "portrait"
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_cta_4e1bd021",
+                    "block_id": "cta",
+                    "block": "cta",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Plan a custom trip",
+                            "level": "h2",
+                            "eyebrow": "Ready to plan?",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "banner",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "subheading": "Use this starter template as a structured baseline, then replace content with client-specific details.",
+                        "button": {
+                            "label": "Request a quote",
+                            "url": "/contact/"
+                        },
+                        "secondary_button": {
+                            "label": "View tours",
+                            "url": "/tours/"
+                        },
+                        "alignment": "center",
+                        "show_badges": true,
+                        "badges": [
+                            {
+                                "label": "Structured content"
+                            },
+                            {
+                                "label": "SEO-ready sections"
+                            },
+                            {
+                                "label": "Editable blocks"
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_faq_e21e6389",
+                    "block_id": "faq",
+                    "block": "faq",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Common Questions",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "accordion",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "items": [
+                            {
+                                "question": "Can this package be customized?",
+                                "answer": "Yes. The itinerary, hotel category, pacing, and inclusions can be adjusted for the traveler profile."
+                            },
+                            {
+                                "question": "Is this content editable?",
+                                "answer": "Yes. All sections are stored as structured IGP Content Graph data."
+                            }
+                        ]
+                    },
+                    "children": []
+                }
+            ],
+            "seo": {
+                "h1": "Luxury India Tours",
+                "title": "Luxury India Tours",
+                "canonical_url": "",
+                "robots": "index,follow",
+                "schema_policy": "tourism_default",
+                "description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+                "focus_topics": [
+                    "Luxury private travel",
+                    "travel packages",
+                    "Rajasthan"
+                ]
+            }
+        },
+        "post_content": "<!-- wp:igp-pro/hero {\"heading\":{\"text\":\"Luxury India Tours\",\"level\":\"h2\",\"eyebrow\":\"Featured travel template\",\"visible\":true},\"style\":{\"variant\":\"centered-minimal\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"subheading\":\"Luxury journeys designed around privacy, comfort, and cultural depth.\",\"background_image\":{\"url\":\"/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg\",\"alt\":\"Luxury India Tours\"},\"cta\":{\"label\":\"Start planning\",\"url\":\"/contact/\"},\"enable_search\":false} /--><!-- wp:igp-pro/rich-text {\"heading\":{\"text\":\"Why this template works\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"article\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"content\":\"Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.\",\"alignment\":\"left\",\"width\":\"normal\"} /--><!-- wp:igp-pro/destination-cards {\"heading\":{\"text\":\"Featured Destinations\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"grid\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"description\":\"Template destinations are relationship-aware and can be expanded during import.\",\"source\":\"query\",\"items\":[],\"layout\":\"grid\",\"columns\":3,\"limit\":3,\"show_excerpt\":true,\"show_count\":true,\"image_ratio\":\"portrait\"} /--><!-- wp:igp-pro/cta {\"heading\":{\"text\":\"Plan a custom trip\",\"level\":\"h2\",\"eyebrow\":\"Ready to plan?\",\"visible\":true},\"style\":{\"variant\":\"banner\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"subheading\":\"Use this starter template as a structured baseline, then replace content with client-specific details.\",\"button\":{\"label\":\"Request a quote\",\"url\":\"/contact/\"},\"secondary_button\":{\"label\":\"View tours\",\"url\":\"/tours/\"},\"alignment\":\"center\",\"show_badges\":true,\"badges\":[{\"label\":\"Structured content\"},{\"label\":\"SEO-ready sections\"},{\"label\":\"Editable blocks\"}]} /--><!-- wp:igp-pro/faq {\"heading\":{\"text\":\"Common Questions\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"accordion\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"items\":[{\"question\":\"Can this package be customized?\",\"answer\":\"Yes. The itinerary, hotel category, pacing, and inclusions can be adjusted for the traveler profile.\"},{\"question\":\"Is this content editable?\",\"answer\":\"Yes. All sections are stored as structured IGP Content Graph data.\"}]} /-->",
+        "meta_description": "Premium tailor-made itineraries with handpicked hotels, private guides, and concierge travel support.",
+        "sync_status": "synced"
+    },
+    "actor_user_id": 1,
+    "source_module": "starter-template-importer",
+    "created_at": "2026-05-04T06:58:32+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "69f6445110d1670fbfc253ef713dcb8430858308654fb9d5861f753bb463a1bf",
+    "after_hash": "595ad8b4ae0fa584c3609bcaf8db03bca4809b985bb6d95fa3dd008fb87f5f86",
+    "current_hash_at_create": "2831cfaf21c1819f4a9572516c549c6108c2b9a117cebb082adc1ee0b585d8a8",
+    "context": {
+        "source_module": "starter-template-importer",
+        "actor_type": "import",
+        "reason": "starter_template_import"
+    }
+}

@@ -55,13 +55,33 @@ class IGP_AI_Copilot_Compiler {
 			$count++;
 		}
 
-		$graph = array( 'version' => 'v1', 'sections' => $sections );
+		$seo = self::sanitize_seo( isset( $normalized_draft['seo'] ) && is_array( $normalized_draft['seo'] ) ? $normalized_draft['seo'] : array() );
+		$graph = array(
+			'version' => 'v1',
+			'sections' => $sections,
+		);
+		if ( ! empty( $seo ) ) {
+			$graph['seo'] = $seo;
+		}
+
+		if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+			$graph = igp_pro_canonicalize_content_graph( $graph );
+			if ( is_wp_error( $graph ) ) { return $graph; }
+		}
+		if ( function_exists( 'igp_pro_sanitize_content_graph_payload' ) ) {
+			$graph = igp_pro_sanitize_content_graph_payload( $graph );
+			if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+				$graph = igp_pro_canonicalize_content_graph( $graph );
+				if ( is_wp_error( $graph ) ) { return $graph; }
+			}
+		}
+
 		$graph_validation = function_exists( 'igp_pro_validate_content_graph' ) ? igp_pro_validate_content_graph( $graph ) : ( function_exists( 'igp_pro_validate_content_graph_payload' ) ? igp_pro_validate_content_graph_payload( $graph ) : true );
 		if ( is_wp_error( $graph_validation ) ) { return $graph_validation; }
 
 		return array(
 			'content_graph' => $graph,
-			'seo' => self::sanitize_seo( isset( $normalized_draft['seo'] ) && is_array( $normalized_draft['seo'] ) ? $normalized_draft['seo'] : array() ),
+			'seo' => $seo,
 			'media_requirements' => $media_requirements,
 			'relationship_hints' => self::relationship_hints( $normalized_draft ),
 			'mapping_report' => $mapping_report,
@@ -99,11 +119,75 @@ class IGP_AI_Copilot_Compiler {
 
 	private static function sanitize_seo( array $seo ): array {
 		$out = array();
-		foreach ( $seo as $key => $value ) {
-			$key = sanitize_key( (string) $key );
-			if ( is_array( $value ) ) { $out[ $key ] = array_map( 'sanitize_text_field', array_map( 'strval', array_filter( $value, 'is_scalar' ) ) ); }
-			elseif ( is_scalar( $value ) ) { $out[ $key ] = sanitize_textarea_field( (string) $value ); }
+		if ( empty( $seo ) ) {
+			return $out;
 		}
+
+		$text_map = array(
+			'meta_title' => 'title',
+			'title' => 'title',
+			'seo_title' => 'title',
+			'canonical' => 'canonical_url',
+			'canonical_url' => 'canonical_url',
+			'robots' => 'robots',
+			'og_title' => 'og_title',
+			'open_graph_title' => 'og_title',
+			'schema_policy' => 'schema_policy',
+		);
+		$textarea_map = array(
+			'meta_description' => 'description',
+			'description' => 'description',
+			'seo_description' => 'description',
+			'og_description' => 'og_description',
+			'open_graph_description' => 'og_description',
+		);
+
+		foreach ( $text_map as $source_key => $target_key ) {
+			if ( isset( $seo[ $source_key ] ) && is_scalar( $seo[ $source_key ] ) && '' !== trim( (string) $seo[ $source_key ] ) ) {
+				$out[ $target_key ] = 'canonical_url' === $target_key ? esc_url_raw( (string) $seo[ $source_key ] ) : sanitize_text_field( (string) $seo[ $source_key ] );
+			}
+		}
+
+		foreach ( $textarea_map as $source_key => $target_key ) {
+			if ( isset( $seo[ $source_key ] ) && is_scalar( $seo[ $source_key ] ) && '' !== trim( (string) $seo[ $source_key ] ) ) {
+				$out[ $target_key ] = sanitize_textarea_field( (string) $seo[ $source_key ] );
+			}
+		}
+
+		$focus_topics = array();
+		foreach ( array( 'primary_keyword', 'focus_keyword', 'focus_topic' ) as $key ) {
+			if ( isset( $seo[ $key ] ) && is_scalar( $seo[ $key ] ) && '' !== trim( (string) $seo[ $key ] ) ) {
+				$focus_topics[] = sanitize_text_field( (string) $seo[ $key ] );
+			}
+		}
+		foreach ( array( 'secondary_keywords', 'keywords', 'focus_topics' ) as $key ) {
+			if ( isset( $seo[ $key ] ) && is_array( $seo[ $key ] ) ) {
+				foreach ( $seo[ $key ] as $topic ) {
+					if ( is_scalar( $topic ) && '' !== trim( (string) $topic ) ) {
+						$focus_topics[] = sanitize_text_field( (string) $topic );
+					}
+				}
+			} elseif ( isset( $seo[ $key ] ) && is_scalar( $seo[ $key ] ) && '' !== trim( (string) $seo[ $key ] ) ) {
+				$parts = preg_split( '/\r\n|\r|\n|,/', (string) $seo[ $key ] ) ?: array();
+				foreach ( $parts as $topic ) {
+					if ( '' !== trim( (string) $topic ) ) {
+						$focus_topics[] = sanitize_text_field( (string) $topic );
+					}
+				}
+			}
+		}
+		if ( ! empty( $focus_topics ) ) {
+			$out['focus_topics'] = array_values( array_unique( array_filter( $focus_topics ) ) );
+		}
+
+		if ( isset( $seo['og_image_id'] ) && is_numeric( $seo['og_image_id'] ) ) {
+			$out['og_image_id'] = absint( $seo['og_image_id'] );
+		}
+
+		if ( isset( $seo['internal_link_targets'] ) && is_array( $seo['internal_link_targets'] ) ) {
+			$out['internal_link_targets'] = $seo['internal_link_targets'];
+		}
+
 		return $out;
 	}
 

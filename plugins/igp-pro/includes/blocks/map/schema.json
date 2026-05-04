@@ -156,5 +156,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "map"
 }

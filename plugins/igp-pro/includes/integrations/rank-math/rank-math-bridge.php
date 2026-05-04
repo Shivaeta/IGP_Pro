@@ -106,9 +106,31 @@ function igp_pro_rank_math_bridge_enabled(): bool {
 
 /**
  * Whether Rank Math should own frontend SEO output for the current request.
+ *
+ * @param string $channel Optional channel: meta, open_graph, schema, breadcrumbs, or all.
  */
-function igp_pro_rank_math_bridge_owns_frontend_output(): bool {
-	return igp_pro_rank_math_bridge_enabled() && igp_pro_rank_math_is_active();
+function igp_pro_rank_math_bridge_owns_frontend_output( string $channel = 'all' ): bool {
+	if ( ! igp_pro_rank_math_bridge_enabled() || ! igp_pro_rank_math_is_active() ) {
+		return false;
+	}
+
+	$settings = igp_pro_rank_math_bridge_get_settings();
+	$channel  = sanitize_key( $channel );
+
+	$ownership = array(
+		'meta'       => ! empty( $settings['provide_meta'] ),
+		'open_graph' => ! empty( $settings['provide_open_graph'] ),
+		'og'         => ! empty( $settings['provide_open_graph'] ),
+		'schema'     => ! empty( $settings['provide_schema'] ),
+		'json_ld'    => ! empty( $settings['provide_schema'] ),
+		'breadcrumbs'=> ! empty( $settings['provide_breadcrumbs'] ),
+	);
+
+	if ( 'all' === $channel ) {
+		return in_array( true, $ownership, true );
+	}
+
+	return ! empty( $ownership[ $channel ] );
 }
 
 /**

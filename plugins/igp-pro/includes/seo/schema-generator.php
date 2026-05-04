@@ -8,9 +8,25 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Get graph data from post content first, then saved graph meta.
+ * Get Content Graph data for SEO/schema contexts.
+ *
+ * Saved Content Graph meta is the canonical source of truth. Parsed
+ * post_content is used only as a recovery fallback when no canonical graph
+ * sections or SEO object exist yet.
  */
 function igp_pro_seo_get_content_graph( int $post_id ): array {
+	if ( function_exists( 'igp_pro_load_content_graph' ) ) {
+		$graph = igp_pro_load_content_graph( $post_id );
+		if ( is_array( $graph ) ) {
+			$has_sections = ! empty( $graph['sections'] ) && is_array( $graph['sections'] );
+			$has_seo      = ! empty( $graph['seo'] ) && is_array( $graph['seo'] );
+
+			if ( $has_sections || $has_seo ) {
+				return $graph;
+			}
+		}
+	}
+
 	if ( function_exists( 'igp_pro_content_graph_from_post_content' ) ) {
 		$graph = igp_pro_content_graph_from_post_content( $post_id );
 		if ( is_array( $graph ) && ! empty( $graph['sections'] ) ) {
@@ -18,14 +34,7 @@ function igp_pro_seo_get_content_graph( int $post_id ): array {
 		}
 	}
 
-	if ( function_exists( 'igp_pro_load_content_graph' ) ) {
-		$graph = igp_pro_load_content_graph( $post_id );
-		if ( is_array( $graph ) ) {
-			return $graph;
-		}
-	}
-
-	return array( 'version' => 'v1', 'sections' => array() );
+	return function_exists( 'igp_pro_get_empty_content_graph' ) ? igp_pro_get_empty_content_graph() : array( 'version' => 'v1', 'sections' => array() );
 }
 
 /**

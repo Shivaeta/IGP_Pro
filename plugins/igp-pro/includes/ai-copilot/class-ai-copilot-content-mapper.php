@@ -84,11 +84,13 @@ class IGP_AI_Copilot_Content_Mapper {
 			case 'hero':
 				$media = isset( $ai_block['media'] ) && is_array( $ai_block['media'] ) ? $ai_block['media'] : array();
 				$url = self::safe_url( self::first_string( $media, array( 'url', 'image_url' ) ) );
-				if ( '' === $url ) {
-					$url = self::placeholder_url();
-					$warnings[] = self::issue( 'igp_ai_media_placeholder_used', __( 'Hero media prompt was preserved as pending media; placeholder used for safe preview.', 'igp-pro' ), 'media' );
+				$alt = self::first_string( $media, array( 'alt', 'alt_text' ) );
+				if ( '' !== $url || '' !== $alt ) {
+					$data['background_image'] = array( 'url' => $url, 'alt' => $alt );
 				}
-				$data['background_image'] = array( 'url' => $url, 'alt' => self::first_string( $media, array( 'alt', 'alt_text' ) ) );
+				if ( '' === $url && '' !== self::first_string( $media, array( 'prompt', 'description', 'brief' ) ) ) {
+					$warnings[] = self::issue( 'igp_ai_media_pending', __( 'Hero media prompt was preserved as a pending media requirement; no placeholder URL was stored in the Content Graph.', 'igp-pro' ), 'media' );
+				}
 				break;
 			case 'rich_text':
 				$text = self::first_string( $ai_block, array( 'text', 'content', 'description', 'body' ) );
@@ -165,7 +167,6 @@ class IGP_AI_Copilot_Content_Mapper {
 	private static function read_path( array $source, string $path ) { $v = $source; foreach ( explode( '.', $path ) as $part ) { if ( is_array( $v ) && array_key_exists( $part, $v ) ) { $v = $v[ $part ]; } else { return null; } } return $v; }
 	private static function default_heading( string $block_id, array $data, array $context ): string { if ( 'hero' === $block_id && ! empty( $context['title'] ) ) { return (string) $context['title']; } return (string) ( $data['heading']['text'] ?? ucwords( str_replace( '_', ' ', $block_id ) ) ); }
 	private static function cta_label( string $intent, string $fallback ): string { $intent = sanitize_key( $intent ?: $fallback ); $map = array( 'enquiry' => __( 'Send Enquiry', 'igp-pro' ), 'booking' => __( 'Book Now', 'igp-pro' ), 'contact' => __( 'Contact Us', 'igp-pro' ), 'download' => __( 'Download Brochure', 'igp-pro' ), 'quote' => __( 'Request Quote', 'igp-pro' ), 'call' => __( 'Call Now', 'igp-pro' ), 'whatsapp' => __( 'Chat on WhatsApp', 'igp-pro' ), 'learn_more' => __( 'Learn More', 'igp-pro' ) ); return $map[ $intent ] ?? __( 'Send Enquiry', 'igp-pro' ); }
-	private static function placeholder_url(): string { return function_exists( 'igp_pro_url' ) ? igp_pro_url( 'assets/images/ai-media-placeholder.svg' ) : ''; }
 	private static function safe_url( string $url ): string { return function_exists( 'esc_url_raw' ) ? esc_url_raw( $url ) : $url; }
 	private static function issue( string $code, string $message, string $field ): array { return array( 'code' => sanitize_key( $code ), 'message' => $message, 'field' => $field ); }
 

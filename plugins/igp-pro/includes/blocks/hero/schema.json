@@ -118,8 +118,7 @@
       "type": "string"
     },
     "background_image": {
-      "type": "image",
-      "required": true
+      "type": "image"
     },
     "cta": {
       "type": "object",
@@ -147,8 +146,7 @@
   ],
   "validation": {
     "required": [
-      "heading",
-      "background_image"
+      "heading"
     ]
   },
   "render_callback": "igp_pro_render_block",
@@ -181,5 +179,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "hero"
 }

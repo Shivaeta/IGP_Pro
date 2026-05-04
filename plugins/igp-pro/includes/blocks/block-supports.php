@@ -82,6 +82,27 @@ function igp_pro_build_html_attributes( array $attributes ): string {
 	return implode( ' ', $parts );
 }
 
+
+/**
+ * Demote a block render file's outer <section> to <div> when the central
+ * renderer owns the semantic section wrapper. This avoids nested semantic
+ * sections while preserving legacy classes and layout CSS.
+ *
+ * @param string $html Rendered block HTML.
+ * @return string
+ */
+function igp_pro_demote_outer_section_for_central_wrapper( string $html ): string {
+	$trimmed = ltrim( $html );
+	$prefix  = substr( $html, 0, strlen( $html ) - strlen( $trimmed ) );
+	if ( ! preg_match( '/^<section\b/i', $trimmed ) ) {
+		return $html;
+	}
+
+	$trimmed = preg_replace( '/^<section\b/i', '<div', $trimmed, 1 );
+	$trimmed = preg_replace( '/<\/section>\s*$/i', '</div>', $trimmed, 1 );
+	return $prefix . (string) $trimmed;
+}
+
 /**
  * Apply semantic wrapper, stable IDs, and heading policy to rendered block HTML.
  *
@@ -106,9 +127,9 @@ function igp_pro_apply_semantic_block_wrapper( string $block_id, string $html, a
 	$heading_id = sanitize_html_class( (string) $context['igp_heading_id'] );
 	$has_heading = ! empty( $heading['visible'] ) && '' !== trim( (string) $heading['text'] );
 	$heading_tag = ! empty( $heading['level'] ) ? strtolower( (string) $heading['level'] ) : 'h2';
-	$heading_tag = in_array( $heading_tag, array( 'h1', 'h2', 'h3', 'h4' ), true ) ? $heading_tag : 'h2';
+	$heading_tag = in_array( $heading_tag, array( 'h2', 'h3', 'h4' ), true ) ? $heading_tag : 'h2';
 
-	$body = $html;
+	$body = igp_pro_demote_outer_section_for_central_wrapper( $html );
 	$matched_existing_heading = false;
 
 	if ( '' !== trim( (string) $heading['text'] ) ) {

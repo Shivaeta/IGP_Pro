@@ -15,7 +15,7 @@ if ( ! function_exists( 'igp_pro_render_section_wrapper' ) ) {
 		$layout      = igp_pro_enum( $data['layout'] ?? 'grid', array( 'grid', 'list', 'carousel', 'split' ), 'grid' );
 		$columns     = igp_pro_int_range( $data['columns'] ?? 3, 3, 1, 4 );
 		$spacing     = igp_pro_enum( $data['spacing'] ?? 'normal', array( 'compact', 'normal', 'relaxed' ), 'normal' );
-		$variant     = igp_pro_enum( $data['variant'] ?? 'default', array( 'default', 'contained', 'wide', 'panel', 'accent', 'dark' ), 'default' );
+		$variant     = igp_pro_enum( function_exists( 'igp_pro_get_legacy_visual_variant' ) ? igp_pro_get_legacy_visual_variant( 'section', $data, 'default' ) : 'default', array( 'default', 'contained', 'wide', 'panel', 'accent', 'dark' ), 'default' );
 		$align       = igp_pro_enum( $data['align'] ?? 'left', array( 'left', 'center', 'right' ), 'left' );
 		$background  = igp_pro_enum( $data['background'] ?? 'none', array( 'none', 'soft', 'white', 'sand', 'dark', 'brand' ), 'none' );
 
@@ -51,4 +51,4 @@ if ( ! function_exists( 'igp_pro_render_section_wrapper' ) ) {
 	}
 }
 
-return igp_pro_render_section_wrapper( $resolved_data ?? array(), isset( $context['content'] ) ? (string) $context['content'] : '' );
+return igp_pro_render_section_wrapper( $resolved_data ?? array(), isset( $context['children_html'] ) ? (string) $context['children_html'] : ( isset( $context['content'] ) ? (string) $context['content'] : '' ) );

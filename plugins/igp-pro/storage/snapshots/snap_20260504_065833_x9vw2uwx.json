@@ -1,0 +1,248 @@
+{
+    "snapshot_id": "snap_20260504_065833_x9vw2uwx",
+    "object_type": "content_graph",
+    "object_id": 101,
+    "before_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": []
+        },
+        "post_content": "",
+        "meta_description": "Destination page starter content.",
+        "sync_status": ""
+    },
+    "after_data": {
+        "graph": {
+            "version": "v1",
+            "schema_version": "2.0",
+            "migrated_from": "",
+            "last_migrated_at": "",
+            "sections": [
+                {
+                    "id": "section_0_hero_2578cb61",
+                    "block_id": "hero",
+                    "block": "hero",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Rajasthan",
+                            "level": "h2",
+                            "eyebrow": "Featured travel template",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "centered-minimal",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "subheading": "Destination template for Rajasthan.",
+                        "background_image": {
+                            "url": "/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg",
+                            "alt": "Rajasthan"
+                        },
+                        "cta": {
+                            "label": "Start planning",
+                            "url": "/contact/"
+                        },
+                        "enable_search": false
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_rich_text_48c339e1",
+                    "block_id": "rich_text",
+                    "block": "rich_text",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "About Rajasthan",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "article",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "content": "Rajasthan is the primary destination used by this starter package. Replace this text with client-specific destination expertise.",
+                        "alignment": "left",
+                        "width": "normal"
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_best_time_to_visit_27231447",
+                    "block_id": "best_time_to_visit",
+                    "block": "best_time_to_visit",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Best Time to Visit",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "seasons",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "intro": "Seasonality guidance helps travelers choose the right travel window.",
+                        "best_months": "October to March",
+                        "weather_summary": "Cooler weather and strong sightseeing conditions in most routes.",
+                        "seasons": [
+                            {
+                                "name": "Peak season",
+                                "months": "October–March",
+                                "temperature": "15–28°C",
+                                "description": "Cooler weather and strong sightseeing conditions.",
+                                "best_for": "Sightseeing and cultural travel"
+                            },
+                            {
+                                "name": "Shoulder season",
+                                "months": "April–June",
+                                "temperature": "24–38°C",
+                                "description": "Good value with warmer days.",
+                                "best_for": "Budget-conscious travelers"
+                            }
+                        ],
+                        "tips": [
+                            {
+                                "item": "Book early for peak season hotels."
+                            },
+                            {
+                                "item": "Carry sun protection during warmer months."
+                            }
+                        ]
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_nearby_attractions_779a4de5",
+                    "block_id": "nearby_attractions",
+                    "block": "nearby_attractions",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Nearby Attractions",
+                            "level": "h2",
+                            "eyebrow": "",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "grid",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "intro": "Add nearby attractions relevant to this destination.",
+                        "source": "manual",
+                        "items": [
+                            {
+                                "name": "Signature attraction",
+                                "description": "Replace with a real nearby attraction.",
+                                "distance": "30 km",
+                                "travel_time": "30 minutes",
+                                "image": {
+                                    "url": "",
+                                    "alt": ""
+                                },
+                                "link_url": ""
+                            }
+                        ],
+                        "limit": 6
+                    },
+                    "children": []
+                },
+                {
+                    "id": "section_0_cta_3fcbcfdb",
+                    "block_id": "cta",
+                    "block": "cta",
+                    "schema_version": "2.0",
+                    "data": {
+                        "heading": {
+                            "text": "Plan a trip to Rajasthan",
+                            "level": "h2",
+                            "eyebrow": "Ready to plan?",
+                            "visible": true
+                        },
+                        "style": {
+                            "variant": "banner",
+                            "density": "comfortable",
+                            "theme": "brand",
+                            "container": "wide",
+                            "surface": "default",
+                            "media_position": "auto"
+                        },
+                        "subheading": "Use this starter template as a structured baseline, then replace content with client-specific details.",
+                        "button": {
+                            "label": "Request a quote",
+                            "url": "/contact/"
+                        },
+                        "secondary_button": {
+                            "label": "View tours",
+                            "url": "/tours/"
+                        },
+                        "alignment": "center",
+                        "show_badges": true,
+                        "badges": [
+                            {
+                                "label": "Structured content"
+                            },
+                            {
+                                "label": "SEO-ready sections"
+                            },
+                            {
+                                "label": "Editable blocks"
+                            }
+                        ]
+                    },
+                    "children": []
+                }
+            ],
+            "seo": {
+                "h1": "Rajasthan",
+                "title": "Rajasthan",
+                "canonical_url": "",
+                "robots": "index,follow",
+                "schema_policy": "tourism_default",
+                "description": "Destination page starter content.",
+                "focus_topics": [
+                    "Luxury private travel",
+                    "travel packages",
+                    "Rajasthan"
+                ]
+            }
+        },
+        "post_content": "<!-- wp:igp-pro/hero {\"heading\":{\"text\":\"Rajasthan\",\"level\":\"h2\",\"eyebrow\":\"Featured travel template\",\"visible\":true},\"style\":{\"variant\":\"centered-minimal\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"subheading\":\"Destination template for Rajasthan.\",\"background_image\":{\"url\":\"/wp-content/plugins/igp-pro/assets/images/template-placeholder.jpg\",\"alt\":\"Rajasthan\"},\"cta\":{\"label\":\"Start planning\",\"url\":\"/contact/\"},\"enable_search\":false} /--><!-- wp:igp-pro/rich-text {\"heading\":{\"text\":\"About Rajasthan\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"article\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"content\":\"Rajasthan is the primary destination used by this starter package. Replace this text with client-specific destination expertise.\",\"alignment\":\"left\",\"width\":\"normal\"} /--><!-- wp:igp-pro/best-time-to-visit {\"heading\":{\"text\":\"Best Time to Visit\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"seasons\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"intro\":\"Seasonality guidance helps travelers choose the right travel window.\",\"best_months\":\"October to March\",\"weather_summary\":\"Cooler weather and strong sightseeing conditions in most routes.\",\"seasons\":[{\"name\":\"Peak season\",\"months\":\"October–March\",\"temperature\":\"15–28°C\",\"description\":\"Cooler weather and strong sightseeing conditions.\",\"best_for\":\"Sightseeing and cultural travel\"},{\"name\":\"Shoulder season\",\"months\":\"April–June\",\"temperature\":\"24–38°C\",\"description\":\"Good value with warmer days.\",\"best_for\":\"Budget-conscious travelers\"}],\"tips\":[{\"item\":\"Book early for peak season hotels.\"},{\"item\":\"Carry sun protection during warmer months.\"}]} /--><!-- wp:igp-pro/nearby-attractions {\"heading\":{\"text\":\"Nearby Attractions\",\"level\":\"h2\",\"eyebrow\":\"\",\"visible\":true},\"style\":{\"variant\":\"grid\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"intro\":\"Add nearby attractions relevant to this destination.\",\"source\":\"manual\",\"items\":[{\"name\":\"Signature attraction\",\"description\":\"Replace with a real nearby attraction.\",\"distance\":\"30 km\",\"travel_time\":\"30 minutes\",\"image\":{\"url\":\"\",\"alt\":\"\"},\"link_url\":\"\"}],\"limit\":6} /--><!-- wp:igp-pro/cta {\"heading\":{\"text\":\"Plan a trip to Rajasthan\",\"level\":\"h2\",\"eyebrow\":\"Ready to plan?\",\"visible\":true},\"style\":{\"variant\":\"banner\",\"density\":\"comfortable\",\"theme\":\"brand\",\"container\":\"wide\",\"surface\":\"default\",\"media_position\":\"auto\"},\"subheading\":\"Use this starter template as a structured baseline, then replace content with client-specific details.\",\"button\":{\"label\":\"Request a quote\",\"url\":\"/contact/\"},\"secondary_button\":{\"label\":\"View tours\",\"url\":\"/tours/\"},\"alignment\":\"center\",\"show_badges\":true,\"badges\":[{\"label\":\"Structured content\"},{\"label\":\"SEO-ready sections\"},{\"label\":\"Editable blocks\"}]} /-->",
+        "meta_description": "Destination page starter content.",
+        "sync_status": "synced"
+    },
+    "actor_user_id": 1,
+    "source_module": "starter-template-importer",
+    "created_at": "2026-05-04T06:58:33+00:00",
+    "rollback_status": "not_restored",
+    "before_hash": "d254a089cbcdfc509409dab425623f3b46c0a5930881739d5a4cdc1451bea61b",
+    "after_hash": "da9774844252c50eaffecb13ac61b458a778e239259aad6cef5f68de1cb6dfac",
+    "current_hash_at_create": "2831cfaf21c1819f4a9572516c549c6108c2b9a117cebb082adc1ee0b585d8a8",
+    "context": {
+        "source_module": "starter-template-importer",
+        "actor_type": "import",
+        "reason": "starter_template_import"
+    }
+}

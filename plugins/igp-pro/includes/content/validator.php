@@ -14,6 +14,13 @@ defined( 'ABSPATH' ) || exit;
  * @return true|WP_Error
  */
 function igp_pro_validate_content_graph_payload( array $graph ) {
+	if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+		$graph = igp_pro_canonicalize_content_graph( $graph );
+		if ( is_wp_error( $graph ) ) {
+			return $graph;
+		}
+	}
+
 	if ( empty( $graph['version'] ) || ! is_string( $graph['version'] ) ) {
 		return new WP_Error( 'igp_pro_graph_missing_version', __( 'Content graph version is required.', 'igp-pro' ) );
 	}
@@ -22,28 +29,60 @@ function igp_pro_validate_content_graph_payload( array $graph ) {
 		return new WP_Error( 'igp_pro_graph_unsupported_version', __( 'Only Content Graph version v1 is supported in this phase.', 'igp-pro' ) );
 	}
 
+	if ( empty( $graph['schema_version'] ) || ! is_string( $graph['schema_version'] ) ) {
+		return new WP_Error( 'igp_pro_graph_missing_schema_version', __( 'Content graph schema_version is required.', 'igp-pro' ) );
+	}
+
 	if ( ! array_key_exists( 'sections', $graph ) || ! is_array( $graph['sections'] ) ) {
 		return new WP_Error( 'igp_pro_graph_missing_sections', __( 'Content graph sections must be an array.', 'igp-pro' ) );
 	}
 
-	foreach ( $graph['sections'] as $index => $section ) {
+	$section_validation = igp_pro_validate_content_graph_sections( $graph['sections'], 'sections', 0 );
+	if ( is_wp_error( $section_validation ) ) {
+		return $section_validation;
+	}
+
+	if ( function_exists( 'igp_pro_validate_heading_hierarchy' ) ) {
+		$heading_validation = igp_pro_validate_heading_hierarchy( $graph );
+		if ( is_wp_error( $heading_validation ) ) {
+			return $heading_validation;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Validate Content Graph sections recursively.
+ *
+ * @param array<int,mixed> $sections Sections.
+ * @param string           $path     Error path.
+ * @param int              $depth    Current depth.
+ * @return true|WP_Error
+ */
+function igp_pro_validate_content_graph_sections( array $sections, string $path = 'sections', int $depth = 0 ) {
+	if ( $depth > 4 ) {
+		return new WP_Error( 'igp_pro_graph_max_depth_exceeded', __( 'Content graph nesting cannot exceed four levels.', 'igp-pro' ) );
+	}
+
+	foreach ( $sections as $index => $section ) {
 		if ( ! is_array( $section ) ) {
-			return new WP_Error( 'igp_pro_graph_invalid_section', sprintf( __( 'Content graph section %d must be an object.', 'igp-pro' ), (int) $index ) );
+			return new WP_Error( 'igp_pro_graph_invalid_section', sprintf( __( '%s.%d must be an object.', 'igp-pro' ), $path, (int) $index ) );
 		}
 
 		if ( empty( $section['block_id'] ) || ! is_string( $section['block_id'] ) ) {
-			return new WP_Error( 'igp_pro_graph_missing_block_id', sprintf( __( 'Content graph section %d requires a block_id.', 'igp-pro' ), (int) $index ) );
+			return new WP_Error( 'igp_pro_graph_missing_block_id', sprintf( __( '%s.%d requires a block_id.', 'igp-pro' ), $path, (int) $index ) );
 		}
 
 		$block_id = sanitize_key( (string) $section['block_id'] );
 		$block    = igp_pro_get_registered_block( $block_id );
 
 		if ( ! $block ) {
-			return new WP_Error( 'igp_pro_graph_unknown_block', sprintf( __( 'Content graph section %1$d references unknown block %2$s.', 'igp-pro' ), (int) $index, $block_id ) );
+			return new WP_Error( 'igp_pro_graph_unknown_block', sprintf( __( '%1$s.%2$d references unknown block %3$s.', 'igp-pro' ), $path, (int) $index, $block_id ) );
 		}
 
 		if ( array_key_exists( 'data', $section ) && ! is_array( $section['data'] ) ) {
-			return new WP_Error( 'igp_pro_graph_invalid_section_data', sprintf( __( 'Content graph section %d data must be an object.', 'igp-pro' ), (int) $index ) );
+			return new WP_Error( 'igp_pro_graph_invalid_section_data', sprintf( __( '%s.%d data must be an object.', 'igp-pro' ), $path, (int) $index ) );
 		}
 
 		$data   = isset( $section['data'] ) && is_array( $section['data'] ) ? $section['data'] : array();
@@ -53,13 +92,36 @@ function igp_pro_validate_content_graph_payload( array $graph ) {
 			return $schema;
 		}
 
-		if ( function_exists( 'igp_pro_migrate_block_heading_data_for_render' ) ) {
+		if ( function_exists( 'igp_pro_canonicalize_block_data' ) ) {
+			$data = igp_pro_canonicalize_block_data( $block_id, $data );
+		} elseif ( function_exists( 'igp_pro_migrate_block_heading_data_for_render' ) ) {
 			$data = igp_pro_migrate_block_heading_data_for_render( $block_id, $data );
 		}
 
-		$field_validation = igp_pro_validate_schema_data( $schema, $data, 'sections.' . $index . '.data', false );
+		$field_validation = igp_pro_validate_schema_data( $schema, $data, $path . '.' . $index . '.data', false );
 		if ( is_wp_error( $field_validation ) ) {
 			return $field_validation;
+		}
+
+		if ( function_exists( 'igp_pro_validate_block_heading_data' ) ) {
+			$heading_validation = igp_pro_validate_block_heading_data( $block_id, $data, $schema );
+			if ( is_wp_error( $heading_validation ) ) {
+				return $heading_validation;
+			}
+		}
+
+		if ( function_exists( 'igp_pro_validate_block_style_data' ) ) {
+			$style_validation = igp_pro_validate_block_style_data( $block_id, $data, $schema );
+			if ( is_wp_error( $style_validation ) ) {
+				return $style_validation;
+			}
+		}
+
+		if ( function_exists( 'igp_pro_validate_block_relationship_fields' ) ) {
+			$relationship_validation = igp_pro_validate_block_relationship_fields( $block_id, $data, array( 'path' => $path . '.' . $index . '.data' ) );
+			if ( is_wp_error( $relationship_validation ) ) {
+				return $relationship_validation;
+			}
 		}
 
 		// Validate the same data after schema defaults are applied so required
@@ -70,12 +132,15 @@ function igp_pro_validate_content_graph_payload( array $graph ) {
 		if ( is_wp_error( $block_validation ) ) {
 			return $block_validation;
 		}
-	}
 
-	if ( function_exists( 'igp_pro_semantic_outline_enabled' ) && igp_pro_semantic_outline_enabled() && function_exists( 'igp_pro_validate_heading_hierarchy' ) ) {
-		$heading_validation = igp_pro_validate_heading_hierarchy( $graph );
-		if ( is_wp_error( $heading_validation ) ) {
-			return $heading_validation;
+		if ( isset( $section['children'] ) ) {
+			if ( ! is_array( $section['children'] ) ) {
+				return new WP_Error( 'igp_pro_graph_invalid_children', sprintf( __( '%s.%d children must be an array.', 'igp-pro' ), $path, (int) $index ) );
+			}
+			$children_validation = igp_pro_validate_content_graph_sections( $section['children'], $path . '.' . $index . '.children', $depth + 1 );
+			if ( is_wp_error( $children_validation ) ) {
+				return $children_validation;
+			}
 		}
 	}
 

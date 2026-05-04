@@ -116,19 +116,74 @@ class IGP_MCP_AI_Copilot_Tools {
 		return rest_ensure_response( array( 'success' => true, 'data' => array( 'logged' => true ) ) );
 	}
 
+
+	/** Return a minimal JSON Schema object descriptor. */
+	private static function object_schema( array $properties = array(), array $required = array() ): array {
+		$schema = array(
+			'type' => 'object',
+			'additionalProperties' => false,
+			'properties' => $properties,
+		);
+		if ( ! empty( $required ) ) {
+			$schema['required'] = array_values( $required );
+		}
+		return $schema;
+	}
+
+	/** Return the shared YAML tool input schema. */
+	private static function yaml_schema( bool $include_context = false, bool $include_draft_confirmation = false, bool $include_target_post_id = false ): array {
+		$properties = array(
+			'yaml' => array(
+				'type' => 'string',
+				'minLength' => 1,
+				'maxLength' => 200000,
+				'description' => 'AI Copilot YAML draft. Raw Content Graph JSON is not accepted.',
+			),
+		);
+		if ( $include_context ) {
+			$properties['context'] = array(
+				'type' => 'object',
+				'additionalProperties' => true,
+				'description' => 'Optional compile/render context. WordPress sanitizes this before use.',
+			);
+		}
+		if ( $include_draft_confirmation ) {
+			$properties['confirm_draft_only'] = array(
+				'type' => 'boolean',
+				'default' => true,
+				'description' => 'Must remain true. The tool creates drafts only and never publishes.',
+			);
+		}
+		if ( $include_target_post_id ) {
+			$properties['target_post_id'] = array(
+				'type' => 'integer',
+				'minimum' => 0,
+				'default' => 0,
+				'description' => 'Optional existing post ID for a review changeset.',
+			);
+		}
+		return self::object_schema( $properties, array( 'yaml' ) );
+	}
+
 	/** Register exactly the safe Phase 16 tools. */
 	private static function register_tools(): void {
 		if ( ! class_exists( 'IGP_MCP_Tool_Registry' ) ) {
 			return;
 		}
+		$empty_schema = self::object_schema();
+		$yaml_schema  = self::yaml_schema();
+		$compile_schema = self::yaml_schema( true, false );
+		$draft_schema = self::yaml_schema( true, true );
+		$changeset_schema = self::yaml_schema( true, false, true );
+
 		$tools = array(
-			array( 'name' => 'igp_ai_get_yaml_contract', 'title' => 'Get YAML Contract', 'method' => 'GET', 'rest_path' => 'igp/v1/ai-copilot/contract', 'safe_write' => false, 'description' => 'Return the current AI Copilot YAML contract.' ),
-			array( 'name' => 'igp_ai_get_supported_blocks', 'title' => 'Get Supported Blocks', 'method' => 'GET', 'rest_path' => 'igp/v1/ai-copilot/blocks', 'safe_write' => false, 'description' => 'Return supported AI block aliases and registered IGP blocks.' ),
-			array( 'name' => 'igp_ai_validate_yaml', 'title' => 'Validate YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/validate', 'safe_write' => false, 'description' => 'Validate YAML without saving content.' ),
-			array( 'name' => 'igp_ai_compile_yaml', 'title' => 'Compile YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/compile', 'safe_write' => false, 'description' => 'Compile YAML into Content Graph without saving.' ),
-			array( 'name' => 'igp_ai_preview_yaml', 'title' => 'Preview YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/preview', 'safe_write' => false, 'description' => 'Render a central-renderer preview without saving.' ),
-			array( 'name' => 'igp_ai_create_draft_from_yaml', 'title' => 'Create Draft From YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/create-draft', 'safe_write' => true, 'description' => 'Create a WordPress draft only after Copilot validation and compile checks pass. Never publishes.' ),
-			array( 'name' => 'igp_ai_create_changeset_from_yaml', 'title' => 'Create Changeset From YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/create-changeset', 'safe_write' => true, 'description' => 'Create a reviewable AI changeset. Human approval is required before content is saved.' ),
+			array( 'name' => 'igp_ai_get_yaml_contract', 'title' => 'Get YAML Contract', 'method' => 'GET', 'rest_path' => 'igp/v1/ai-copilot/contract', 'safe_write' => false, 'description' => 'Return the current AI Copilot YAML contract.', 'input_schema' => $empty_schema ),
+			array( 'name' => 'igp_ai_get_supported_blocks', 'title' => 'Get Supported Blocks', 'method' => 'GET', 'rest_path' => 'igp/v1/ai-copilot/blocks', 'safe_write' => false, 'description' => 'Return supported AI block aliases and registered IGP blocks.', 'input_schema' => $empty_schema ),
+			array( 'name' => 'igp_ai_validate_yaml', 'title' => 'Validate YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/validate', 'safe_write' => false, 'description' => 'Validate YAML without saving content.', 'input_schema' => $yaml_schema ),
+			array( 'name' => 'igp_ai_compile_yaml', 'title' => 'Compile YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/compile', 'safe_write' => false, 'description' => 'Compile YAML into Content Graph without saving.', 'input_schema' => $compile_schema ),
+			array( 'name' => 'igp_ai_preview_yaml', 'title' => 'Preview YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/preview', 'safe_write' => false, 'description' => 'Render a central-renderer preview without saving.', 'input_schema' => $compile_schema ),
+			array( 'name' => 'igp_ai_create_draft_from_yaml', 'title' => 'Create Draft From YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/create-draft', 'safe_write' => true, 'description' => 'Create a WordPress draft only after Copilot validation and compile checks pass. Never publishes.', 'input_schema' => $draft_schema ),
+			array( 'name' => 'igp_ai_create_changeset_from_yaml', 'title' => 'Create Changeset From YAML', 'method' => 'POST', 'rest_path' => 'igp/v1/ai-copilot/create-changeset', 'safe_write' => true, 'description' => 'Create a reviewable AI changeset. Human approval is required before content is saved.', 'input_schema' => $changeset_schema ),
 		);
 		foreach ( $tools as $tool ) {
 			IGP_MCP_Tool_Registry::register_tool( $tool['name'], $tool );

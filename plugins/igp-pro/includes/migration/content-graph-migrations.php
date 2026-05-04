@@ -74,6 +74,40 @@ function igp_pro_migrate_content_graph( array $graph, string $target = '2.0' ) {
 }
 
 /**
+ * Migrate a Content Graph for non-mutating render/preview/import validation paths.
+ *
+ * @param array<string,mixed> $graph  Graph.
+ * @param string             $target Target schema version.
+ * @return array<string,mixed>|WP_Error
+ */
+function igp_pro_migrate_content_graph_for_render( array $graph, string $target = '2.0' ) {
+	$migrated = igp_pro_migrate_content_graph( $graph, $target );
+	if ( is_wp_error( $migrated ) ) {
+		return $migrated;
+	}
+
+	if ( function_exists( 'igp_pro_sanitize_content_graph_payload' ) ) {
+		$migrated = igp_pro_sanitize_content_graph_payload( $migrated );
+	}
+
+	if ( function_exists( 'igp_pro_canonicalize_content_graph' ) ) {
+		$migrated = igp_pro_canonicalize_content_graph( $migrated );
+		if ( is_wp_error( $migrated ) ) {
+			return $migrated;
+		}
+	}
+
+	if ( function_exists( 'igp_pro_validate_content_graph' ) ) {
+		$validation = igp_pro_validate_content_graph( $migrated );
+		if ( is_wp_error( $validation ) ) {
+			return $validation;
+		}
+	}
+
+	return $migrated;
+}
+
+/**
  * Traceable V1-to-V2 Content Graph migration.
  *
  * The root `version` remains `v1` during Phase 6 so existing V1 validators,
@@ -157,7 +191,21 @@ function igp_pro_migrate_content_graph_for_post( int $post_id, string $target = 
 		return $migrated;
 	}
 
-	$save = igp_pro_save_content_graph( $post_id, $migrated );
+	if ( class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+		$save = IGP_Content_Graph_Save_Service::save(
+			$post_id,
+			$migrated,
+			array(
+				'check_capability' => false,
+				'skip_snapshot'    => true,
+				'source_module'    => 'migration',
+				'actor_type'       => 'system',
+				'reason'           => 'content_graph_migration',
+			)
+		);
+	} else {
+		$save = new WP_Error( 'igp_pro_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
+	}
 	if ( is_wp_error( $save ) ) {
 		return $save;
 	}

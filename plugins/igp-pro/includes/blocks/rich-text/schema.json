@@ -133,16 +133,6 @@
         "narrow"
       ],
       "default": "normal"
-    },
-    "variant": {
-      "type": "enum",
-      "values": [
-        "default",
-        "lead",
-        "panel",
-        "quote"
-      ],
-      "default": "default"
     }
   },
   "defaults": {
@@ -155,7 +145,6 @@
     "content": "Add rich text content.",
     "alignment": "left",
     "width": "normal",
-    "variant": "default",
     "style": {
       "variant": "default",
       "density": "comfortable",
@@ -176,5 +165,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "rich_text"
 }

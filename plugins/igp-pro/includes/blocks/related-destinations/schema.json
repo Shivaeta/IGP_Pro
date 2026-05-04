@@ -161,5 +161,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "related_destinations"
 }

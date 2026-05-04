@@ -155,19 +155,48 @@ function igp_pro_restore_snapshot_data( string $object_type, int $object_id, $be
 			return new WP_Error( 'igp_pro_snapshot_invalid_graph', __( 'Snapshot does not contain a restorable Content Graph.', 'igp-pro' ) );
 		}
 
-		if ( ! function_exists( 'igp_pro_save_content_graph' ) ) {
-			return new WP_Error( 'igp_pro_content_graph_service_missing', __( 'Content Graph service is unavailable.', 'igp-pro' ) );
+		if ( ! class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+			return new WP_Error( 'igp_pro_save_service_missing', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
 		}
 
-		$save = igp_pro_save_content_graph( $object_id, $graph );
+		$save_context = array(
+			'check_capability' => false,
+			'skip_snapshot'    => true,
+			'source_module'    => 'recovery-rollback',
+			'actor_type'       => 'human',
+			'reason'           => 'snapshot_restore',
+		);
+		if ( is_array( $before_data ) && array_key_exists( 'meta_description', $before_data ) ) {
+			$save_context['meta_description'] = (string) $before_data['meta_description'];
+		}
+
+		$save = IGP_Content_Graph_Save_Service::save( $object_id, $graph, $save_context );
 		if ( is_wp_error( $save ) ) {
 			return $save;
 		}
 
-		if ( function_exists( 'igp_pro_sync_content_graph_to_post_content' ) ) {
+		if ( is_array( $before_data ) && array_key_exists( 'post_content', $before_data ) && function_exists( 'wp_update_post' ) ) {
+			$restore_post = wp_update_post(
+				array(
+					'ID'           => $object_id,
+					'post_content' => (string) $before_data['post_content'],
+				),
+				true
+			);
+			if ( is_wp_error( $restore_post ) ) {
+				return $restore_post;
+			}
+		} elseif ( function_exists( 'igp_pro_sync_content_graph_to_post_content' ) ) {
 			$sync = igp_pro_sync_content_graph_to_post_content( $object_id, $graph );
 			if ( is_wp_error( $sync ) ) {
 				return $sync;
+			}
+		}
+
+		if ( is_array( $before_data ) && array_key_exists( 'meta_description', $before_data ) && function_exists( 'igp_pro_save_meta_description' ) ) {
+			$meta_restore = igp_pro_save_meta_description( $object_id, (string) $before_data['meta_description'] );
+			if ( is_wp_error( $meta_restore ) ) {
+				return $meta_restore;
 			}
 		}
 

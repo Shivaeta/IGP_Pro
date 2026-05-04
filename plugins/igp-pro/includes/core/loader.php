@@ -51,6 +51,10 @@ function igp_pro_load(): void {
 	require_once IGP_PRO_PATH . 'includes/blocks/registry.php';
 	require_once IGP_PRO_PATH . 'includes/blocks/resolver.php';
 
+	if ( file_exists( IGP_PRO_PATH . 'includes/blocks/block-contract.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/blocks/block-contract.php';
+	}
+
 	if ( file_exists( IGP_PRO_PATH . 'includes/blocks/heading-support.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/blocks/heading-support.php';
 	}
@@ -128,6 +132,10 @@ function igp_pro_load(): void {
 		require_once IGP_PRO_PATH . 'includes/recovery/rollback.php';
 	}
 
+	if ( file_exists( IGP_PRO_PATH . 'includes/content/class-content-graph-save-service.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/content/class-content-graph-save-service.php';
+	}
+
 	if ( file_exists( IGP_PRO_PATH . 'includes/migration/schema-version-map.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/migration/schema-version-map.php';
 	}
@@ -138,6 +146,10 @@ function igp_pro_load(): void {
 
 	if ( file_exists( IGP_PRO_PATH . 'includes/migration/content-graph-migrations.php' ) ) {
 		require_once IGP_PRO_PATH . 'includes/migration/content-graph-migrations.php';
+	}
+
+	if ( file_exists( IGP_PRO_PATH . 'includes/relationships/block-relationship-validator.php' ) ) {
+		require_once IGP_PRO_PATH . 'includes/relationships/block-relationship-validator.php';
 	}
 
 	if ( function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_relationship_layer' ) ) {
@@ -332,6 +344,7 @@ function igp_pro_load(): void {
 	}
 	add_action( 'init', 'igp_pro_register_core_blocks', 9 );
 	add_action( 'init', 'igp_pro_register_wordpress_blocks', 10 );
+		add_filter( 'block_categories_all', 'igp_pro_register_block_categories' );
 	add_action( 'enqueue_block_editor_assets', 'igp_pro_enqueue_block_editor_assets' );
 
 	if ( function_exists( 'igp_pro_enqueue_frontend_assets' ) ) {

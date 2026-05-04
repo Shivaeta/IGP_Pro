@@ -19,7 +19,7 @@ if ( ! function_exists( 'igp_pro_render_cta' ) ) {
 		$secondary_label = isset( $secondary['label'] ) ? trim( igp_pro_to_string( $secondary['label'] ) ) : '';
 		$secondary_url   = isset( $secondary['url'] ) ? esc_url( igp_pro_to_string( $secondary['url'] ) ) : '';
 		$alignment  = igp_pro_enum( $data['alignment'] ?? 'center', array( 'center', 'left', 'right' ), 'center' );
-		$variant    = igp_pro_enum( $data['variant'] ?? 'solid', array( 'solid', 'outline', 'minimal', 'split', 'dark' ), 'solid' );
+		$variant    = igp_pro_enum( function_exists( 'igp_pro_get_legacy_visual_variant' ) ? igp_pro_get_legacy_visual_variant( 'cta', $data, 'solid' ) : 'solid', array( 'solid', 'outline', 'minimal', 'split', 'dark' ), 'solid' );
 		$badges     = igp_pro_normalize_list( $data['badges'] ?? array() );
 		$show_badges = ! empty( $data['show_badges'] );
 

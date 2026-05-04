@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 function igp_pro_render_page_h1_from_outline( array $outline ): string {
 	$h1 = isset( $outline['h1'] ) && is_array( $outline['h1'] ) ? $outline['h1'] : array();
 	$text = trim( wp_strip_all_tags( (string) ( $h1['text'] ?? '' ) ) );
-	if ( '' === $text || 'hero_fallback' === (string) ( $h1['source'] ?? '' ) ) {
+	if ( '' === $text ) {
 		return '';
 	}
 
@@ -118,17 +118,17 @@ function igp_pro_ensure_content_has_page_h1( string $content ): string {
 	}
 
 	$graph = array();
-	if ( function_exists( 'igp_pro_content_graph_from_post_content' ) ) {
-		$parsed_graph = igp_pro_content_graph_from_post_content( (int) $post->ID );
-		if ( is_array( $parsed_graph ) && ! empty( $parsed_graph['sections'] ) ) {
-			$graph = $parsed_graph;
-		}
-	}
-
-	if ( empty( $graph ) && function_exists( 'igp_pro_load_content_graph' ) ) {
+	if ( function_exists( 'igp_pro_load_content_graph' ) ) {
 		$stored_graph = igp_pro_load_content_graph( (int) $post->ID );
 		if ( is_array( $stored_graph ) ) {
 			$graph = $stored_graph;
+		}
+	}
+
+	if ( empty( $graph ) && function_exists( 'igp_pro_recover_graph_from_post_content' ) ) {
+		$parsed_graph = igp_pro_recover_graph_from_post_content( (int) $post->ID );
+		if ( is_array( $parsed_graph ) && ! empty( $parsed_graph['sections'] ) ) {
+			$graph = $parsed_graph;
 		}
 	}
 

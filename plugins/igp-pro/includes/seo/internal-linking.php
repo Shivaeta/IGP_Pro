@@ -629,7 +629,21 @@ function igp_pro_approve_internal_link_opportunities( int $post_id, array $oppor
 	}
 
 	$graph['seo']['internal_link_targets'] = igp_pro_dedupe_approved_internal_links( $existing );
-	$save = function_exists( 'igp_pro_save_content_graph' ) ? igp_pro_save_content_graph( $post_id, $graph ) : new WP_Error( 'igp_pro_internal_links_save_unavailable', __( 'Content Graph save service is unavailable.', 'igp-pro' ) );
+	if ( class_exists( 'IGP_Content_Graph_Save_Service' ) ) {
+		$save = IGP_Content_Graph_Save_Service::save(
+			$post_id,
+			$graph,
+			array(
+				'check_capability' => false,
+				'skip_snapshot'    => true,
+				'source_module'    => 'internal-linking',
+				'actor_type'       => 'human',
+				'reason'           => 'approve_internal_links',
+			)
+		);
+	} else {
+		$save = new WP_Error( 'igp_pro_internal_links_save_unavailable', __( 'Canonical Content Graph save service is unavailable.', 'igp-pro' ) );
+	}
 	if ( is_wp_error( $save ) ) {
 		return $save;
 	}

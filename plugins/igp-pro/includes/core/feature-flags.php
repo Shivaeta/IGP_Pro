@@ -22,22 +22,22 @@ if ( ! defined( 'IGP_PRO_FEATURE_FLAGS_OPTION' ) ) {
 function igp_pro_get_feature_flag_definitions(): array {
 	return array(
 		'enable_relationship_layer'     => array(
-			'default'     => false,
+			'default'     => true,
 			'label'       => __( 'Relationship Layer', 'igp-pro' ),
 			'description' => __( 'Enables V2 tour/destination relationship services and relationship-aware modules after implementation.', 'igp-pro' ),
 		),
 		'enable_semantic_outline'       => array(
-			'default'     => false,
+			'default'     => true,
 			'label'       => __( 'Semantic Outline', 'igp-pro' ),
 			'description' => __( 'Enables V2 page-level H1 policy and semantic heading support after implementation.', 'igp-pro' ),
 		),
 		'enable_smart_block_variants'   => array(
-			'default'     => false,
+			'default'     => true,
 			'label'       => __( 'Smart Block Variants', 'igp-pro' ),
 			'description' => __( 'Enables controlled V2 visual variants and block style support after implementation.', 'igp-pro' ),
 		),
 		'enable_brand_engine'           => array(
-			'default'     => false,
+			'default'     => true,
 			'label'       => __( 'Brand Engine', 'igp-pro' ),
 			'description' => __( 'Enables V2 brand profiles, design tokens, and generated CSS after implementation.', 'igp-pro' ),
 		),

@@ -7,6 +7,54 @@
 
 defined( 'ABSPATH' ) || exit;
 
+
+/**
+ * Record block render failures for diagnostics, editor QA, and SEO audits.
+ *
+ * @param string $block_id Block ID.
+ * @param string $reason Failure reason.
+ * @param array<string,mixed> $context Render context.
+ */
+function igp_pro_record_block_render_failure( string $block_id, string $reason, array $context = array() ): void {
+	$post_id = 0;
+	if ( isset( $context['post_id'] ) ) {
+		$post_id = absint( $context['post_id'] );
+	} elseif ( function_exists( 'get_the_ID' ) ) {
+		$post_id = absint( get_the_ID() );
+	}
+
+	$section_id = '';
+	if ( isset( $context['section']['id'] ) ) {
+		$section_id = sanitize_key( (string) $context['section']['id'] );
+	} elseif ( isset( $context['igp_section_id'] ) ) {
+		$section_id = sanitize_key( (string) $context['igp_section_id'] );
+	}
+
+	$GLOBALS['igp_pro_block_render_failures'] = is_array( $GLOBALS['igp_pro_block_render_failures'] ?? null ) ? $GLOBALS['igp_pro_block_render_failures'] : array();
+	$GLOBALS['igp_pro_block_render_failures'][] = array(
+		'post_id'    => $post_id,
+		'section_id' => $section_id,
+		'block_id'   => sanitize_key( $block_id ),
+		'reason'     => sanitize_key( $reason ),
+		'time'       => time(),
+	);
+
+	if ( function_exists( 'igp_pro_log' ) ) {
+		igp_pro_log(
+			array(
+				'actor_type'    => is_admin() ? 'human' : 'system',
+				'operation'     => 'block_render_failure',
+				'object_type'   => 'content_graph_section',
+				'object_id'     => $post_id,
+				'source_module' => 'block-renderer',
+				'status'        => 'failure',
+				'error_code'    => sanitize_key( $reason ),
+				'summary'       => sprintf( 'Block render fallback for %s: %s', sanitize_key( $block_id ), sanitize_key( $reason ) ),
+			)
+		);
+	}
+}
+
 /**
  * Render a registered IGP Pro block through one controller.
  *
@@ -20,12 +68,14 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 		$block = igp_pro_get_registered_block( $block_id );
 
 		if ( ! $block ) {
+			igp_pro_record_block_render_failure( $block_id, 'missing_block', $context );
 			return igp_pro_render_block_fallback( $block_id, 'missing_block' );
 		}
 
 		$render_path = isset( $block['render_path'] ) ? (string) $block['render_path'] : '';
 
 		if ( '' === $render_path || ! file_exists( $render_path ) ) {
+			igp_pro_record_block_render_failure( $block_id, 'missing_render_path', $context );
 			return igp_pro_render_block_fallback( $block_id, 'missing_render_path' );
 		}
 
@@ -42,6 +92,7 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 		$validation = igp_pro_validate_block_data( $block, $resolved_data );
 
 		if ( is_wp_error( $validation ) ) {
+			igp_pro_record_block_render_failure( $block_id, $validation->get_error_code(), $context );
 			return igp_pro_render_block_fallback( $block_id, $validation->get_error_code() );
 		}
 
@@ -54,6 +105,10 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 			$resolved_data = igp_pro_prepare_legacy_heading_render_data( $block_id, $resolved_data );
 		}
 
+		if ( function_exists( 'igp_pro_prepare_legacy_style_render_data' ) ) {
+			$resolved_data = igp_pro_prepare_legacy_style_render_data( $block_id, $resolved_data );
+		}
+
 		ob_start();
 		$result = include $render_path;
 		$output = ob_get_clean();
@@ -63,6 +118,7 @@ function igp_pro_render_block( string $block_id, array $data = array(), array $c
 		}
 
 		if ( '' === trim( $output ) ) {
+			igp_pro_record_block_render_failure( $block_id, 'empty_output', $context );
 			return igp_pro_render_block_fallback( $block_id, 'empty_output' );
 		}
 

@@ -20,7 +20,7 @@ if ( ! function_exists( 'igp_pro_render_destination_cards' ) ) {
 		$show_excerpt = ! empty( $data['show_excerpt'] );
 		$show_count   = ! empty( $data['show_count'] );
 		$image_ratio  = igp_pro_enum( $data['image_ratio'] ?? 'portrait', array( 'landscape', 'portrait', 'square' ), 'portrait' );
-		$variant      = igp_pro_enum( $data['variant'] ?? 'overlay', array( 'elevated', 'overlay', 'bordered' ), 'overlay' );
+		$variant      = igp_pro_enum( function_exists( 'igp_pro_get_legacy_visual_variant' ) ? igp_pro_get_legacy_visual_variant( 'destination_cards', $data, 'overlay' ) : 'overlay', array( 'elevated', 'overlay', 'bordered' ), 'overlay' );
 		$query_limit  = 'manual' === $source && ! empty( $ids ) ? max( $limit, count( $ids ) ) : $limit;
 
 		if ( 'manual' === $source && empty( $ids ) ) {

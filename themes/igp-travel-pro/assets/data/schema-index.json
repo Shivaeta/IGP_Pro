@@ -1,0 +1,567 @@
+{
+  "accordions": {
+    "variants": [
+      "default",
+      "accordion",
+      "grouped",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "items"
+    ],
+    "css_slug": "accordions"
+  },
+  "best_time_to_visit": {
+    "variants": [
+      "default",
+      "seasons",
+      "monthly",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "best_months",
+      "weather_summary",
+      "seasons",
+      "tips"
+    ],
+    "css_slug": "best-time-to-visit"
+  },
+  "breadcrumb": {
+    "variants": [
+      "default",
+      "compact"
+    ],
+    "fields": [
+      "source",
+      "items",
+      "show_current",
+      "style"
+    ],
+    "css_slug": "breadcrumb"
+  },
+  "brochure_cta": {
+    "variants": [
+      "default",
+      "banner",
+      "card",
+      "inline"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "description",
+      "file_url",
+      "button_label",
+      "secondary_label",
+      "secondary_url",
+      "form_note"
+    ],
+    "css_slug": "brochure-cta"
+  },
+  "cta": {
+    "variants": [
+      "default",
+      "inline",
+      "banner",
+      "split",
+      "card"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "subheading",
+      "button",
+      "secondary_button",
+      "alignment",
+      "show_badges",
+      "badges"
+    ],
+    "css_slug": "cta"
+  },
+  "departure_dates": {
+    "variants": [
+      "default",
+      "table",
+      "cards",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "dates",
+      "footnote"
+    ],
+    "css_slug": "departure-dates"
+  },
+  "destination_cards": {
+    "variants": [
+      "default",
+      "grid",
+      "carousel-safe",
+      "list",
+      "featured"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "description",
+      "source",
+      "items",
+      "layout",
+      "columns",
+      "limit",
+      "show_excerpt",
+      "show_count",
+      "image_ratio"
+    ],
+    "css_slug": "destination-cards"
+  },
+  "expert_box": {
+    "variants": [
+      "default",
+      "card",
+      "profile",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "name",
+      "role",
+      "bio",
+      "image",
+      "phone",
+      "email",
+      "cta_label",
+      "cta_url",
+      "specialties"
+    ],
+    "css_slug": "expert-box"
+  },
+  "faq": {
+    "variants": [
+      "default",
+      "accordion",
+      "grouped",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "items"
+    ],
+    "css_slug": "faq"
+  },
+  "featured_listings": {
+    "variants": [
+      "default",
+      "grid",
+      "carousel-safe",
+      "list",
+      "featured"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "description",
+      "post_type",
+      "items",
+      "layout",
+      "columns",
+      "limit",
+      "show_excerpt",
+      "show_price",
+      "show_rating",
+      "image_ratio"
+    ],
+    "css_slug": "featured-listings"
+  },
+  "gallery": {
+    "variants": [
+      "default",
+      "grid",
+      "masonry-safe",
+      "slider-safe"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "images",
+      "layout",
+      "columns"
+    ],
+    "css_slug": "gallery"
+  },
+  "hero": {
+    "variants": [
+      "default",
+      "full-width",
+      "image-left",
+      "image-right",
+      "split-overlay",
+      "centered-minimal"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "subheading",
+      "background_image",
+      "cta",
+      "enable_search"
+    ],
+    "css_slug": "hero"
+  },
+  "icon_list": {
+    "variants": [
+      "default",
+      "grid",
+      "compact",
+      "cards"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "items",
+      "columns"
+    ],
+    "css_slug": "icon-list"
+  },
+  "inclusions_exclusions": {
+    "variants": [
+      "default",
+      "two-column",
+      "compact",
+      "cards"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "inclusions",
+      "exclusions",
+      "note"
+    ],
+    "css_slug": "inclusions-exclusions"
+  },
+  "itinerary": {
+    "variants": [
+      "default",
+      "timeline",
+      "cards",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "days"
+    ],
+    "css_slug": "itinerary"
+  },
+  "map": {
+    "variants": [
+      "default",
+      "wide",
+      "card"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "address",
+      "embed_url",
+      "height",
+      "link_label"
+    ],
+    "css_slug": "map"
+  },
+  "nearby_attractions": {
+    "variants": [
+      "default",
+      "grid",
+      "list",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "source",
+      "items",
+      "limit"
+    ],
+    "css_slug": "nearby-attractions"
+  },
+  "package_tiers": {
+    "variants": [
+      "default",
+      "comparison",
+      "cards",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "tiers",
+      "note"
+    ],
+    "css_slug": "package-tiers"
+  },
+  "pricing_summary": {
+    "variants": [
+      "default",
+      "compact",
+      "featured",
+      "comparison"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "currency",
+      "base_price",
+      "items",
+      "note"
+    ],
+    "css_slug": "pricing-summary"
+  },
+  "related_destinations": {
+    "variants": [
+      "default",
+      "grid",
+      "carousel-safe",
+      "list",
+      "featured"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "limit",
+      "layout",
+      "show_excerpt"
+    ],
+    "css_slug": "related-destinations"
+  },
+  "related_tours": {
+    "variants": [
+      "default",
+      "grid",
+      "carousel-safe",
+      "list",
+      "featured"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "limit",
+      "layout",
+      "show_excerpt"
+    ],
+    "css_slug": "related-tours"
+  },
+  "reviews_summary": {
+    "variants": [
+      "default",
+      "summary",
+      "cards",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "average_rating",
+      "review_count",
+      "rating_source",
+      "summary",
+      "breakdown",
+      "testimonials"
+    ],
+    "css_slug": "reviews-summary"
+  },
+  "rich_text": {
+    "variants": [
+      "default",
+      "article",
+      "lead",
+      "panel",
+      "quote"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "content",
+      "alignment",
+      "width"
+    ],
+    "css_slug": "rich-text"
+  },
+  "route_timeline": {
+    "variants": [
+      "default",
+      "timeline",
+      "cards",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "stops"
+    ],
+    "css_slug": "route-timeline"
+  },
+  "section": {
+    "variants": [
+      "default",
+      "band",
+      "split",
+      "grid"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "description",
+      "layout",
+      "columns",
+      "spacing",
+      "align",
+      "background"
+    ],
+    "css_slug": "section"
+  },
+  "stats": {
+    "variants": [
+      "default",
+      "grid",
+      "strip",
+      "cards"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "items",
+      "columns"
+    ],
+    "css_slug": "stats"
+  },
+  "sticky_booking_cta": {
+    "variants": [
+      "default",
+      "bottom-bar",
+      "side-card",
+      "inline"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "description",
+      "price_from",
+      "currency",
+      "primary_label",
+      "primary_url",
+      "secondary_label",
+      "secondary_url",
+      "phone_label",
+      "phone_url",
+      "note",
+      "cta_title"
+    ],
+    "css_slug": "sticky-booking-cta"
+  },
+  "tabs": {
+    "variants": [
+      "default",
+      "pills",
+      "underline",
+      "boxed"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "items"
+    ],
+    "css_slug": "tabs"
+  },
+  "tour_cards": {
+    "variants": [
+      "default",
+      "grid",
+      "carousel-safe",
+      "list",
+      "featured"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "description",
+      "source",
+      "items",
+      "destination",
+      "layout",
+      "columns",
+      "limit",
+      "show_price",
+      "show_rating",
+      "show_excerpt",
+      "show_meta",
+      "cta_label",
+      "image_ratio"
+    ],
+    "css_slug": "tour-cards"
+  },
+  "tour_facts": {
+    "variants": [
+      "default",
+      "grid",
+      "compact",
+      "icons"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "facts"
+    ],
+    "css_slug": "tour-facts"
+  },
+  "trust": {
+    "variants": [
+      "default",
+      "logo-strip",
+      "testimonial-cards",
+      "stats"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "rating",
+      "source",
+      "layout",
+      "items",
+      "logos"
+    ],
+    "css_slug": "trust"
+  },
+  "visa_requirements": {
+    "variants": [
+      "default",
+      "checklist",
+      "cards",
+      "compact"
+    ],
+    "fields": [
+      "heading",
+      "style",
+      "intro",
+      "requirements",
+      "documents",
+      "disclaimer",
+      "last_updated"
+    ],
+    "css_slug": "visa-requirements"
+  }
+}

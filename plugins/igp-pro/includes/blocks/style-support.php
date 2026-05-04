@@ -41,25 +41,7 @@ function igp_pro_style_css_slug( string $value ): string {
  * @return bool
  */
 function igp_pro_should_apply_block_style_support( string $block_id, array $data = array() ): bool {
-	if ( function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_smart_block_variants' ) ) {
-		return true;
-	}
-
-	if ( isset( $data['style'] ) && is_array( $data['style'] ) ) {
-		return true;
-	}
-
-	if ( function_exists( 'igp_pro_get_registered_block' ) && function_exists( 'igp_pro_get_block_schema' ) ) {
-		$block = igp_pro_get_registered_block( $block_id );
-		if ( is_array( $block ) ) {
-			$schema = igp_pro_get_block_schema( $block );
-			if ( is_array( $schema ) ) {
-				return ! empty( $schema['supports']['style'] ) || isset( $schema['fields']['style'] );
-			}
-		}
-	}
-
-	return false;
+	return function_exists( 'igp_feature_enabled' ) && igp_feature_enabled( 'enable_smart_block_variants' );
 }
 
 /**
@@ -299,4 +281,88 @@ function igp_pro_apply_block_style_defaults_for_render( string $block_id, array 
 
 	$data['style'] = array_merge( igp_pro_get_block_style_defaults( $block_id ), $data['style'] );
 	return $data;
+}
+
+
+/**
+ * Prepare canonical style data for legacy render callbacks that still read a
+ * top-level `variant` key. The editor and Content Graph remain canonicalized to
+ * style.variant; this bridge is render-only.
+ *
+ * @param string              $block_id Block ID.
+ * @param array<string,mixed> $data Data.
+ * @return array<string,mixed>
+ */
+function igp_pro_prepare_legacy_style_render_data( string $block_id, array $data ): array {
+	$block_id = sanitize_key( $block_id );
+	if ( empty( $data['style'] ) || ! is_array( $data['style'] ) ) {
+		return $data;
+	}
+
+	$style_variant = sanitize_key( (string) ( $data['style']['variant'] ?? 'default' ) );
+	$map = array(
+		'cta' => array(
+			'default' => 'solid',
+			'inline'  => 'minimal',
+			'banner'  => 'dark',
+			'split'   => 'split',
+			'card'    => 'outline',
+		),
+		'destination_cards' => array(
+			'default'       => 'overlay',
+			'grid'          => 'elevated',
+			'carousel-safe' => 'elevated',
+			'list'          => 'bordered',
+			'featured'      => 'compact',
+		),
+		'tour_cards' => array(
+			'default'       => 'elevated',
+			'grid'          => 'elevated',
+			'carousel-safe' => 'elevated',
+			'list'          => 'bordered',
+			'featured'      => 'compact',
+		),
+		'featured_listings' => array(
+			'default'       => 'elevated',
+			'grid'          => 'elevated',
+			'carousel-safe' => 'elevated',
+			'list'          => 'bordered',
+			'featured'      => 'compact',
+		),
+		'rich_text' => array(
+			'default' => 'default',
+			'article' => 'default',
+			'lead'    => 'lead',
+			'panel'   => 'panel',
+			'quote'   => 'quote',
+		),
+		'section' => array(
+			'default' => 'default',
+			'band'    => 'panel',
+			'split'   => 'wide',
+			'grid'    => 'contained',
+		),
+	);
+
+	if ( isset( $map[ $block_id ][ $style_variant ] ) ) {
+		$data['variant'] = $map[ $block_id ][ $style_variant ];
+	}
+
+	return $data;
+}
+
+/**
+ * Return the render-time legacy visual variant from canonical style.variant.
+ *
+ * This keeps old markup/CSS class names working while the Content Graph and
+ * editor expose only the canonical style.variant contract.
+ *
+ * @param string              $block_id Block ID.
+ * @param array<string,mixed> $data Block data.
+ * @param string              $fallback Fallback legacy variant.
+ * @return string
+ */
+function igp_pro_get_legacy_visual_variant( string $block_id, array $data, string $fallback = 'default' ): string {
+	$prepared = igp_pro_prepare_legacy_style_render_data( $block_id, $data );
+	return sanitize_key( (string) ( $prepared['variant'] ?? $fallback ) );
 }

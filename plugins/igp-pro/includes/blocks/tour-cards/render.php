@@ -22,7 +22,7 @@ if ( ! function_exists( 'igp_pro_render_tour_cards' ) ) {
 		$show_meta    = ! empty( $data['show_meta'] );
 		$cta_label    = isset( $data['cta_label'] ) ? trim( igp_pro_to_string( $data['cta_label'] ) ) : __( 'Book a tour', 'igp-pro' );
 		$image_ratio  = igp_pro_enum( $data['image_ratio'] ?? 'landscape', array( 'landscape', 'portrait', 'square' ), 'landscape' );
-		$variant      = igp_pro_enum( $data['variant'] ?? 'elevated', array( 'elevated', 'bordered', 'compact' ), 'elevated' );
+		$variant      = igp_pro_enum( function_exists( 'igp_pro_get_legacy_visual_variant' ) ? igp_pro_get_legacy_visual_variant( 'tour_cards', $data, 'elevated' ) : 'elevated', array( 'elevated', 'bordered', 'compact' ), 'elevated' );
 		$ids          = 'manual' === $source ? igp_pro_normalize_post_ids( $data['items'] ?? array() ) : array();
 		$query_limit  = 'manual' === $source && ! empty( $ids ) ? max( $limit, count( $ids ) ) : $limit;
 		$destination_ids = igp_pro_normalize_post_ids( $data['destination'] ?? array() );

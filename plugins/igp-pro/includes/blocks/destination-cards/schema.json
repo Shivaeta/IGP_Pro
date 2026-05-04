@@ -165,15 +165,6 @@
         "square"
       ],
       "default": "portrait"
-    },
-    "variant": {
-      "type": "enum",
-      "values": [
-        "elevated",
-        "overlay",
-        "bordered"
-      ],
-      "default": "overlay"
     }
   },
   "defaults": {
@@ -192,7 +183,6 @@
     "show_excerpt": true,
     "show_count": true,
     "image_ratio": "portrait",
-    "variant": "overlay",
     "style": {
       "variant": "default",
       "density": "comfortable",
@@ -216,5 +206,6 @@
   "supports": {
     "heading": true,
     "style": true
-  }
+  },
+  "block_id": "destination_cards"
 }
